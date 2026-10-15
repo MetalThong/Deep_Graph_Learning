@@ -1,0 +1,13 @@
+{"kind":"deck","id":"pr/3xh1v7","name":"Deck"}
+{"kind":"layout","id":"ly/1s7q90re","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/mtgji943","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/y14jatgj","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/0be98nih","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/1cfu1gfq","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"Left column","type":"body"},{"name":"Right column","type":"body"}]}
+{"kind":"layout","id":"ly/yl4vuhs3","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/8relgzyx","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/6f5qjo","slideIndex":0,"layout":{"id":"ly/8relgzyx","name":"Blank"},"title":"Học sâu trên đồ thị: GCN, GraphSAGE và GAT","textShapes":1,"backgroundColor":"rgba(247,246,240,1)"}
+{"kind":"textbox","id":"sh/5o7mpcr2","slideIndex":0,"position":{"left":64,"top":40,"width":1150,"height":100},"text":"Học sâu trên đồ thị: GCN, GraphSAGE và GAT","geometry":"rect","lineWidth":0,"style":{"fontSize":44,"typeface":"Arial","color":"#102E33","bold":true,"alignment":"left"}}
+{"kind":"chart","id":"ch/j2d4falw","slideIndex":0,"position":{"left":750,"top":180,"width":440,"height":380},"name":"","chartType":"bar"}
+{"kind":"table","id":"tb/vilkvq5g","slideIndex":0,"position":{"left":64,"top":180,"width":650,"height":190},"name":"","rows":3,"cols":3,"preview":"Mô hình | Accuracy | Macro-F1"}
+{"kind":"notes","id":"nt/6f5qjo","slideIndex":0,"text":"Thành viên 1. Đây là lời thuyết trình thử nghiệm với dấu tiếng Việt."}

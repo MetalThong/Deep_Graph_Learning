@@ -1,0 +1,893 @@
+
+--- PAGE 1 ---
+Intelligent System Development
+From Deep Learning to Knowledge Graph, RAG,
+and Intelligent Agents
+Student Lecture and Practical Tutorial
+Department of Information Technology
+2026
+Abstract
+This lecture presents a unified development framework for modern intelligent systems.
+The course begins with Deep Learning, which enables systems to learn representations and
+predictive functions from data. It then introduces Knowledge Graphs for representing struc-
+tured knowledge and relationships, Retrieval Augmented Generation (RAG) for retrieving
+external information before language generation, and intelligent agents for combining rea-
+soning, memory, tools, retrieval, and action.
+The central message is that these technologies are complementary. Deep Learning pro-
+vides learned representations and predictive models; Knowledge Graphs provide structured
+relationships; RAG provides access to external information; large language models provide
+language understanding and generation; and agents coordinate these components to achieve
+a goal.
+Students progressively implement these ideas using Python, embeddings, vector retrieval,
+knowledge graphs, and language models. The final project is an intelligent assistant that
+can retrieve information, reason over structured knowledge, use learned models, and perform
+useful actions.
+Contents
+1 Introduction 4
+2 From Machine Learning to Intelligent Systems 4
+3 Deep Learning as the Learning Component 5
+4 Why Learned Models Need External Knowledge 6
+5 Knowledge Representation 6
+6 Knowledge Graphs 6
+7 Example: University Knowledge Graph 7
+8 Creating a Small Knowledge Graph in Python 8
+9 Graph Databases 8
+10 What is RAG? 8
+11 Document Embeddings 9
+1
+
+--- PAGE 2 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+12 Basic RAG Pipeline 9
+13 A Minimal RAG Implementation 9
+14 Why RAG is Important 10
+14.1 Current Information . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+14.2 Domain Knowledge . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+14.3 Evidence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+14.4 Reduced Hallucination . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+15 Knowledge Graph versus Vector RAG 10
+16 Knowledge Graph + RAG 11
+17 Example: University Intelligent Assistant 11
+17.1 Step 1: Query the Knowledge Graph . . . . . . . . . . . . . . . . . . . . . . . . . 12
+17.2 Step 2: Retrieve Documents . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+17.3 Step 3: Combine Evidence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+17.4 Step 4: Generate Answer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+18 GraphRAG 12
+19 GraphRAG Example 13
+20 From RAG to Intelligent Agents 13
+21 Agent Architecture 13
+22 Tools 14
+23 Deep Learning + KG + RAG + Agent 14
+24 A Unified Mathematical View 15
+25 Practical Development Roadmap 15
+26 Practical Project 17
+27 Example Project: University Assistant 17
+28 Example User Interaction 18
+29 Evaluation of an Intelligent System 18
+29.1 Prediction Accuracy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+29.2 Retrieval Quality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+29.3 Answer Quality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+29.4 Agent Performance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+30 Common Failure Modes 19
+30.1 Deep Learning Failure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+30.2 Knowledge Graph Failure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+30.3 RAG Failure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+30.4 LLM Failure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+30.5 Agent Failure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+2
+
+--- PAGE 3 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+31 Implementation Environment 20
+32 Suggested Student Workflow 21
+33 Mini Project 1: Semantic Search 22
+34 Mini Project 2: RAG Chatbot 22
+35 Mini Project 3: Knowledge Graph 22
+36 Final Project: Intelligent Agent 23
+37 Recommended Final Report Structure 23
+38 The Big Picture 24
+39 Exercises 24
+40 Final Message to Students 25
+3
+
+--- PAGE 4 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+1 Introduction
+Artificial Intelligence systems have evolved from systems that perform a single prediction into
+systems that can combine learning, knowledge, retrieval, reasoning, and action.
+A traditional machine learning system may answer a question such as
+“Is this image a cat or a dog?”
+A more advanced intelligent system should be able to answer
+“Why is this image classified as a cat, what related information do we know about
+cats, and what should the user do next?”
+These are fundamentally different capabilities.
+A useful development framework is
+Intelligent System= Learning +Knowledge +Retrieval +Reasoning +Action. (1)
+In this framework:
+• Deep Learning provides learning.
+• Knowledge Graphs provide structured knowledge.
+• RAG provides information retrieval.
+• Large Language Models provide language understanding and generation.
+• Agents provide planning, tool use, memory, and action.
+The goal of this lecture is to understand how these components can be integrated into one
+intelligent system.
+2 From Machine Learning to Intelligent Systems
+Students have previously studied machine learning and deep learning models.
+A typical supervised learning problem can be written as
+y =fθ(x), (2)
+where
+• x is the input,
+• y is the target,
+• fθis a learned model,
+• θrepresents trainable parameters.
+For example,
+image−→CNN−→class. (3)
+For time-series prediction,
+4
+
+--- PAGE 5 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+(x1,x 2,...,xT )−→LSTM−→ˆxT +1. (4)
+These models are powerful, but they normally solve a relatively specific computational prob-
+lem.
+An intelligent system must go beyond prediction.
+It may need to:
+1. understand a user query;
+2. retrieve relevant information;
+3. use structured knowledge;
+4. call a prediction model;
+5. reason about several pieces of information;
+6. use external tools;
+7. remember previous interactions;
+8. produce an answer;
+9. perform an action.
+This motivates the transition
+Deep Learning→Knowledge→Retrieval→Agent. (5)
+3 Deep Learning as the Learning Component
+Deep Learning learns representations from data.
+A neural network can be viewed abstractly as
+h =fθ(x), (6)
+where h is a learned representation.
+For an image,
+ximage→hvisual→y. (7)
+For text,
+xtext→htext→y. (8)
+For time series,
+X1:T→hT→ˆy. (9)
+These representations become important later.
+A modern intelligent system may use several learned representations:
+himage =f image
+θ (x),
+htext =f text
+θ (q),
+htime =f time
+θ (X).
+(10)
+The system can then combine these representations with external knowledge.
+5
+
+--- PAGE 6 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+4 Why Learned Models Need External Knowledge
+Suppose a student builds a neural network for university information.
+The model may learn patterns from training data, but it does not automatically know a
+newly published university regulation.
+This illustrates an important distinction:
+Model Parameters̸= Current Knowledge. (11)
+A trained model contains information encoded during training. An intelligent system often
+needs information that is:
+• current,
+• private,
+• domain-specific,
+• stored in documents,
+• stored in databases,
+• continuously updated.
+Therefore, the system should retrieve external information when needed.
+This is the basic motivation for RAG.
+5 Knowledge Representation
+Before introducing Knowledge Graphs, consider the difference between unstructured and struc-
+tured information.
+A document may contain:
+“Artificial Intelligence is offered by the Department of Information Technology. The
+course requires Linear Algebra and Programming.”
+Humans can easily identify the relationships.
+A computer can represent them explicitly as
+(Artificial Intelligence,offered_by,Information Technology),
+(Artificial Intelligence,requires,Linear Algebra),
+(Artificial Intelligence,requires,Programming).
+(12)
+These are knowledge triples.
+6 Knowledge Graphs
+Definition 6.1 (Knowledge Graph). A Knowledge Graph is a graph-based representation in
+which entities are represented as nodes and semantic relationships between entities are repre-
+sented as edges.
+6
+
+--- PAGE 7 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+A simple graph is
+G = (V,E ), (13)
+where V is the set of entities andE is the set of relationships.
+A knowledge graph may contain triples
+(s,r,o ), (14)
+where
+• s is the subject,
+• r is the relation,
+• o is the object.
+For example,
+(Student,enrolled_in,Course). (15)
+Another example is
+(Course,taught_by,Lecturer). (16)
+7 Example: University Knowledge Graph
+Consider the following graph.
+Student Artificial
+Intelligence Lecturer
+Linear
+Algebra
+IT Department
+enrolled_in taught_by
+requires
+offered_by
+A graph makes relationships explicit.
+This is particularly useful for questions such as
+Which courses require Linear Algebra?
+or
+Which courses can this student take?
+7
+
+--- PAGE 8 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+8 Creating a Small Knowledge Graph in Python
+A simple graph can first be represented using Python data structures.
+1 knowledge = [
+2 ("AI", "offered_by", "IT Department"),
+3 ("AI", "requires", "Linear Algebra"),
+4 ("AI", "requires", "Programming"),
+5 ("Machine Learning", "requires", "AI"),
+6 ("Machine Learning", "taught_by", "Dr. Smith")
+7 ]
+8
+9 for subject, relation, object_ in knowledge:
+10 print(subject, relation, object_)
+The output is conceptually
+1 AI offered_by IT Department
+2 AI requires Linear Algebra
+3 AI requires Programming
+4 Machine Learning requires AI
+5 Machine Learning taught_by Dr. Smith
+This small example illustrates the fundamental idea of a Knowledge Graph.
+9 Graph Databases
+For larger systems, graph databases can store entities and relationships explicitly.
+One popular graph database is Neo4j.
+A graph database allows queries such as
+1 MATCH (c:Course)-[:REQUIRES]->(p)
+2 WHERE p.name = "Linear Algebra"
+3 RETURN c
+The important idea is that the query follows relationships rather than searching only for text
+similarity.
+10 What is RAG?
+RAG stands for
+Retrieval-Augmented Generation. (17)
+The central idea is simple:
+Question→Retrieve Information→Generate Answer. (18)
+Instead of asking an LLM to answer using only its internal parameters, the system first
+retrieves relevant information.
+A basic RAG system contains
+1. document collection;
+2. document splitting;
+3. embedding model;
+8
+
+--- PAGE 9 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+4. vector database;
+5. retriever;
+6. language model;
+7. answer generator.
+11 Document Embeddings
+Let a text fragment be
+di. (19)
+An embedding model maps the text into a vector:
+ei =fθ(di)∈Rm. (20)
+Similarly, a user queryq becomes
+eq =fθ(q). (21)
+Similarity can be measured using cosine similarity:
+sim(eq,ei) = eT
+qei
+∥eq∥∥ei∥. (22)
+The retriever selects the documents with the largest similarity.
+12 Basic RAG Pipeline
+The complete pipeline is
+Documents Chunking Embeddings Vector
+Store
+User Query Retriever LLM Answer
+13 A Minimal RAG Implementation
+For teaching, students should first understand the mechanism before using a large framework.
+A conceptual implementation is:
+1 documents = [
+2 "Artificial Intelligence requires programming.",
+3 "Machine Learning is a branch of Artificial Intelligence.",
+4 "Deep Learning uses neural networks.",
+5 "RAG retrieves external information before generation."
+6 ]
+7
+8 query = "What is RAG?"
+9
+9
+
+--- PAGE 10 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+10 # Step 1: embed query
+11 query_vector = embed(query)
+12
+13 # Step 2: embed documents
+14 document_vectors = [
+15 embed(doc) for doc in documents
+16 ]
+17
+18 # Step 3: compute similarity
+19 scores = [
+20 cosine_similarity(query_vector, vector)
+21 for vector in document_vectors
+22 ]
+23
+24 # Step 4: select relevant documents
+25 context = retrieve_top_k(documents, scores, k=2)
+26
+27 # Step 5: generate answer
+28 answer = llm_generate(query, context)
+29
+30 print(answer)
+The important conceptual sequence is
+q→eq→similarity→Dk→LLM. (23)
+14 Why RAG is Important
+RAG provides several important advantages.
+14.1 Current Information
+The knowledge base can be updated without retraining the language model.
+14.2 Domain Knowledge
+The system can use university documents, company documents, technical manuals, regulations,
+research papers, or personal notes.
+14.3 Evidence
+The system can return the retrieved documents as evidence.
+14.4 Reduced Hallucination
+RAG does not guarantee correctness, but grounding generation in retrieved evidence can reduce
+unsupported answers.
+15 Knowledge Graph versus Vector RAG
+Knowledge Graph retrieval and vector retrieval answer different types of questions.
+10
+
+--- PAGE 11 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+Knowledge Graph Vector RAG
+Representation Entities and relations Text embeddings
+Strength Explicit relationships Semantic similarity
+Typical question “Who teaches this course?” “What does this course
+cover?”
+Retrieval Graph traversal Vector similarity
+Reasoning Relationship based Context based
+Data Structured Unstructured or semi-
+structured
+The important conclusion is:
+KG and RAG should often be combined rather than compared. (24)
+16 Knowledge Graph + RAG
+A more powerful architecture combines both approaches.
+User Query
+Knowledge Graph Vector RAG
+Integrated Context
+Language Model
+Grounded Answer
+The Knowledge Graph supplies structured relationships while RAG supplies relevant textual
+evidence.
+17 Example: University Intelligent Assistant
+Suppose a student asks:
+“Can I take Machine Learning next semester?”
+The intelligent system may perform the following operations.
+11
+
+--- PAGE 12 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+17.1 Step 1: Query the Knowledge Graph
+The KG contains
+Machine Learning→requires→Artificial Intelligence,
+Artificial Intelligence→requires→Programming. (25)
+The system checks whether the student has completed the prerequisites.
+17.2 Step 2: Retrieve Documents
+The RAG subsystem searches course regulations and retrieves relevant passages.
+17.3 Step 3: Combine Evidence
+The context may contain
+1 Knowledge Graph:
+2 Student -> completed -> Artificial Intelligence
+3
+4 Document:
+5 Machine Learning requires Artificial Intelligence.
+17.4 Step 4: Generate Answer
+The LLM converts the structured evidence and retrieved document into a natural-language
+response.
+This is more powerful than ordinary keyword search.
+18 GraphRAG
+GraphRAG extends the RAG idea by using graph structure during retrieval.
+Conceptually,
+Question→Graph Retrieval→Context→Generation. (26)
+A practical GraphRAG pipeline may include
+1. document loading;
+2. text splitting;
+3. entity extraction;
+4. relationship extraction;
+5. graph construction;
+6. embedding generation;
+7. graph/vector retrieval;
+8. context construction;
+9. LLM generation.
+Modern Neo4j tooling supports knowledge graph construction from PDF/text and several
+retrieval approaches including vector, graph-based, hybrid, and Text-to-Cypher retrieval. [1]
+12
+
+--- PAGE 13 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+19 GraphRAG Example
+Suppose a collection contains research papers about Deep Learning.
+The graph may contain
+CNN→used_for→Image Classification,
+LSTM→used_for→Time Series,
+Transformer→used_for→Language Modeling.
+(27)
+A user asks:
+“Which models are useful for sequential data and why?”
+Vector retrieval may find passages containing the words “sequence”, “time series”, and
+“Transformer”.
+Graph retrieval can additionally follow relationships such as
+Model→used_for→Task. (28)
+The two sources of evidence can then be combined.
+20 From RAG to Intelligent Agents
+RAG answers the question
+“What information is relevant?”
+An agent must answer a more general question:
+“What should I do to achieve the user’s goal?”
+An agent can be modeled conceptually as
+Agent = Reasoning +Memory +Tools +Knowledge +Planning. (29)
+A simplified agent loop is
+Observe→Reason→Plan→Act→Observe. (30)
+21 Agent Architecture
+User Agent
+Memory
+Knowledge Graph
+RAG
+Tools Action
+The agent therefore becomes the coordinator of the intelligent system.
+13
+
+--- PAGE 14 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+22 Tools
+A tool is an external capability that the agent can invoke.
+Examples include:
+• calculator;
+• Python interpreter;
+• database query;
+• web search;
+• Knowledge Graph query;
+• RAG retrieval;
+• machine learning model;
+• file reader;
+• email service;
+• scheduling system.
+For example, if the user asks
+“Predict tomorrow’s stock price and explain the result using recent company infor-
+mation.”
+the agent may need to call:
+1. a market-data tool;
+2. a Deep Learning prediction model;
+3. a document retrieval system;
+4. a Knowledge Graph;
+5. an LLM for explanation.
+23 Deep Learning + KG + RAG + Agent
+We can now formulate the complete architecture.
+User Intelligent
+Agent
+Deep Learning
+Models
+Knowledge
+Graph
+RAG
+External
+Tools Action
+This is the central architecture of the lecture.
+14
+
+--- PAGE 15 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+24 A Unified Mathematical View
+Let
+x (31)
+denote the user’s input.
+A learned model produces a representation
+h =fθ(x). (32)
+The query is transformed into a retrieval representation
+q =fϕ(x). (33)
+The retrieval system returns
+Dk =R(q,K), (34)
+whereK is the external knowledge base.
+A Knowledge Graph retrieval operator may be written as
+Gk =G(q,G ), (35)
+where G is the graph.
+The complete context is
+C = Combine (Dk,Gk,h ). (36)
+The language model then produces
+y = LLMθ(x,C ). (37)
+For an agent, the process is iterative:
+st+1 =F (st,xt,Ct,at), (38)
+where
+• st is the agent state,
+• xt is the current observation,
+• Ct is retrieved context,
+• at is an action.
+25 Practical Development Roadmap
+Students should not immediately build the complete system.
+A progressive development strategy is recommended.
+15
+
+--- PAGE 16 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+Level 1: Deep Learning
+Build one useful model.
+Examples:
+• image classifier;
+• disease classifier;
+• stock predictor;
+• sentiment classifier;
+• time-series predictor.
+Level 2: Semantic Search
+Convert documents into embeddings.
+di→ei. (39)
+Then implement similarity search.
+Level 3: Basic RAG
+Add an LLM:
+q→retrieve(q)→LLM. (40)
+Level 4: Knowledge Graph
+Create
+G = (V,E ). (41)
+Implement graph queries.
+Level 5: Hybrid RAG
+Combine
+Vector Retrieval+Graph Retrieval. (42)
+Level 6: Agent
+Add:
+Memory +Tools +Planning +Action. (43)
+16
+
+--- PAGE 17 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+26 Practical Project
+The final student project should be:
+Personal / Domain Intelligent Assistant
+Each group selects a domain.
+Examples include:
+• university assistant;
+• medical information assistant;
+• financial assistant;
+• e-commerce assistant;
+• tourism assistant;
+• research assistant;
+• programming assistant;
+• agricultural assistant.
+The project should contain at least four components:
+1. one Deep Learning model;
+2. one Knowledge Graph;
+3. one RAG pipeline;
+4. one agent or tool-use component.
+27 Example Project: University Assistant
+The knowledge base may contain:
+• course information;
+• lecturer information;
+• curriculum;
+• prerequisites;
+• university regulations;
+• student information;
+• lecture documents.
+17
+
+--- PAGE 18 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+The Knowledge Graph contains structured information:
+Student→Course,
+Course→Lecturer,
+Course→Prerequisite,
+Course→Department.
+(44)
+RAG contains unstructured information:
+PDFs→Chunks→Embeddings→Vector Store. (45)
+The agent coordinates the system.
+28 Example User Interaction
+User:
+I have completed Programming and Linear Algebra. What should I study next?
+The agent may perform:
+1. query student records;
+2. query the Knowledge Graph;
+3. identify eligible courses;
+4. retrieve course descriptions;
+5. rank the courses;
+6. explain the recommendations;
+7. provide document evidence.
+The final response could be:
+Based on your completed courses, Artificial Intelligence and Machine Learning are
+possible next courses. Machine Learning requires Artificial Intelligence according to
+the curriculum, so Artificial Intelligence is recommended first.
+The answer is therefore generated from
+Student Data+Knowledge Graph+RAG +LLM. (46)
+29 Evaluation of an Intelligent System
+Students should not evaluate an intelligent system only by asking whether the answer “looks
+good.”
+Several dimensions should be evaluated.
+18
+
+--- PAGE 19 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+29.1 Prediction Accuracy
+For a Deep Learning component:
+Accuracy = correct predictions
+total predictions . (47)
+Other metrics include
+• precision;
+• recall;
+• F1-score;
+• MAE;
+• RMSE;
+• AUC.
+29.2 Retrieval Quality
+Measure whether relevant documents are retrieved.
+For example:
+Recall@k = relevant retrieved items
+all relevant items . (48)
+29.3 Answer Quality
+Evaluate:
+• correctness;
+• relevance;
+• completeness;
+• groundedness;
+• citation/evidence quality.
+29.4 Agent Performance
+Evaluate whether the agent:
+• selects the correct tool;
+• retrieves appropriate information;
+• follows the correct workflow;
+• avoids unnecessary actions;
+• completes the user’s goal.
+30 Common Failure Modes
+Students should understand that intelligent systems can fail.
+19
+
+--- PAGE 20 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+30.1 Deep Learning Failure
+Poor Data→Poor Model. (49)
+Typical problems include:
+• overfitting;
+• data leakage;
+• class imbalance;
+• distribution shift.
+30.2 Knowledge Graph Failure
+The graph may contain:
+• missing entities;
+• incorrect relationships;
+• duplicate entities;
+• outdated information.
+30.3 RAG Failure
+The retriever may return irrelevant documents.
+Then
+Bad Retrieval→Bad Context→Bad Answer. (50)
+30.4 LLM Failure
+The model may generate an unsupported answer.
+Therefore,
+LLM Output̸= Guaranteed Truth. (51)
+30.5 Agent Failure
+An agent may select the wrong tool or execute an incorrect sequence of actions.
+This motivates systematic evaluation.
+31 Implementation Environment
+A practical student environment is:
+20
+
+--- PAGE 21 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+Component Recommended technology
+Programming Python
+Development Jupyter Notebook / Spyder
+Deep Learning PyTorch
+Embeddings Sentence Transformers or API embeddings
+Vector search FAISS / Chroma / vector database
+Knowledge Graph Neo4j
+Graph query Cypher
+RAG framework LangChain or direct Python
+GraphRAG Neo4j GraphRAG Python package
+LLM API model or local model
+Visualization Matplotlib / NetworkX
+Neo4j currently provides an official Python GraphRAG package that supports knowledge-
+graph construction and retrieval workflows, including vector, graph, and hybrid retrieval. [1]
+LangChain documentation also provides practical workflows for semantic search over PDFs
+and RAG applications. [2]
+32 Suggested Student Workflow
+A student should implement the project in the following order.
+1. Select a domain.
+2. Collect data.
+3. Build a Deep Learning model.
+4. Collect domain documents.
+5. Split documents into chunks.
+6. Generate embeddings.
+7. Build a vector index.
+8. Implement semantic retrieval.
+9. Implement basic RAG.
+10. Identify entities and relationships.
+11. Build a Knowledge Graph.
+12. Implement graph queries.
+13. Combine graph retrieval and vector retrieval.
+14. Add an LLM.
+15. Add tools.
+16. Add memory.
+17. Implement an agent loop.
+18. Evaluate the complete system.
+21
+
+--- PAGE 22 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+33 Mini Project 1: Semantic Search
+Objective:
+Build a search engine over a collection of documents.
+Input:
+• 20–100 documents;
+• one query.
+Output:
+Return the top-k relevant passages.
+Students should report:
+• embedding model;
+• vector dimension;
+• similarity function;
+• k;
+• retrieval examples.
+34 Mini Project 2: RAG Chatbot
+Build
+Documents→RAG→Chatbot. (52)
+The chatbot must answer questions using the provided documents.
+Each answer should contain:
+• answer;
+• retrieved evidence;
+• document identifier;
+• optional page number.
+35 Mini Project 3: Knowledge Graph
+Students construct a graph containing at least
+• 50 entities;
+• 100 relationships;
+• 5 relationship types;
+• 3 entity types.
+They should implement at least five Cypher queries.
+Example:
+1 MATCH (c:Course)-[:REQUIRES]->(p:Course)
+2 RETURN c.name, p.name
+22
+
+--- PAGE 23 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+36 Final Project: Intelligent Agent
+The final system should have the following architecture:
+User→Agent→
+
+
+Deep Learning
+Knowledge Graph
+RAG
+Tools
+Memory
+
+
+→Action. (53)
+The student should demonstrate at least five user queries.
+For every query, the report should show:
+1. user question;
+2. agent reasoning workflow;
+3. selected tools;
+4. retrieved KG information;
+5. retrieved documents;
+6. final answer;
+7. evidence;
+8. evaluation.
+37 Recommended Final Report Structure
+The final project report should contain:
+1. Introduction
+2. Problem Definition
+3. Data Collection
+4. Deep Learning Model
+5. Knowledge Graph Design
+6. RAG Architecture
+7. Agent Architecture
+8. System Implementation
+9. Experimental Evaluation
+10. Error Analysis
+11. Limitations
+12. Conclusion
+The report should include both architecture diagrams and experimental evidence.
+23
+
+--- PAGE 24 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+38 The Big Picture
+The development path of this course can now be summarized as
+Data Deep Learning Knowledge
+Graph RAG Intelligent
+Agent
+Intelligent
+System
+The progression is not simply a sequence of technologies.
+It represents an evolution in system capability:
+Deep Learning→learn patterns,
+Knowledge Graph→represent relationships,
+RAG→retrieve information,
+LLM→understand and generate language,
+Agent→reason, plan and act.
+(54)
+Therefore,
+Intelligent System= Deep Learning+Knowledge Graph+RAG +LLM +Agent. (55)
+39 Exercises
+Exercise 1
+Explain the difference between a Deep Learning model and a Knowledge Graph.
+Exercise 2
+Why can a trained neural network fail to answer questions about new information?
+Exercise 3
+Given
+(Course,requires,Programming), (56)
+identify the subject, relation, and object.
+Exercise 4
+Explain why vector similarity is useful for RAG.
+24
+
+--- PAGE 25 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+Exercise 5
+Design a Knowledge Graph for an e-commerce system.
+Use at least:
+• Product;
+• Customer;
+• Order;
+• Category;
+• Seller.
+Exercise 6
+Design a RAG system for university regulations.
+Exercise 7
+Explain the difference between ordinary RAG and GraphRAG.
+Exercise 8
+Design an agent that can answer:
+“Find a suitable product, explain why it is suitable, and compare it with two alter-
+natives.”
+Identify:
+• memory;
+• tools;
+• Knowledge Graph;
+• RAG;
+• Deep Learning model;
+• final action.
+40 Final Message to Students
+The objective of Intelligent System Development is not simply to learn how to call an LLM.
+A modern intelligent system should be able to
+Learn→Know→Retrieve→Reason→Act. (57)
+Deep Learning teaches the machine from data.
+Knowledge Graphs organize what the system knows.
+RAG gives the system access to relevant external information.
+Large Language Models provide powerful language understanding and generation.
+Agents combine these capabilities into a system that can pursue a goal.
+The final objective of the course is therefore:
+Do not build only a model. Build an intelligent system around the
+model.
+25
+
+--- PAGE 26 ---
+Intelligent System Development Deep Learning – KG – RAG – Agents
+References
+[1] Neo4j, Neo4j GraphRAG for Python , Neo4j Documentation, 2026.
+[2] LangChain, Learn: Semantic Search and Retrieval Augmented Generation, LangChain Doc-
+umentation, 2026.
+[3] A. Vaswani et al., “Attention Is All You Need,” inAdvances in Neural Information Pro-
+cessing Systems, 2017.
+[4] P. Lewis et al., “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,” in
+Advances in Neural Information Processing Systems , 2020.
+[5] T. Mikolov et al., “Efficient Estimation of Word Representations in Vector Space,”
+arXiv:1301.3781, 2013.
+[6] T. N. Kipf and M. Welling, “Semi-Supervised Classification with Graph Convolutional
+Networks,” inInternational Conference on Learning Representations , 2017.
+26

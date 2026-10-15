@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import {Presentation, PresentationFile} from '@oai/artifact-tool';
+const p=Presentation.create({slideSize:{width:1280,height:720}});
+const s=p.slides.add();s.background.fill='#F7F6F0';
+const t=s.shapes.add({geometry:'textbox',position:{left:64,top:40,width:1150,height:100},fill:'none',line:{fill:'none',width:0}});
+t.text='Học sâu trên đồ thị: GCN, GraphSAGE và GAT';t.text.style={typeface:'Arial',fontSize:44,bold:true,color:'#102E33',autoFit:'none',insets:0};
+const tb=s.tables.add({rows:3,columns:3,left:64,top:180,width:650,height:190,values:[['Mô hình','Accuracy','Macro-F1'],['GCN','80,32%','79,10%'],['MLP','60,41%','58,25%']]});
+tb.cells.block({row:0,column:0,rowCount:3,columnCount:3}).assign({textStyle:{typeface:'Arial',fontSize:24,color:'#102E33'},margins:{top:12,bottom:12,left:16,right:16}});
+tb.borders.assign({width:1,fill:'#D4DDDA'});
+const c=s.charts.add('bar',{position:{left:750,top:180,width:440,height:380},categories:['MLP','GCN'],series:[{name:'Accuracy',values:[.6041,.8032],fill:'#087F78'}],hasLegend:false,yAxis:{min:0,max:1,numberFormatCode:'0%',textStyle:{fontSize:22,fill:'#102E33'}},xAxis:{textStyle:{fontSize:22,fill:'#102E33'}},dataLabels:{showValue:true,numberFormatCode:'0.0%',textStyle:{fontSize:22},position:'outEnd'}});
+s.speakerNotes.text='Thành viên 1. Đây là lời thuyết trình thử nghiệm với dấu tiếng Việt.';
+await fs.writeFile('probe.png',new Uint8Array(await (await p.export({slide:s,format:'png',scale:1})).arrayBuffer()));
+await (await PresentationFile.exportPptx(p)).save('probe.pptx');
+console.log('Probe complete');

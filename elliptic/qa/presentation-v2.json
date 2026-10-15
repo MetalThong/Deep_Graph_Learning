@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "revision": 2,
+  "slides": 26,
+  "changed_slides": [
+    8,
+    10,
+    12,
+    14,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    26
+  ],
+  "visual_review": "All changed slide PNGs inspected individually; all final PNGs equal inspected drafts, remaining slides equal V1. Both PDF contact sheets and changed/dense pages inspected.",
+  "notes_verified": 26,
+  "download_hashes_match": true,
+  "artifacts": {
+    "Elliptic_Deep_Graph_26_Slides.pptx": "8ed246f5979f765a2e5a87414827dbf3c9df31be644ad9848ccaffdf5d207422",
+    "Elliptic_Loi_Thuyet_Trinh_Va_Demo.pdf": "7bd1a9ede54921d4ef13fc2b9d8f444d14c83716317d2057bc2d9927fce25e79",
+    "Elliptic_Tai_Lieu_Hoc_3_Ngay.pdf": "e69330618972b962f27477351a3e592c67255231d935545b2d860fce2091d660"
+  }
+}

@@ -1,0 +1,617 @@
+
+--- PAGE 1 ---
+Assignment 03: Neural Networks and Representation
+Learning
+“The important thing is not only to make a model
+learn, but to understand what the model is
+learning.”
+Intelligent System Development
+Neural Networks and Representation Learning
+Dinh Que Tran, Ph.D., Assoc. Prof.
+Department of Information Technology
+Posts and Telecommunications Institute of Technology
+quetd@ptit.edu.vn
+August 7, 2026 1 / 39
+
+--- PAGE 2 ---
+From Assignment 02 to Assignment 03
+Assignment 02 focused on traditional machine learning.
+Data → Prepared Features → ML Algorithm → Prediction
+Assignment 03 asks a deeper question:
+Can the model learn useful representations from
+the data?
+Data → Learned Representation → Prediction
+August 7, 2026 2 / 39
+
+--- PAGE 3 ---
+The Central Question
+What does a neural network actually learn?
+Input
+x
+Learned
+Representation
+h
+Prediction
+ˆy
+The representation h is not manually specified.
+Instead, its parameters are learned from data.
+x → hθ(x) → ˆy
+where θ denotes the learnable parameters.
+August 7, 2026 3 / 39
+
+--- PAGE 4 ---
+What Is a Neural Network?
+A neural network is a parameterized function composed of successive
+transformations.
+A simple network can be written as
+fθ(x) = W2 ϕ(W1x + b1) + b2.
+The network contains:
+weights W ;
+biases b;
+activation functions ϕ;
+learnable parameters θ.
+Key Idea
+A neural network is not magic.
+It is a parameterized mathematical function whose parameters are learned
+from data.
+August 7, 2026 4 / 39
+
+--- PAGE 5 ---
+A Neuron
+A single neuron computes:
+z = w T x + b.
+An activation function then produces
+h = ϕ(z).
+x1, . . . ,xd w T x + b ϕ(·) h
+The important distinction is:
+Linear transformation + Nonlinearity
+August 7, 2026 5 / 39
+
+--- PAGE 6 ---
+Linear Transformation
+For an input vector
+x ∈ Rd ,
+a linear layer computes
+z = Wx + b.
+If
+W ∈ Rk×d ,
+then
+z ∈ Rk .
+Therefore:
+Rd → Rk
+This changes the representation dimension.
+Question
+What determines the dimensions of W , x, and z?
+August 7, 2026 6 / 39
+
+--- PAGE 7 ---
+Why Do We Need Activation Functions?
+Suppose every layer were purely linear:
+h1 = W1x + b1
+and
+h2 = W2h1 + b2.
+Then the composition is still a linear-affine transformation:
+h2 = W2W1x + W2b1 + b2.
+Therefore, stacking linear layers alone does not provide the expressive
+power expected from a deep network.
+Depth + Nonlinearity → Expressive Model
+August 7, 2026 7 / 39
+
+--- PAGE 8 ---
+The ReLU Activation Function
+A common activation function is the Rectified Linear Unit (ReLU):
+ReLU(z) = max(0, z).
+Equivalently,
+ReLU(z) =
+(
+0, z < 0,
+z, z ≥ 0.
+Interpretation
+ReLU introduces a nonlinear transformation: negative values are mapped
+to zero, while positive values are preserved.
+In PyTorch:
+nn . ReLU ()
+August 7, 2026 8 / 39
+
+--- PAGE 9 ---
+From One Neuron to a Layer
+Instead of one neuron, a layer contains many neurons.
+z = Wx + b
+where
+W ∈ Rk×d , b ∈ Rk .
+Then
+h = ϕ(z).
+Conceptually:
+x ∈ Rd → h ∈ Rk
+Each output dimension corresponds to a learned transformation of the
+input.
+August 7, 2026 9 / 39
+
+--- PAGE 10 ---
+A Multi-Layer Perceptron
+A simple MLP can be represented as:
+x → W1x + b1 → ReLU → W2h + b2 → ˆy
+For example:
+d → 64 → 32 → C .
+Input
+d
+Hidden 1
+64
+Hidden 2
+32
+Output
+C
+August 7, 2026 10 / 39
+
+--- PAGE 11 ---
+The Hidden Representation
+Consider
+h1 = ReLU(W1x + b1).
+The vector h1 is a learned representation.
+x ∈ Rd − → h1 ∈ R64.
+Unlike Assignment 02, the 64 features are not manually defined by the
+programmer.
+They are determined by learned parameters.
+Key Idea
+A hidden layer can be viewed as a learned transformation of the original
+representation.
+August 7, 2026 11 / 39
+
+--- PAGE 12 ---
+What Does “Learned Representation” Mean?
+Traditional ML often begins with:
+x = [x1, x2, . . . ,xd].
+The features may have explicit meanings such as:
+age;
+glucose;
+blood pressure;
+BMI;
+etc.
+A neural network transforms them into
+h = [h1, h2, . . . ,hk].
+The hidden features generally do not have such direct human-readable
+meanings.
+Human-designed features → Learned features
+August 7, 2026 12 / 39
+
+--- PAGE 13 ---
+Forward Propagation
+For a two-hidden-layer network:
+h1 = ReLU(W1x + b1),
+h2 = ReLU(W2h1 + b2),
+and
+z = W3h2 + b3.
+The final vector z contains the output scores.
+Thus:
+x → h1 → h2 → z
+This complete computation is called forward propagation.
+August 7, 2026 13 / 39
+
+--- PAGE 14 ---
+Classification Output
+For a C -class problem, the network produces
+z = [z1, . . . ,zC ].
+These are commonly called logits.
+For probability interpretation:
+pi = ezi
+PC
+j=1 ezj
+.
+This is the softmax function.
+The predicted class is commonly
+ˆy = arg max
+i
+zi .
+PyTorch Practice
+When using CrossEntropyLoss, the network should normally return
+logits rather than applying softmax inside the model.
+August 7, 2026 14 / 39
+
+--- PAGE 15 ---
+From Prediction to Learning
+Forward propagation produces a prediction.
+But how does the network learn?
+Input → Prediction → Loss
+The loss measures disagreement between the prediction and the target.
+For classification:
+L = CrossEntropy(y , z).
+The learning problem becomes:
+min
+θ
+L(θ)
+August 7, 2026 15 / 39
+
+--- PAGE 16 ---
+Gradient Descent
+Suppose θ represents all learnable parameters.
+Gradient descent updates:
+θt+1 = θt − η∇θL.
+where:
+η is the learning rate;
+∇θL is the gradient.
+The central idea is:
+Change parameters → reduce loss
+August 7, 2026 16 / 39
+
+--- PAGE 17 ---
+Backpropagation
+Backpropagation computes gradients of the loss with respect to model
+parameters.
+Conceptually:
+Forward → Loss → Backward → Update
+The chain rule is fundamental.
+For example:
+∂L
+∂W1
+= ∂L
+∂h1
+∂h1
+∂z1
+∂z1
+∂W1
+.
+Students do not need to derive every gradient manually, but they must
+understand the role of the chain rule.
+August 7, 2026 17 / 39
+
+--- PAGE 18 ---
+The PyTorch Training Cycle
+A complete training step is:
+Input Batch
+↓
+Forward
+↓
+Loss
+↓
+Backward
+↓
+Optimizer Step
+In PyTorch:
+o p t i m i z e r . z e r o _ g r a d ()
+outputs = model ( X_batch )
+loss = c r i t e r i o n (
+outputs ,
+y_batch
+)
+loss . b ac kw ard ()
+o p t i m i z e r . step ()
+August 7, 2026 18 / 39
+
+--- PAGE 19 ---
+Building the MLP in PyTorch
+import torch
+import torch . nn as nn
+class MLP ( nn . Module ) :
+def __ ini t_ _ ( self , input_dim , n u m _ c l a s s e s ) :
+super () . __i ni t_ _ ()
+self . network = nn . S e q u e n t i a l (
+nn . Linear ( input_dim , 64) ,
+nn . ReLU () ,
+nn . Linear (64 , 32) ,
+nn . ReLU () ,
+nn . Linear (32 , n u m _ c l a s s e s )
+)
+def forward ( self , x ) :
+return self . network ( x )
+Question
+What are the input and output dimensions of every layer?
+August 7, 2026 19 / 39
+
+--- PAGE 20 ---
+Understanding Tensor Shapes
+Suppose:
+X ∈ R32×d .
+The batch contains 32 observations.
+After the first layer:
+32 × d → 32 × 64.
+After the second layer:
+32 × 64 → 32 × 32.
+Finally:
+32 × 32 → 32 × C .
+Batch Dimension × Feature Dimension
+August 7, 2026 20 / 39
+
+--- PAGE 21 ---
+Dataset and DataLoader
+PyTorch commonly separates:
+Dataset and DataLoader .
+A Dataset stores or provides individual samples, while a DataLoader
+organizes samples into mini-batches.
+Example:
+from torch . utils . data import T e n s o r D a t a s e t
+from torch . utils . data import D a t a L o a d e r
+dataset = T e n s o r D a t a s e t (
+X_tensor ,
+y_ te nso r
+)
+loader = D a t a L o a d e r (
+dataset ,
+b a t c h _ s i z e =32 ,
+shuffle = True
+)
+Key Idea
+The DataLoader provides mini-batches that can be iterated over during
+the training process.
+August 7, 2026 21 / 39
+
+--- PAGE 22 ---
+Why Mini-Batches?
+Instead of processing all N observations simultaneously, training can use
+mini-batches.
+X → X1, X2, . . . ,XB .
+For each batch:
+Lb = L(Xb, yb).
+Advantages include:
+efficient memory usage;
+efficient computation;
+frequent parameter updates;
+compatibility with GPU computation.
+August 7, 2026 22 / 39
+
+--- PAGE 23 ---
+Loss Function and Optimizer
+For multi-class classification, a common loss function is:
+L = CrossEntropyLoss(z, y),
+where z denotes the model logits and y is the target class.
+In PyTorch:
+c r i t e r i o n = nn . C r o s s E n t r o p y L o s s ()
+o p t i m i z e r = torch . optim . Adam (
+model . p a r a m e t e r s () ,
+lr =0.001
+)
+The two components have different roles:
+Loss Function → measures prediction error
+Optimizer → updates model parameters
+Key Idea
+The loss tells us how wrong the model is; the optimizer determines how to
+change its parameters to reduce the loss.
+August 7, 2026 23 / 39
+
+--- PAGE 24 ---
+A Complete Training Loop
+for epoch in range ( n u m _ e p o c h s ) :
+model . train ()
+for X_batch , y_batch in t r a i n _ l o a d e r :
+o p t i m i z e r . z e r o _ g r a d ()
+outputs = model ( X_batch )
+loss = c r i t e r i o n (
+outputs ,
+y_batch
+)
+loss . bac kw ard ()
+o p t i m i z e r . step ()
+Students must be able to explain every major operation.
+August 7, 2026 24 / 39
+
+--- PAGE 25 ---
+Training vs. Evaluation Mode
+PyTorch models have different operating modes.
+During training:
+model . train ()
+During validation or testing:
+model . eval ()
+During evaluation, gradients are normally not required:
+model . eval ()
+with torch . no_grad () :
+outputs = model ( X_test )
+Important Distinction
+model.train() and model.eval() control the model’s operating mode.
+torch.no grad() disables gradient computation for the enclosed
+operations.
+August 7, 2026 25 / 39
+
+--- PAGE 26 ---
+Training Curves
+Students should monitor both training and validation behavior.
+Typical quantities include:
+training loss;
+validation loss;
+training accuracy;
+validation accuracy.
+The curves help identify:
+Underfitting Good Fit Overfitting
+Important
+A high training accuracy does not necessarily mean good generalization.
+August 7, 2026 26 / 39
+
+--- PAGE 27 ---
+Underfitting and Overfitting
+Underfitting
+training performance is poor;
+validation performance is also
+poor;
+model may have insufficient
+capacity;
+optimization may be
+inadequate.
+Overfitting
+training performance becomes
+very high;
+validation performance stops
+improving;
+training and validation
+behavior diverges;
+model may memorize training
+patterns.
+Generalization > Training Accuracy Alone
+August 7, 2026 27 / 39
+
+--- PAGE 28 ---
+Evaluation
+The final model should be evaluated on held-out test data.
+For classification:
+Accuracy;
+Precision;
+Recall;
+F1-score;
+Confusion matrix.
+Students should compare:
+Training ̸= Validation ̸= Test
+The test set should provide an unbiased estimate of final generalization
+under the experimental design.
+August 7, 2026 28 / 39
+
+--- PAGE 29 ---
+Traditional ML vs. Neural Network
+Suppose Assignment 02 produced:
+Logistic Regression
+and Assignment 03 produces:
+MLP.
+The important comparison is not only accuracy.
+Logistic Regression MLP
+Representation Prepared Learned
+Model capacity Lower Higher
+Nonlinearity No Yes
+Parameters Fewer More
+Interpretability Higher Lower
+Training cost Lower Higher
+August 7, 2026 29 / 39
+
+--- PAGE 30 ---
+A Scientific Model Comparison
+A neural network should not automatically be considered better than
+traditional ML.
+Students should ask:
+Is the dataset large enough?
+Is the learned representation useful?
+Does validation performance improve?
+Does test performance improve?
+How many parameters are introduced?
+What is the computational cost?
+Is the improvement practically meaningful?
+Better Model ̸= Higher Accuracy Only
+August 7, 2026 30 / 39
+
+--- PAGE 31 ---
+Inspecting the Learned Representation
+Consider:
+h = ReLU(W1x + b1).
+Students can extract h from a hidden layer.
+Then investigate:
+x ∈ Rd − → h ∈ Rk .
+Questions:
+Has the dimensionality changed?
+Do observations from different classes separate?
+Which patterns appear in the learned space?
+What information may have been transformed?
+August 7, 2026 31 / 39
+
+--- PAGE 32 ---
+Representation Is a Learned Transformation
+Traditional ML:
+x → ML Algorithm → ˆy
+Deep learning:
+x → h1 → h2 → · · · → ˆy
+Each hidden layer applies a learned transformation.
+Therefore:
+Deep Network = Composition of Learned Transformations
+August 7, 2026 32 / 39
+
+--- PAGE 33 ---
+Saving a PyTorch Model
+After training, the learned parameters can be saved.
+torch . save (
+model . s t a t e _ d i c t () ,
+" m l p _ m o d e l . pth "
+)
+Later, reconstruct the same architecture and load the parameters:
+model = MLP (
+i n p u t _ d i m = input_dim ,
+n u m _ c l a s s e s = n u m _ c l a s s e s
+)
+model . l o a d _ s t a t e _ d i c t (
+torch . load ( " m l p _ m o d e l . pth " )
+)
+model . eval ()
+Key Idea
+state dict() stores the learned parameter state. The model architecture
+must be reconstructed before the parameters can be loaded.August 7, 2026 33 / 39
+
+--- PAGE 34 ---
+Assignment 03: Required Experiments
+Students must conduct at least three controlled experiments.
+1 Baseline MLP
+d → 64 → C
+2 Deeper MLP
+d → 64 → 32 → C
+3 Optimization Experiment
+Compare at least two learning rates or optimizers.
+For each experiment report:
+architecture;
+number of parameters;
+training configuration;
+training/validation curves;
+test metrics;
+interpretation.
+August 7, 2026 34 / 39
+
+--- PAGE 35 ---
+Assignment 03: Required Deliverables
+Students must submit:
+1 Jupyter Notebook
+2 PyTorch Source Code
+3 Saved Model
+4 Experimental Results
+5 Technical Report
+6 Short Presentation
+The notebook should run from beginning to end.
+Academic Requirement
+Students must be able to explain the architecture, tensor shapes, loss,
+optimizer, training loop, evaluation, and experimental conclusions.
+August 7, 2026 35 / 39
+
+--- PAGE 36 ---
+Academic Use of AI Assistants
+AI assistants may be used as learning and development tools .
+Students remain responsible for their submitted work.
+They must understand:
+tensor shapes;
+network architecture;
+forward propagation;
+loss function;
+optimizer;
+backpropagation;
+training loop;
+evaluation;
+important source code.
+Principle
+AI may assist development, but understanding must belong to the student.
+August 7, 2026 36 / 39
+
+--- PAGE 37 ---
+The Main Lesson
+Deep learning learns representations together with
+the prediction function.
+Input → Learned Representation → Prediction
+But a neural network is still a mathematical model:
+Layers + Parameters + Loss + Optimization
+August 7, 2026 37 / 39
+
+--- PAGE 38 ---
+Looking Forward: From Vectors to Images
+So far:
+x ∈ Rd
+is a feature vector.
+But an image is naturally represented as a tensor:
+X ∈ RC ×H×W .
+For example:
+3 × 224 × 224.
+A fully connected MLP can process the flattened vector, but this may
+ignore important spatial structure.
+The next question is:
+How can a neural network learn spatial
+representations?
+August 7, 2026 38 / 39
+
+--- PAGE 39 ---
+From MLP to CNN
+The next assignment introduces convolutional neural networks.
+Vector → MLP
+becomes
+Image Tensor → CNN
+The representation now preserves spatial organization.
+Deep Learning → Spatial Representation Learning
+Next
+Assignment 04: Convolutional Neural Networks and image representation
+learning.
+August 7, 2026 39 / 39

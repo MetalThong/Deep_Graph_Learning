@@ -1,0 +1,590 @@
+
+--- PAGE 1 ---
+Intelligent System Development Assignment 01
+INTELLIGENT SYSTEM DEVELOPMENT
+Assignment 01
+From Data Representation to a First Intelligent System
+“Understand the system, represent the information, learn from
+data, and turn the model into an application.”
+Instructor: Dinh Que Tran, Ph.D., Assoc. Prof.
+quetd@ptit.edu.vn
+Duration: 2 weeks
+Due date:.........................
+Mode: Individual
+1 Purpose of Assignment 01
+Assignment 01 is the first practical step after Slide 01,Intelligent System Development . Slide 01
+introduces the course-level progression:
+Intelligence → Intelligent System→ Representation → Learning → Decision → Action
+and the development philosophy:
+Understand → Represent → Implement → Experiment → Apply
+Assignment 01 makes the first concrete realization of this framework using structured data and
+traditional machine learning.
+Foundation
+Central idea
+A traditional ML system does not directly operate on the whole real world. It operates on a
+computational representation of selected information.
+Real-world problem→ Data → Feature representation→ ML model → Prediction
+The goal is therefore not merely to “train a classifier.” The goal is to develop and explain a small
+intelligent system.
+2 Connection with Slide 01
+Students should explicitly connect every part of Assignment 01 to the conceptual framework intro-
+duced in Slide 01.
+1
+
+--- PAGE 2 ---
+Intelligent System Development Assignment 01
+Slide 01 concept Assignment 01 realization Student evidence
+Intelligence Predictive capability Meaningful prediction
+task
+Intelligent system Data + representation +
+model + application
+System diagram
+External information Dataset / observations Dataset description
+Internal computational
+representation
+Feature vector Feature table and X
+Learning Training a traditional ML
+model
+Training procedure
+Decision Prediction ˆy Model output
+Action / application Use prediction in a small ap-
+plication
+Working demo
+Development Experiment, evaluate, im-
+prove
+Controlled experiments
+Important
+The assignment must be understandable as a smallintelligent system, not as a collection
+of unrelated Scikit-learn examples.
+3 What Is the Intelligent System Being Developed?
+Before writing code, students must define the system.
+A useful abstraction is:
+Environment → Input → Representation → Learning / Model→ Decision → Output
+For this assignment:
+Real-world data→ Feature vector→ Traditional ML→ Prediction
+Students must answer:
+1. What real-world problem does the system address?
+2. What information does the system receive?
+3. How is that information represented internally?
+4. What does the model learn?
+5. What decision or prediction does it produce?
+6. Who or what uses the prediction?
+Student Requirement
+Required system statement
+Write a short paragraph describing the intelligent system before starting model training.
+Also draw a simple system diagram showing:
+Input → Representation → Model → Prediction.
+2
+
+--- PAGE 3 ---
+Intelligent System Development Assignment 01
+4 Intelligence in This Assignment
+In this first assignment, intelligence is deliberately treated in a limited and operational sense. The
+system demonstrates a form of intelligence when it can:
+• receive information;
+• represent relevant information computationally;
+• learn a relationship from examples;
+• produce a prediction for a new case;
+• support a decision or application.
+Thus:
+Learning from examples+generalization +prediction
+is the working notion of intelligence for Assignment 01.
+This is not intended to be a complete definition of intelligence. Later assignments will extend
+the notion through deep learning, knowledge, retrieval, generation, interaction, and deployment.
+5 Data Representation: The Central Idea
+A real-world object or event can be represented in different ways. For structured data, an observation
+is represented as a feature vector:
+xi = [xi1,xi2,...,xid] ∈ Rd.
+A supervised dataset is:
+D = {(xi,yi)}N
+i=1.
+Here:
+• xi is the input representation;
+• d is the number of features;
+• yi is the target;
+• N is the number of observations.
+The complete feature matrix is:
+X ∈ RN ×d.
+Foundation
+Key principle
+The model does not receive “the real world.” It receives a representation of selected informa-
+tion. Therefore:
+Representation determines what information is available to learning.
+3
+
+--- PAGE 4 ---
+Intelligent System Development Assignment 01
+6 Why Traditional Machine Learning Fits Here
+Slide 01 places traditional ML in the following pipeline:
+Raw / Domain Data→ Human-designed Features→ Traditional ML Model→ Prediction
+This is the central technical focus of Assignment 01.
+Students should understand the distinction between:
+Traditional ML : human-designed feature representation+learned prediction model
+Deep Learning : learned representation+learned prediction model.
+The second approach will be studied later.
+7 Dataset Selection
+Students must select one real structured dataset from Kaggle or another approved public source.
+The dataset should contain:
+• a meaningful real-world problem;
+• identifiable observations;
+• usable features;
+• a clearly defined target;
+• enough data for a meaningful experiment;
+• a problem suitable for traditional ML.
+Possible domains include:
+• healthcare;
+• finance;
+• education;
+• agriculture;
+• business;
+• e-commerce;
+• transportation;
+• environment.
+Students must record the dataset source.
+4
+
+--- PAGE 5 ---
+Intelligent System Development Assignment 01
+Student Requirement
+Dataset questions
+Before training any model, answer:
+1. What real-world phenomenon is represented?
+2. What is one observation?
+3. What are the features?
+4. What is the target?
+5. Is the target numerical or categorical?
+6. Is this regression or classification?
+7. How many observations are available?
+8. How many features are available?
+9. Which features are numerical?
+10. Which features are categorical?
+8 Data Representation Task
+Students must explicitly construct the representation used by the model.
+For example:
+xi = [age,income,BMI,duration,...].
+Provide a table:
+Feature Type Representation Meaning
+Age Numerical Real value Age of subject
+Gender Categorical Encoded value Category
+BMI Numerical Real value Body mass index
+Status Categorical Binary/encoded Status
+Explain how categorical variables are represented numerically when required.
+Students must distinguish:
+Raw feature̸= encoded feature ̸= model input
+when preprocessing changes the representation.
+9 Formulating the Learning Problem
+The supervised learning problem is:
+D = {(xi,yi)}N
+i=1.
+The model learns:
+ˆy =fθ(x).
+5
+
+--- PAGE 6 ---
+Intelligent System Development Assignment 01
+The learning objective can be expressed as:
+θ∗ = arg min
+θ
+1
+N
+N∑
+i=1
+ℓ(fθ(xi),yi).
+Students should be able to explain:
+• input;
+• target;
+• model;
+• parameters;
+• prediction;
+• loss/error;
+• training;
+• testing;
+• generalization.
+10 Regression or Classification?
+Students must identify the learning problem before selecting models.
+10.1 Regression
+A regression system predicts a numerical quantity:
+x → ˆy ∈ R.
+Examples include:
+• house price;
+• sales amount;
+• temperature;
+• energy consumption.
+10.2 Classification
+A classification system predicts a class:
+x → ˆy ∈ {1,...,K }.
+Examples include:
+• spam / not spam;
+• disease / healthy;
+• churn / no churn;
+• benign / malignant.
+6
+
+--- PAGE 7 ---
+Intelligent System Development Assignment 01
+Important
+The report must contain a one-sentence formal problem statement.
+For example:
+Given the selected feature vector, predict the target class for a previously unseen
+observation.
+11 Train/Test Separation
+Students must separate data used for learning from data used for evaluation.
+A simple split is:
+D =Dtrain ∪Dtest.
+For example:
+80% training, 20% testing.
+Example:
+1 from sklearn . m o d e l _ s e l e c t i o n import t r a i n _ t e s t _ s p l i t
+2
+3 X_train , X_test , y_train , y_test = t r a i n _ t e s t _ s p l i t (
+4 X ,
+5 y ,
+6 t es t_ si ze =0.20 ,
+7 r a n d o m _ s t a t e =42 ,
+8 stratify = y
+9 )
+Students must explain why the test set must not be used as a training source.
+12 Baseline: The First Reference Point
+Before building sophisticated models, students must establish a baseline.
+For classification:
+1 from sklearn . dummy import D u m m y C l a s s i f i e r
+2
+3 baseline = D u m m y C l a s s i f i e r (
+4 strategy = " m o s t _ f r e q u e n t "
+5 )
+6
+7 baseline . fit ( X_train , y_train )
+8 y_pred = baseline . predict ( X_test )
+The student must answer:
+Why is a baseline necessary?
+The purpose is to determine whether the learned model provides meaningful improvement over
+a simple strategy.
+7
+
+--- PAGE 8 ---
+Intelligent System Development Assignment 01
+13 Traditional ML Models
+Students must train at least four traditional ML models. Recommended classification models:
+1. Logistic Regression;
+2. k-Nearest Neighbors;
+3. Decision Tree;
+4. Random Forest;
+5. Support Vector Machine.
+For regression, suitable choices include:
+1. Linear Regression;
+2. Decision Tree Regressor;
+3. Random Forest Regressor;
+4. Support Vector Regression.
+Students do not need to implement the algorithms completely from scratch, but must understand
+their basic learning principles.
+14 Model Understanding
+For every selected model, explain:
+1. What representation does it receive?
+2. What relationship does it try to learn?
+3. What parameters or structures are learned?
+4. What criterion guides learning?
+5. What assumptions does the model make?
+6. What are its strengths?
+7. What are its weaknesses?
+Examples:
+14.1 Linear Regression
+ˆy =wTx +b.
+14.2 Logistic Regression
+z =wTx +b, σ (z) = 1
+1 +e−z.
+14.3 k-NN
+Prediction is based on nearby training observations according to a chosen distance measure.
+8
+
+--- PAGE 9 ---
+Intelligent System Development Assignment 01
+14.4 Decision Tree
+The feature space is recursively divided using selected splitting criteria.
+14.5 Random Forest
+Multiple decision trees are combined:
+many trees→ combined prediction.
+14.6 SVM
+The model seeks a separating boundary with an appropriate margin.
+15 Controlled Experiments
+Students must conduct at least three controlled experiments.
+15.1 Experiment Model Comparison
+Compare at least four models under the same evaluation protocol.
+Model Accuracy Precision Recall F1
+Model 1 – – – –
+Model 2 – – – –
+Model 3 – – – –
+Model 4 – – – –
+15.2 Experiment Hyperparameter Investigation
+Change one meaningful hyperparameter.
+Examples:
+• k in k-NN;
+• tree depth;
+• number of trees;
+• SVM regularization;
+• regularization in Logistic Regression.
+The experimental question must be stated before running the experiment.
+15.3 Experiment Representation / Feature Investigation
+This experiment directly responds to Slide 01.
+Compare, for example:
+Xall vs. Xselected,
+or:
+unscaled features vs. standardized features .
+Students must explain whether the representation change affects the result and why.
+9
+
+--- PAGE 10 ---
+Intelligent System Development Assignment 01
+16 Evaluation
+For classification, report:
+• Accuracy;
+• Precision;
+• Recall;
+• F1-score;
+• Confusion Matrix.
+Important definitions are:
+Accuracy = TP +TN
+TP +TN +FP +FN ,
+Precision = TP
+TP +FP ,
+Recall = TP
+TP +FN ,
+F 1 = 2PR
+P +R.
+For regression, report:
+• MAE;
+• MSE;
+• RMSE;
+• R2.
+Students must explain which metrics are appropriate for their application.
+17 From Model to Intelligent Application
+A model alone is not the complete system.
+Assignment 01 therefore requires students to turn the trained model into a small application.
+The application should realize:
+Input → Representation → Preprocessing → Model → Prediction → Output
+The same representation used during training must be used for new inputs.
+Example:
+1 def predict ( model , sample ) :
+2 # Convert a p p l i c a t i o n input into
+3 # the same r e p r e s e n t a t i o n used in training .
+4 p r e d i c t i o n = model . predict ( sample )
+5 return p r e d i c t i o n
+10
+
+--- PAGE 11 ---
+Intelligent System Development Assignment 01
+The student must demonstrate at least three input cases.
+Application
+System requirement
+The final demonstration must show the complete path:
+User / Environment→ Input → Feature Representation→ ML Model → Prediction
+This is the first small intelligent system developed in the course.
+18 Reflection: What Makes This an Intelligent System?
+This section is mandatory.
+Students must answer:
+1. What information does your system receive?
+2. What is the internal representation?
+3. What does the model learn from examples?
+4. What prediction or decision does it make?
+5. Why can it handle an unseen input?
+6. What part of the system can reasonably be called “intelligent”?
+7. What limitations prevent it from being a more capable intelligent system?
+Students should distinguish:
+trained model ̸= complete intelligent system
+A complete system also requires input handling, representation, preprocessing, prediction, out-
+put, and integration into an application.
+19 Reflection on Representation
+Students must answer:
+1. Why is your feature-vector representation appropriate?
+2. What information does it preserve?
+3. What information might it lose?
+4. Could the same problem be represented as an image?
+5. Could it be represented as a sequence?
+6. Could it be represented as a graph?
+7. Could it be represented using learned embeddings?
+8. What would change if the representation changed?
+The purpose is to prepare students for the central course idea:
+Different information representations⇒ different learning methods
+11
+
+--- PAGE 12 ---
+Intelligent System Development Assignment 01
+20 Connection to the History of AI
+Slide 01 presents intelligent-system development as an evolving history of representations and learn-
+ing mechanisms.
+Assignment 01 occupies one important stage:
+Structured Data → Feature Engineering→ Traditional ML
+Students should briefly explain where their system belongs in the broader evolution:
+Symbolic AI → Explicit rules and symbols
+Statistical ML → Features + learned models
+Deep Learning → Learned representations
+Foundation / Generative AI → Large learned representations + generation
+Interactive / Agentic Systems → Perception + reasoning + action + interaction.
+The purpose is not to study the complete history in Assignment 01. The purpose is to understand
+that traditional ML is one stage in the development of intelligent systems.
+21 Required Notebook Structure
+The Jupyter Notebook must contain:
+1. System and Problem Definition
+2. Intelligent System Diagram
+3. Dataset Source
+4. Dataset Description
+5. Data Representation
+6. Feature and Target Analysis
+7. Exploratory Data Analysis
+8. Train/Test Split
+9. Baseline
+10. Model 1
+11. Model 2
+12. Model 3
+13. Model 4
+14. Evaluation
+15. Experiment 1: Model Comparison
+16. Experiment 2: Hyperparameter Investigation
+17. Experiment 3: Representation / Feature Investigation
+18. Final Model
+19. Application
+12
+
+--- PAGE 13 ---
+Intelligent System Development Assignment 01
+20. System Demonstration
+21. Reflection
+22. Conclusion
+22 Explicit Requirements
+Student Requirement
+R1. Real Dataset
+Use a real dataset from Kaggle or another approved public source.
+R2. System Definition
+Define the real-world problem and the intended intelligent system.
+R3. Representation
+Explicitly describe how raw information becomes model input.
+R4. Feature Analysis
+Explain the meaning and type of important features.
+R5. Problem Formulation
+Clearly define input, target, and learning task.
+R6. Baseline
+Implement and report a baseline.
+R7. Multiple Models
+Train at least four traditional ML models.
+R8. Controlled Experiments
+Perform at least three experiments.
+R9. Evaluation
+Use appropriate metrics and explain them.
+R10. Scientific Analysis
+Explain why the results were obtained.
+R11. Application
+Develop a small application using the selected model.
+R12. System Demonstration
+Demonstrate the complete input-to-prediction pipeline.
+R13. Reflection
+Explain the role and limitations of the representation.
+R14. Reproducibility
+The notebook must run from beginning to end with documented environment and dataset
+information.
+23 What Students Must NOT Do
+The following are not sufficient:
+• Downloading a dataset and immediately callingmodel.fit().
+• Reporting only accuracy.
+• Training only one model.
+• Copying code without understanding it.
+• Changing many parameters without an experimental question.
+• Claiming that a model is “better” without evidence.
+13
+
+--- PAGE 14 ---
+Intelligent System Development Assignment 01
+• Using the test set repeatedly during model development.
+• Presenting results without explaining them.
+• Showing a trained model without demonstrating the complete application pipeline.
+Important
+The assignment evaluatesunderstanding, representation, experimentation, and sys-
+tem development, not the amount of code.
+24 Deliverables
+Each student/team must submit:
+1. Jupyter Notebook (.ipynb);
+2. dataset information and source;
+3. technical report;
+4. system architecture / pipeline diagram;
+5. experimental comparison table;
+6. figures and visualizations;
+7. application source code;
+8. README describing how to run the system.
+25 Suggested Report Structure
+The report should contain:
+1. Introduction
+2. Intelligent System Definition
+3. Problem Definition
+4. Dataset
+5. Data Representation
+6. Traditional ML Methods
+7. Experimental Design
+8. Results
+9. Model Comparison
+10. Representation Analysis
+11. Intelligent Application
+12. Limitations
+13. Reflection
+14. Conclusion
+14
+
+--- PAGE 15 ---
+Intelligent System Development Assignment 01
+26 Assessment Rubric
+Component Weight
+Intelligent-system and problem under-
+standing
+15%
+Data and representation analysis 15%
+ML model understanding and implementa-
+tion
+15%
+Experimental design 15%
+Evaluation and model comparison 15%
+Scientific analysis and reflection 15%
+Application and system demonstration 7%
+Code/report quality and reproducibility 3%
+Total 100%
+27 AI-Assisted Development
+Students may use AI-based programming assistants such as ChatGPT during development.
+However, the student remains responsible for the submitted work.
+Students must:
+• understand generated code;
+• verify generated code;
+• understand all reported results;
+• explain the selected algorithms;
+• explain the experimental conclusions;
+• cite external sources when appropriate;
+• disclose substantial AI assistance when required by course policy.
+During demonstration, students may be asked to explain any algorithm, code component, exper-
+iment, or result.
+28 Connection to Assignment 02 and the Course Roadmap
+Assignment 01 establishes the first concrete layer:
+Structured Data → Feature Vector→ Traditional ML→ Prediction
+The course then progressively expands the representation and intelligence capabilities:
+A1 Feature vectors + Traditional ML
+A2 Data preparation + evaluation + better representations
+A3 Learned representations + Deep Learning
+A4 Tensors + CNN + structured knowledge / graphs
+A5 Embeddings + RAG + interaction + deployment
+Project Integrated Intelligent System
+The long-term course progression is:
+Data → Representation → Learning → Knowledge → Retrieval → Generation → Interaction → Intelligent System
+15
+
+--- PAGE 16 ---
+Intelligent System Development Assignment 01
+29 Final Assignment Message
+From Slide 01 to Assignment 01
+Understand the idea of intelligence
+↓
+Define a small intelligent system
+↓
+Represent its information as feature vectors
+↓
+Learn from examples using traditional ML
+↓
+Experiment and evaluate
+↓
+Turn the model into an application
+Understand → Represent → Learn → Experiment → Apply
+GOOD LUCK!
+16

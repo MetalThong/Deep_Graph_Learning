@@ -1,0 +1,52 @@
+{
+  "selected_config": "quantile",
+  "finalists": [
+    "quantile",
+    "clipped"
+  ],
+  "criterion": "Mean validation AP across seeds 0,1,2; finalists based on pilot AP; mathematically dominated incomplete candidates may be pruned with AP<=1 upper bound",
+  "mean_validation_ap": {
+    "quantile": 0.9621567044602424
+  },
+  "pruned_finalists": [
+    {
+      "config": "clipped",
+      "observed_seeds": [
+        0
+      ],
+      "maximum_possible_mean_ap": 0.960244430270777,
+      "incumbent_mean_ap": 0.9621567044602424,
+      "reason": "AP <= 1. Even perfect validation AP on every missing seed cannot beat the completed incumbent mean. No test scores used."
+    }
+  ],
+  "evaluate_keys": [
+    "long_gcn_0",
+    "moderate_weight_gcn_0",
+    "paper_inspired_gcn_0",
+    "clipped_gcn_0",
+    "quantile_gcn_0",
+    "quantile_gcn_1",
+    "quantile_gcn_2",
+    "quantile_mlp_0",
+    "quantile_mlp_1",
+    "quantile_mlp_2"
+  ],
+  "config": {
+    "hidden": 64,
+    "dropout": 0.2,
+    "lr": 0.003,
+    "weight_decay": 0.0005,
+    "pos_weight": 2.3333333333333335,
+    "clip": null,
+    "transform": "quantile",
+    "epochs": 1500,
+    "patience": 150
+  },
+  "test_reuse_disclosure": "Original test was viewed before this revision. All new candidate selection uses validation only; final test results are retrospective.",
+  "selected_gcn_checkpoints_sha256": {
+    "quantile_gcn_0": "c98dc6e2a01c6899713b90cf833ae7fffda7ae6d64b86f1417b2df8737a3f5a8",
+    "quantile_gcn_1": "48236fc4ca50f8e5b04fcacaca3bdaaed1453ab2364ae3b79e77555dbda1ff38",
+    "quantile_gcn_2": "8a2b1053f871c31bfdb439083704151f1415764bf24cbaa24286bcc054275174"
+  },
+  "frozen_at_utc": "2026-10-13T16:51:48.438151+00:00"
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "key": "detected",
+    "title": "Phát hiện đúng",
+    "id": 69756172,
+    "step": 35,
+    "description": "Đã chọn sau đánh giá để minh họa một giao dịch illicit được GCN cảnh báo.",
+    "label": 1,
+    "scores": {
+      "rf_local": 0.541454,
+      "rf_all": 0.651699,
+      "mlp": 0.855752,
+      "gcn": 0.997197
+    }
+  },
+  {
+    "key": "false_alarm",
+    "title": "Cảnh báo nhầm",
+    "id": 201433814,
+    "step": 36,
+    "description": "GCN cảnh báo nhưng nhãn tham chiếu là licit. Quan sát mạng không đủ để kết luận vi phạm.",
+    "label": 0,
+    "scores": {
+      "rf_local": 0.149048,
+      "rf_all": 0.363787,
+      "mlp": 0.605041,
+      "gcn": 0.835016
+    }
+  },
+  {
+    "key": "missed",
+    "title": "Bỏ sót",
+    "id": 67673076,
+    "step": 35,
+    "description": "Nhãn tham chiếu là illicit nhưng GCN không phát cảnh báo ở ngưỡng đã chọn.",
+    "label": 1,
+    "scores": {
+      "rf_local": 0.128409,
+      "rf_all": 0.19797,
+      "mlp": 0.654145,
+      "gcn": 0.359108
+    }
+  },
+  {
+    "key": "disagree",
+    "title": "Hai mô hình khác nhau",
+    "id": 96580297,
+    "step": 40,
+    "description": "Ví dụ GCN cảnh báo đúng một mẫu illicit mà RF all bỏ sót. Chọn sau đánh giá để minh họa, không đại diện toàn bộ test.",
+    "label": 1,
+    "scores": {
+      "rf_local": 0.075806,
+      "rf_all": 0.088584,
+      "mlp": 0.116455,
+      "gcn": 0.728914
+    }
+  },
+  {
+    "key": "unknown",
+    "title": "Chưa có nhãn",
+    "id": 56460695,
+    "step": 35,
+    "description": "Có điểm mô hình nhưng không có nhãn tham chiếu để xác nhận đúng hay sai.",
+    "label": -1,
+    "scores": {
+      "rf_local": 0.209201,
+      "rf_all": 0.182251,
+      "mlp": 0.781922,
+      "gcn": 0.961557
+    }
+  }
+]

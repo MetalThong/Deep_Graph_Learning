@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "file": "Elliptic_Tai_Lieu_Hoc_3_Ngay.pdf",
+      "pages": 15,
+      "current_metrics_and_preprocessing": true,
+      "old_cases_removed": true
+    },
+    {
+      "file": "Elliptic_Loi_Thuyet_Trinh_Va_Demo.pdf",
+      "pages": 16,
+      "current_metrics_and_preprocessing": true,
+      "old_cases_removed": true
+    }
+  ]
+}

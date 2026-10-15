@@ -1,0 +1,218 @@
+{
+  "passed": true,
+  "comparisons": 135008,
+  "max_error": 0.0000013468551635642534,
+  "tolerance": 0.00002,
+  "per_step": [
+    {
+      "step": 35,
+      "model": "gcn",
+      "n": 5507,
+      "max_error": 8.177375793172459e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 35,
+      "model": "mlp",
+      "n": 5507,
+      "max_error": 9.233856200774326e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 36,
+      "model": "gcn",
+      "n": 6393,
+      "max_error": 7.236137390398412e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 36,
+      "model": "mlp",
+      "n": 6393,
+      "max_error": 7.326297760124056e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 37,
+      "model": "gcn",
+      "n": 3306,
+      "max_error": 0.0000013468551635642534,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 37,
+      "model": "mlp",
+      "n": 3306,
+      "max_error": 6.333160400551208e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 38,
+      "model": "gcn",
+      "n": 2891,
+      "max_error": 7.264328002465348e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 38,
+      "model": "mlp",
+      "n": 2891,
+      "max_error": 7.525959014875738e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 39,
+      "model": "gcn",
+      "n": 2760,
+      "max_error": 7.944202423115776e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 39,
+      "model": "mlp",
+      "n": 2760,
+      "max_error": 7.899856567794572e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 40,
+      "model": "gcn",
+      "n": 4481,
+      "max_error": 8.047637939379015e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 40,
+      "model": "mlp",
+      "n": 4481,
+      "max_error": 8.804321288691241e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 41,
+      "model": "gcn",
+      "n": 5342,
+      "max_error": 8.377647399693267e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 41,
+      "model": "mlp",
+      "n": 5342,
+      "max_error": 8.569374084776982e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 42,
+      "model": "gcn",
+      "n": 7140,
+      "max_error": 8.012657165545889e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 42,
+      "model": "mlp",
+      "n": 7140,
+      "max_error": 8.168258667229367e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 43,
+      "model": "gcn",
+      "n": 5063,
+      "max_error": 6.960754394547131e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 43,
+      "model": "mlp",
+      "n": 5063,
+      "max_error": 0.0000011290054321433374,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 44,
+      "model": "gcn",
+      "n": 4975,
+      "max_error": 8.474693298232694e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 44,
+      "model": "mlp",
+      "n": 4975,
+      "max_error": 7.682991027824215e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 45,
+      "model": "gcn",
+      "n": 5598,
+      "max_error": 7.796192169062799e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 45,
+      "model": "mlp",
+      "n": 5598,
+      "max_error": 7.474699020293407e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 46,
+      "model": "gcn",
+      "n": 3519,
+      "max_error": 7.997741699461436e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 46,
+      "model": "mlp",
+      "n": 3519,
+      "max_error": 9.036598205836022e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 47,
+      "model": "gcn",
+      "n": 5121,
+      "max_error": 0.0000010813159942446582,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 47,
+      "model": "mlp",
+      "n": 5121,
+      "max_error": 8.347129821784094e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 48,
+      "model": "gcn",
+      "n": 2954,
+      "max_error": 7.315998077350727e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 48,
+      "model": "mlp",
+      "n": 2954,
+      "max_error": 7.335853576817541e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 49,
+      "model": "gcn",
+      "n": 2454,
+      "max_error": 7.933654785352573e-7,
+      "decision_mismatches": 0
+    },
+    {
+      "step": 49,
+      "model": "mlp",
+      "n": 2454,
+      "max_error": 6.69403076192232e-7,
+      "decision_mismatches": 0
+    }
+  ]
+}

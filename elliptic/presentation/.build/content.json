@@ -1,0 +1,639 @@
+{
+  "title": "Phát hiện giao dịch Bitcoin đáng ngờ",
+  "url": "https://elliptic-transaction-lab.pinkwand512.chatgpt.site",
+  "slides": [
+    {
+      "title": "Phát hiện giao dịch\nBitcoin đáng ngờ",
+      "kind": "cover",
+      "body": [
+        "Deep Graph trên bộ dữ liệu Elliptic",
+        "Phát triển hệ thống thông minh",
+        "Giảng viên: Trần Đình Quế"
+      ],
+      "script": "Trong phần này, em trình bày một hệ thống hỗ trợ sàng lọc giao dịch Bitcoin bằng Deep Graph. Điểm cần kiểm chứng là thông tin từ các giao dịch có liên kết có giúp phân loại tốt hơn hay không. Nhóm đã huấn luyện mô hình, so sánh với đối chứng và xây dựng demo trên dữ liệu lịch sử. Em sẽ trình bày cả kết quả đúng lẫn cảnh báo nhầm, vì đó là điều quyết định một công cụ sàng lọc có hữu ích hay không.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 50,
+      "refs": "https://arxiv.org/abs/1908.02591"
+    },
+    {
+      "title": "Một quyết định cần thêm ngữ cảnh",
+      "kind": "story",
+      "body": [
+        "Giao dịch đang xét",
+        "Các giao dịch có liên kết",
+        "Cảnh báo để kiểm tra tiếp"
+      ],
+      "script": "Hãy hình dung người phân tích đang xem một giao dịch. Nếu chỉ nhìn những con số của giao dịch ấy, họ có thể bỏ qua thông tin nằm trong mạng xung quanh. Demo cho phép mở các liên kết để quan sát ngữ cảnh, rồi xem điểm của nhiều mô hình. Điểm cao chỉ khiến hệ thống phát cảnh báo theo ngưỡng đã đặt. Kết quả này hỗ trợ kiểm tra tiếp, không tự xác nhận một hành vi vi phạm.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 65,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Câu hỏi thực nghiệm",
+      "kind": "question",
+      "body": [
+        "Thông tin hàng xóm có giúp phân loại giao dịch?",
+        "MLP và GCN dùng cùng đặc trưng",
+        "Random Forest là đối chứng bổ sung"
+      ],
+      "script": "Câu hỏi của nhóm là bổ sung quan hệ giữa các giao dịch có giúp ích trong thực nghiệm này không. Để kiểm tra, MLP và GCN nhận cùng 93 đặc trưng local. Hai mô hình có cùng lớp học và nhánh skip, nhưng GCN thêm phép tổng hợp hàng xóm. Nhóm còn dùng Random Forest để tránh việc chỉ so sánh các mạng neural với nhau rồi bỏ qua một mô hình truyền thống mạnh.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 65,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Nút và cạnh trong Elliptic",
+      "kind": "graph_intro",
+      "body": [
+        "Nút: một giao dịch Bitcoin",
+        "Cạnh: dòng Bitcoin giữa hai giao dịch",
+        "Mũi tên thể hiện chiều dòng tiền"
+      ],
+      "script": "Mỗi nút ở đây là một giao dịch, không phải một người hay tài khoản ngân hàng. Một cạnh có hướng thể hiện dòng Bitcoin từ giao dịch này sang giao dịch khác. Khi nói một bước kết nối, em đang nói đến những giao dịch nối trực tiếp với nút đang xét. Hai bước kết nối mở thêm hàng xóm của chúng. Trên giao diện, mũi tên giữ hướng của dữ liệu gốc.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 65,
+      "refs": "https://arxiv.org/abs/1908.02591; https://www.kaggle.com/datasets/ellipticco/elliptic-data-set"
+    },
+    {
+      "title": "Bộ dữ liệu và phạm vi sử dụng",
+      "kind": "dataset",
+      "body": [
+        "203.769 giao dịch",
+        "234.355 cạnh có hướng",
+        "49 lát cắt thời gian"
+      ],
+      "script": "Nhóm tải bộ Elliptic gốc từ nguồn công bố, sau đó kiểm tra số lượng, mã giao dịch và các liên kết. Dữ liệu gồm hơn hai trăm nghìn giao dịch, chia thành 49 lát cắt. Trong bộ này, không có cạnh nối giữa các lát cắt khác nhau. Vì vậy ta có thể học trên các lát cắt trước, kiểm tra trên những lát cắt sau. Đây là dữ liệu lịch sử phục vụ thực nghiệm, không phải luồng giao dịch đang diễn ra.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 65,
+      "refs": "Kết quả kiểm tra trực tiếp trong results/data_summary.json; https://www.kaggle.com/datasets/ellipticco/elliptic-data-set"
+    },
+    {
+      "title": "Ba trạng thái nhãn",
+      "kind": "labels",
+      "body": [
+        "Illicit: 4.545",
+        "Licit: 42.019",
+        "Unknown: 157.205"
+      ],
+      "script": "Ta cần phân biệt ba trạng thái nhãn. Illicit và licit là hai nhóm tham chiếu dùng để học và chấm điểm. Unknown nghĩa là chưa có nhãn, nên nhóm không gán chúng thành licit. Các nút unknown vẫn có đặc trưng và liên kết, vì thế có thể tham gia truyền tin trong graph. Nhưng loss huấn luyện và các chỉ số đánh giá chỉ tính trên những nút đã có nhãn. Đó là lý do số nút test lớn hơn số mẫu được chấm điểm.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 75,
+      "refs": "Kiểm đếm từ elliptic_txs_classes.csv; results/data_summary.json"
+    },
+    {
+      "title": "Đặc trưng đầu vào",
+      "kind": "features",
+      "body": [
+        "93 đặc trưng local dạng số",
+        "72 đặc trưng tổng hợp hàng xóm",
+        "Loại timestep khỏi đầu vào"
+      ],
+      "script": "File gốc có mã giao dịch, timestep và các giá trị đặc trưng. Sau khi tách mã và timestep, nhóm còn 165 cột số: 93 local và 72 tổng hợp hàng xóm. MLP, GCN và RF local dùng 93 cột đầu. RF all dùng cả 165 cột. Các giá trị đã được bên cung cấp xử lý và ẩn danh, nên nhóm không tự gắn một cột bất kỳ thành số tiền hoặc phí cụ thể. Scaler của nhóm chỉ học từ các nút thuộc train. Với GCN và MLP, nhóm thêm QuantileTransformer: học phân bố từng cột từ train, chuyển theo phân vị sang thang đo gần chuẩn rồi giữ nguyên phép biến đổi cho validation/test. RF dùng đặc trưng như bản đầu. Bước này không nhìn nhãn và không fit trên test.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 75,
+      "refs": "Kiểm tra trực tiếp cấu trúc CSV; prepare_data.py; https://www.kaggle.com/datasets/ellipticco/elliptic-data-set"
+    },
+    {
+      "title": "Chia dữ liệu theo thời gian",
+      "kind": "split",
+      "body": [],
+      "script": "Nhóm dùng lát cắt 1 đến 29 để học trọng số, 30 đến 34 để chọn checkpoint và ngưỡng, còn 35 đến 49 để kiểm tra cuối. Test có 67.504 nút nhưng chỉ 16.670 nút có nhãn. Cách chia này giúp tránh việc trộn giao dịch ở tương lai vào quá trình chọn mô hình. Trong từng tập, unknown vẫn là ngữ cảnh. Kết quả chỉ phản ánh một lần chia thời gian, nên nhóm chưa coi đó là bằng chứng tổng quát cho mọi giai đoạn. Tập test từng được xem ở bản đầu. Bản cải tiến chọn cấu hình, checkpoint và ngưỡng bằng validation, rồi đánh giá lại test cũ. Nhóm chưa có một tập mới hoàn toàn để xác nhận độc lập.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 80,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Graph đưa vào mô hình",
+      "kind": "graph_model",
+      "body": [
+        "Đối xứng hóa các cạnh",
+        "Thêm liên kết với chính nút",
+        "Chuẩn hóa theo bậc nút"
+      ],
+      "script": "GCN trong demo dùng graph đối xứng: nếu dữ liệu có cạnh từ A đến B, phép tổng hợp cho phép cả hai nút trao đổi thông tin. Nhóm thêm self-loop để nút giữ thông tin của chính mình, rồi chuẩn hóa theo bậc để nút có nhiều hàng xóm không làm tổng giá trị phình quá lớn. Đây là một lựa chọn đơn giản hóa. Nó làm mất hướng trong phần học, dù giao diện vẫn hiển thị mũi tên gốc. Nhóm ghi rõ hạn chế này.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 80,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "MLP và GCN khác nhau ở đâu?",
+      "kind": "comparison",
+      "body": [],
+      "script": "MLP nhận vector của một nút và biến đổi qua các lớp học. GCN giữ cấu trúc tương tự nhưng có thêm phép tổng hợp theo quan hệ của graph. Cả hai đều có nhánh skip đưa trực tiếp đặc trưng của nút tới đầu ra. Khi thay ma trận quan hệ bằng ma trận đồng nhất, kiến trúc GCN này trở thành đối chứng MLP. Vì vậy khác biệt chính mà nhóm kiểm tra là việc trộn thông tin hàng xóm.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 80,
+      "refs": "https://arxiv.org/abs/1609.02907; train.py, lớp Classifier"
+    },
+    {
+      "title": "Kiến trúc GCN của demo",
+      "kind": "architecture",
+      "body": [
+        "93 đặc trưng / nút",
+        "64 chiều ẩn và ReLU",
+        "Điểm đầu ra qua sigmoid"
+      ],
+      "script": "Luồng xử lý gồm tổng hợp đặc trưng hàng xóm, lớp tuyến tính và ReLU, sau đó tổng hợp lần nữa và tính đầu ra. Nhánh skip bổ sung đặc trưng gốc của nút. Dropout chỉ hoạt động khi huấn luyện. Khi trình diễn, mô hình ở chế độ eval nên không bỏ ngẫu nhiên các giá trị. Sigmoid tạo một điểm từ 0 đến 1, nhưng do mô hình chưa được hiệu chỉnh xác suất, em gọi đây là điểm mô hình thay vì xác suất chắc chắn giao dịch vi phạm.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 85,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Huấn luyện và chọn checkpoint",
+      "kind": "training",
+      "body": [
+        "Weighted BCE cho lớp illicit",
+        "Tối đa 1500 epoch, patience 150",
+        "Checkpoint và ngưỡng chọn bằng validation"
+      ],
+      "script": "Nhóm tăng ngân sách tối đa lên 1500 epoch và patience 150. Checkpoint được chọn bằng AP validation. Cấu hình cuối có hidden 64, dropout 0.2, learning rate 0.003 và trọng số dương khoảng 2.33. Đặc trưng neural được chuẩn hóa bằng scaler học trên train. Nhóm còn dùng chuẩn hóa theo phân vị, học từ train, để chuyển từng đặc trưng sang thang đo gần phân bố chuẩn. MLP dùng cùng các thiết lập đó để đối chứng việc thêm phép truyền tin.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 85,
+      "refs": "optimize_gcn.py; optimization/selection.json; results/metrics.json"
+    },
+    {
+      "title": "Chỉ số cho lớp illicit",
+      "kind": "metrics",
+      "body": [
+        "Precision: cảnh báo đúng bao nhiêu?",
+        "Recall: tìm được bao nhiêu illicit?",
+        "F1: cân bằng Precision và Recall"
+      ],
+      "script": "Giả sử có mười cảnh báo, trong đó tám cảnh báo đúng, thì Precision là tám phần mười. Nếu tập có hai mươi giao dịch illicit mà ta chỉ tìm được tám, Recall là tám phần hai mươi. F1 kết hợp hai chỉ số này. AP đánh giá khả năng xếp hạng mẫu illicit trên nhiều ngưỡng. Nhóm không dùng Accuracy làm kết luận chính vì một mô hình luôn đoán licit vẫn có thể trông tốt khi lớp licit chiếm đa số.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 85,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Ngưỡng cảnh báo",
+      "kind": "threshold",
+      "body": [
+        "Điểm mô hình so với ngưỡng",
+        "Hạ ngưỡng thường tạo thêm cảnh báo",
+        "Ngưỡng báo cáo chọn trên validation"
+      ],
+      "script": "Một điểm chỉ trở thành quyết định sau khi so với ngưỡng. Khi hạ ngưỡng, nhiều giao dịch được cảnh báo hơn: ta có thể tìm thêm illicit nhưng cũng tăng cảnh báo nhầm. Ngưỡng dùng trong báo cáo được chọn bằng F1 trên validation. Trong demo, thanh kéo cho phép quan sát đánh đổi trên test. Đây là hoạt động minh họa, không phải cách nhóm chọn lại ngưỡng để làm đẹp kết quả báo cáo.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 75,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Thiết lập so sánh",
+      "kind": "settings",
+      "body": [],
+      "script": "Bảng cuối gồm bốn mô hình, mỗi mô hình ba seed. RF local dùng 93 đặc trưng; RF all thêm 72 đặc trưng tổng hợp hàng xóm. MLP và GCN đều có 6174 tham số, dùng cùng đầu vào và thiết lập huấn luyện cuối. Nhóm chọn thiết lập neural bằng validation của GCN rồi áp dụng cho MLP để đối chứng. Đây chưa phải kết quả tối ưu riêng cho MLP. Tất cả dùng chung cách chia thời gian. SD qua ba seed không phải khoảng tin cậy.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 80,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Kết quả F1 trên tập kiểm tra",
+      "kind": "results",
+      "body": [],
+      "script": "Bản đầu GCN chỉ đạt 36,5% F1. Sau các đối chứng và tối ưu trên validation, GCN đạt 61,3%. RF local đạt 77,0%, RF all đạt 79,3%, còn MLP với thiết lập neural tương ứng đạt 64,5%. GCN chưa có F1 trung bình cao hơn MLP trên lần chia này. Các số là trung bình ba seed. Tập test từng được xem ở bản đầu. Bản cải tiến chọn cấu hình, checkpoint và ngưỡng bằng validation, rồi đánh giá lại test cũ. Nhóm chưa có một tập mới hoàn toàn để xác nhận độc lập.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 90,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Precision và Recall cho thấy điều gì?",
+      "kind": "result_table",
+      "body": [],
+      "script": "GCN có Precision 52,1%, Recall 74,5% và AP 78,0%. RF all có Precision 88,7%, Recall 71,7% và AP 78,9%. Precision phản ánh tỷ lệ cảnh báo đúng, Recall phản ánh tỷ lệ illicit được tìm ra. AP kiểm tra khả năng xếp hạng qua nhiều ngưỡng. Vì thế nhóm đọc cả ba khía cạnh, không lấy một ví dụ đẹp để thay kết quả toàn tập. AP của hai mô hình khá gần, trong khi F1 chênh lệch lớn. Điều này cho thấy cần phân biệt chất lượng xếp hạng với hiệu quả tại ngưỡng đã chọn. Nhóm giữ nguyên ngưỡng từ validation, không chọn lại bằng test.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 85,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Validation và test khác nhau",
+      "kind": "shift",
+      "body": [
+        "Validation: 16,8% nhãn illicit",
+        "Test: 6,5% nhãn illicit",
+        "Hiệu quả giảm ở giai đoạn sau"
+      ],
+      "script": "Kết quả validation cao hơn test ở nhiều mô hình. Tỷ lệ illicit trong những nút có nhãn cũng đổi từ khoảng 16,8% xuống 6,5%. Đó là một khác biệt đo được giữa hai giai đoạn. Nó có thể góp phần làm Precision thay đổi, nhưng nhóm chưa có thí nghiệm để quy toàn bộ suy giảm cho một nguyên nhân. Đây là minh họa cho việc ngưỡng phù hợp ở giai đoạn trước không bảo đảm hoạt động giống hệt ở giai đoạn sau.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 80,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Vì sao bản đầu GCN thấp?",
+      "kind": "interpretation",
+      "body": [
+        "Ban đầu: 74,8% AP validation",
+        "Tăng ngân sách: 86,1% AP",
+        "Cấu hình được chọn: 96,2% AP"
+      ],
+      "script": "Nguyên nhân có bằng chứng rõ nhất là ngân sách học. Cả ba seed cũ chọn checkpoint epoch 179, sát giới hạn 180. Ở seed 0, giữ kiến trúc và tăng ngân sách cùng patience nâng AP validation từ 74,8% lên 86,1%. Nhóm còn thử giảm trọng số lớp, chặn giá trị lớn và chuẩn hóa theo phân vị. Sau năm cấu hình thăm dò, ứng viên tốt nhất được chạy đủ ba seed. Nhóm chọn bằng AP validation trung bình và dừng ứng viên còn lại khi cận trên toán học của nó cũng không thể vượt kết quả này. Cách đối xứng hóa graph và nhiễu hàng xóm vẫn là các giả thuyết cần thí nghiệm riêng, chưa được coi là nguyên nhân đã chứng minh.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 70,
+      "refs": "optimization/report.json; optimization/audit.json; optimize_gcn.py"
+    },
+    {
+      "title": "Một trường hợp GCN phát hiện đúng",
+      "kind": "case_good",
+      "body": [
+        "#69756172 · lát cắt 35",
+        "GCN: 0,9972",
+        "Nhãn tham chiếu: illicit"
+      ],
+      "script": "Giao dịch 69756172 ở lát cắt 35 có điểm GCN 0.9972, so với ngưỡng validation 0.7079. Nhãn tham chiếu là illicit. Đây là một trường hợp phát hiện đúng. Em so sánh thêm với các mô hình trên giao diện nhưng không suy rộng từ một giao dịch ra toàn bộ dataset. Các trường hợp được chọn sau đánh giá để minh họa. Hình mạng cung cấp ngữ cảnh, chưa phải giải thích nhân quả.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 75,
+      "refs": "results/demo_cases.json; kết quả seed 0. Ví dụ chọn sau đánh giá."
+    },
+    {
+      "title": "Một trường hợp cảnh báo nhầm",
+      "kind": "case_bad",
+      "body": [
+        "#201433814 · lát cắt 36",
+        "GCN: 0,8350",
+        "Nhãn tham chiếu: licit"
+      ],
+      "script": "Giao dịch 201433814 ở lát cắt 36 có điểm GCN 0.8350, so với ngưỡng validation 0.7079. Nhãn tham chiếu là licit. Đây là một cảnh báo nhầm. Điểm cao không bảo đảm dự đoán đúng. Khi đánh giá công cụ sàng lọc, số cảnh báo nhầm cũng quan trọng như số illicit tìm thấy. Các trường hợp được chọn sau đánh giá để minh họa. Hình mạng cung cấp ngữ cảnh, chưa phải giải thích nhân quả.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 70,
+      "refs": "results/demo_cases.json; kết quả seed 0. Ví dụ chọn sau đánh giá."
+    },
+    {
+      "title": "Demo trực tiếp",
+      "kind": "demo",
+      "body": [
+        "Chọn tình huống và mở mạng",
+        "So sánh điểm, rồi đối chiếu nhãn",
+        "Đổi ngưỡng và quan sát cảnh báo nhầm"
+      ],
+      "script": "Em chuyển sang giao diện demo. Trước hết em chọn Phát hiện đúng, giải thích mỗi nút là giao dịch và mỗi mũi tên là dòng Bitcoin. Em mở một rồi hai bước kết nối. Tiếp theo em đối chiếu nhãn, chuyển sang Cảnh báo nhầm và Bỏ sót. Sau đó em đổi ngưỡng để cả lớp quan sát số phát hiện đúng, cảnh báo nhầm và bỏ sót. Cuối cùng, em chọn Chưa có nhãn để nhấn mạnh rằng mô hình có thể cho điểm nhưng ta chưa thể xác nhận đúng hay sai.",
+      "action": "Thực hiện kịch bản 7 phút trong tài liệu. Dùng năm nút tình huống. Sau khi kéo ngưỡng, bấm Dùng ngưỡng chọn trên validation. Tránh dành thời gian đọc toàn bộ ID.",
+      "seconds": 420,
+      "refs": "https://elliptic-transaction-lab.pinkwand512.chatgpt.site; site/dist/app.mjs; results/demo_cases.json"
+    },
+    {
+      "title": "Cách demo chạy trên web",
+      "kind": "deployment",
+      "body": [
+        "Python huấn luyện và lưu checkpoint",
+        "Trình duyệt nạp đặc trưng, graph, trọng số",
+        "GCN và MLP suy luận tại máy người xem"
+      ],
+      "script": "Nhóm huấn luyện bằng Python trước buổi học. Khi mở một lát cắt, trình duyệt tải đặc trưng đã chuẩn hóa, cạnh và trọng số để tính GCN, MLP. Random Forest sử dụng kết quả đã tính trước. Graph trên màn hình giới hạn số nút để dễ đọc, nhưng GCN luôn suy luận trên toàn bộ lát cắt. Nhóm đã kiểm tra tính nhất quán giữa JavaScript và PyTorch trên tất cả nút test. Bản local dùng đúng bộ tài nguyên nên vẫn trình diễn được khi mất mạng.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 80,
+      "refs": "qa/inference-parity.json; site/dist/inference.mjs; export_demo.py"
+    },
+    {
+      "title": "Giới hạn cần nói rõ",
+      "kind": "limits",
+      "body": [
+        "Phân loại ảnh chụp mạng lịch sử",
+        "Đặc trưng ẩn danh, nhiều nút unknown",
+        "Một lần chia thời gian và cấu hình gọn"
+      ],
+      "script": "Có ba giới hạn cần nhớ khi trả lời. Thứ nhất, đây là phân loại snapshot lịch sử: graph có thể bao gồm giao dịch xuất hiện sau nút đang xét trong cùng lát cắt, nên chưa phải phát hiện ngay lúc giao dịch mới đến. Thứ hai, các đặc trưng ẩn danh và nhiều nút chưa có nhãn làm hạn chế diễn giải. Thứ ba, nhóm mới đánh giá một lần chia thời gian và một cấu hình GCN gọn. Hình mạng giúp quan sát quan hệ, chưa phải công cụ giải thích nhân quả của mô hình.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 80,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Ba ngày chuẩn bị cho người demo",
+      "kind": "learning",
+      "body": [],
+      "script": "Ngày đầu, người demo tập giải thích bài toán, node, edge, feature và nhãn bằng lời của mình. Ngày hai, tập đọc bảng kết quả và giải thích Precision, Recall, ngưỡng. Ngày ba, thực hiện kịch bản bảy phút và luyện các tình huống thầy hỏi. Mục tiêu không phải học thuộc code. Mục tiêu là mở một giao dịch bất kỳ và nói được mô hình đang nhận gì, tính trên mạng nào, đưa ra gì và giới hạn của kết luận nằm ở đâu.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 55,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    },
+    {
+      "title": "Kết luận thực nghiệm",
+      "kind": "closing",
+      "body": [
+        "GCN: 36,5% thành 61,3% F1",
+        "RF all có F1 cao nhất trong lần chia này",
+        "Đối chứng cho thấy giới hạn của từng mô hình"
+      ],
+      "script": "Nhóm tăng ngân sách học, cải thiện xử lý đặc trưng và chọn cấu hình bằng validation. GCN tăng từ 36,5% lên 61,3% F1. Đối chứng MLP cùng thiết lập đạt 64,5%. RF all có F1 cao nhất. RF all đã có 72 đặc trưng tổng hợp hàng xóm, còn GCN học cách kết hợp đặc trưng theo graph. Kết quả giúp nhóm lựa chọn mô hình dựa trên bằng chứng và hiểu giá trị của thông tin quan hệ. Tập test từng được xem ở bản đầu. Bản cải tiến chọn cấu hình, checkpoint và ngưỡng bằng validation, rồi đánh giá lại test cũ. Nhóm chưa có một tập mới hoàn toàn để xác nhận độc lập.",
+      "action": "Chỉ vào hình hoặc bảng theo thứ tự từ trái sang phải. Dừng một nhịp ở ý chính.",
+      "seconds": 65,
+      "refs": "Thực nghiệm của nhóm: results/metrics.json, train.py và prepare_data.py."
+    }
+  ],
+  "study": [
+    {
+      "title": "Cách dùng bộ tài liệu này",
+      "sections": [
+        {
+          "heading": "Mục tiêu sau ba ngày",
+          "text": "Bạn cần tự thực hiện được demo bảy phút và giải thích: dữ liệu từ đâu, một nút là gì, mô hình nhận gì, vì sao có graph, kết quả đo thế nào, và khi nào mô hình sai. Không cần học thuộc mọi tham số hay chứng minh công thức GCN."
+        },
+        {
+          "heading": "Thời gian gợi ý",
+          "text": "Mỗi ngày dành khoảng ba giờ tập trung. Chia thành những phiên 40–50 phút và nghỉ ngắn giữa phiên. Nếu chỉ phụ trách demo, ưu tiên trang về giao diện, kịch bản, ngưỡng và câu hỏi phản biện. Phần lời nói theo 26 slide nằm trong PDF riêng."
+        },
+        {
+          "heading": "Sản phẩm đã chuẩn bị",
+          "text": "Demo online: https://elliptic-transaction-lab.pinkwand512.chatgpt.site. Bản local nằm trong site/dist. Code Python, checkpoint, kết quả từng seed và các báo cáo kiểm tra nằm cạnh tài liệu. Bộ PowerPoint có speaker notes đầy đủ. Kết quả trong slide lấy từ results/metrics.json."
+        },
+        {
+          "heading": "Mốc tự kiểm tra",
+          "text": "Cuối ngày 1: giải thích bài toán trong 90 giây. Cuối ngày 2: đọc bảng kết quả mà không nhầm Precision và Recall. Cuối ngày 3: chạy demo hai lần không cần người nhắc, trong đó một lần dùng bản local."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 1 / Bài toán và dữ liệu",
+      "sections": [
+        {
+          "heading": "Phiên 1 · 45 phút",
+          "text": "Đọc slide 1–6. Tự vẽ năm giao dịch A, B, C, D, E và vài cạnh có hướng. Nói rõ: A là giao dịch, không phải người A. Mũi tên biểu diễn dòng Bitcoin giữa giao dịch. Mạng liên quan trong demo chỉ là một phần graph, không phải bản đồ toàn bộ Bitcoin."
+        },
+        {
+          "heading": "Phiên 2 · 45 phút",
+          "text": "Phân biệt nhãn và dự đoán. Nhãn tham chiếu nằm trong dữ liệu. Dự đoán do mô hình tạo ra. Illicit là lớp dương dùng trong chỉ số. Licit là lớp âm. Unknown chưa có đáp án, không được tính là âm. Một nút unknown có thể tham gia truyền tin nhưng không tham gia loss có giám sát."
+        },
+        {
+          "heading": "Phiên 3 · 45 phút",
+          "text": "Mở demo, chọn Phát hiện đúng. Chưa bấm đối chiếu nhãn. Xem điểm của bốn phương pháp rồi tự đoán mỗi mô hình có cảnh báo không. Bấm đối chiếu để kiểm tra. Sau đó chọn Chưa có nhãn và quan sát: hệ thống vẫn có điểm nhưng không thể xác nhận dự đoán đúng."
+        },
+        {
+          "heading": "Bài tập cuối ngày",
+          "text": "Trả lời bằng lời của mình: “Vì sao có hơn 200 nghìn nút nhưng ít mẫu có nhãn hơn?” Đáp án cần có ý: phần lớn là unknown; graph dùng được đặc trưng và cạnh của chúng, còn đánh giá cần đáp án đã biết. Hãy nhờ một người chưa học thử nghe phần giải thích 90 giây."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 1 / Những thuật ngữ phải dùng đúng",
+      "sections": [
+        {
+          "heading": "Node, edge, feature",
+          "text": "Node là giao dịch. Edge là liên kết dòng Bitcoin. Feature là một giá trị số mô tả giao dịch hoặc ngữ cảnh đã xử lý. Mã ID chỉ định danh và không đưa vào mô hình. Một bước kết nối nghĩa là đi qua một cạnh; hai bước là qua tối đa hai cạnh trong graph đã đối xứng hóa để tìm vùng hiển thị."
+        },
+        {
+          "heading": "Score và threshold",
+          "text": "Score là điểm mô hình trong đoạn từ 0 đến 1. Threshold là ngưỡng ra quyết định. Điểm lớn hơn hoặc bằng ngưỡng thì cảnh báo. Chưa hiệu chỉnh xác suất nên không đọc 0,95 thành “chắc chắn 95% vi phạm”. Khi xem một nút, luôn nói cả mô hình và ngưỡng."
+        },
+        {
+          "heading": "Training, validation, test",
+          "text": "Train cập nhật trọng số, validation chọn cấu hình, checkpoint và ngưỡng. Train 1-29, validation 30-34, test 35-49. Tập test từng được xem ở bản đầu. Bản cải tiến chọn cấu hình, checkpoint và ngưỡng bằng validation, rồi đánh giá lại test cũ. Nhóm chưa có một tập mới hoàn toàn để xác nhận độc lập."
+        },
+        {
+          "heading": "Bài tập phân loại câu nói",
+          "text": "Câu đúng: “Nút này có điểm GCN 0,95, vượt ngưỡng, nên hệ thống cảnh báo.” Câu sai: “Người này chắc chắn rửa tiền.” Câu đúng: “Nhãn tham chiếu là unknown.” Câu sai: “Unknown có nghĩa là hợp lệ.” Hãy tự sửa những câu sai và nói lý do."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 1 / Đọc cấu trúc dự án",
+      "sections": [
+        {
+          "heading": "Luồng dữ liệu",
+          "text": "prepare_data.py chuẩn bị dữ liệu. train.py lưu quy trình baseline 180 epoch. optimize_gcn.py thử cấu hình bằng validation; selection.json chốt lựa chọn trước khi đánh giá test lại. report_optimization.py kiểm tra số liệu, promote_optimized.py đồng bộ mô hình hiện hành, export_demo.py đóng gói cho web."
+        },
+        {
+          "heading": "Những file nên mở",
+          "text": "results/data_summary.json cho biết số nút, nhãn và split. results/metrics.json chứa bảng tổng hợp và mô tả giao thức. results/demo_cases.json ghi năm ví dụ. Không cần mở file CSV đặc trưng rất lớn để học thuộc từng giá trị."
+        },
+        {
+          "heading": "Tính tái lập",
+          "text": "Có thể chạy lại cùng lệnh và seed. Tuy nhiên phiên bản thư viện, số luồng và phép tính số thực có thể tạo sai khác nhỏ. Các điểm báo cáo làm tròn sáu chữ số thập phân để ổn định các trường hợp bằng ngưỡng. Không chỉnh nhãn hoặc điểm để tạo tình huống demo."
+        },
+        {
+          "heading": "Tự kiểm tra",
+          "text": "Hãy chỉ đúng file trả lời từng câu: có bao nhiêu mẫu test có nhãn, ngưỡng GCN bao nhiêu, giao dịch cảnh báo nhầm là ID nào, mô hình được lưu ở đâu. Đáp án lần lượt là data_summary.json, metrics.json, demo_cases.json và thư mục models."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 2 / Hiểu cách GCN tính điểm",
+      "sections": [
+        {
+          "heading": "Phiên 1 · 50 phút",
+          "text": "Đọc slide 7–12. Nghĩ về mỗi nút như một hàng số. MLP biến đổi hàng số của chính nút. GCN trước hết trộn thông tin theo những nút nối với nó, rồi biến đổi bằng trọng số học được. Hai lớp cho phép thông tin lan qua tối đa hai bước trong graph mô hình."
+        },
+        {
+          "heading": "Self-loop và chuẩn hóa",
+          "text": "Self-loop giữ thông tin của nút trong phép tổng hợp. Chuẩn hóa theo bậc điều chỉnh đóng góp của các nút có số liên kết khác nhau. Không hiểu GCN là lấy nhãn đỏ của hàng xóm rồi tô đỏ nút đang xét: nhãn không được đưa vào feature hay phép truyền tin của dự án."
+        },
+        {
+          "heading": "Nhánh skip",
+          "text": "Nhánh skip đưa đặc trưng gốc của nút vào đầu ra thông qua một lớp tuyến tính. Nó giúp mô hình có đường sử dụng tín hiệu local. Cả MLP và GCN đều có nhánh này. Nhóm gọi GCN + skip để tránh khiến người xem nghĩ đã tái lập nguyên vẹn mọi thiết lập của bài báo gốc."
+        },
+        {
+          "heading": "Bài tập giải thích",
+          "text": "Dùng hình năm nút hôm qua, nói một lớp tổng hợp lấy thông tin từ đâu. Sau đó chỉ hai bước kết nối. Câu cần nhớ: “GCN học từ đặc trưng và quan hệ; nhãn chỉ hướng dẫn việc học trên những nút train có nhãn.”"
+        },
+        {
+          "heading": "Chuẩn hóa ở bản 2",
+          "text": "QuantileTransformer học phân bố mỗi cột trên train rồi đổi giá trị theo phân vị sang thang đo gần chuẩn. Giữ nguyên phép biến đổi cho validation và test. Không dùng nhãn để học bước này. GCN và MLP đều nhận cùng feature đã biến đổi; browser tải các feature đó từ file dữ liệu."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 2 / Đọc kết quả mà không nhầm",
+      "sections": [
+        {
+          "heading": "Phiên 2 · 50 phút",
+          "text": "Đọc slide 13–18. Hãy tưởng tượng có 20 mẫu illicit và 80 mẫu licit. Mô hình cảnh báo 10 mẫu, trong đó 8 mẫu là illicit. Khi đó TP=8, FP=2, FN=12, TN=78. Precision=80%, Recall=40%, F1 khoảng 53,3%. Viết lại ví dụ mà không nhìn tài liệu."
+        },
+        {
+          "heading": "Average Precision",
+          "text": "AP tóm tắt chất lượng xếp hạng illicit theo điểm, trên nhiều mức ngưỡng. Giá trị lớn hơn tốt hơn trong cùng tập kiểm tra. AP khác Accuracy và khác F1 tại một ngưỡng. Trong slide, AP được tính bằng average_precision_score của scikit-learn."
+        },
+        {
+          "heading": "Kết quả thật của nhóm",
+          "text": "RF all: F1 79,3%; RF local: 77,0%; MLP: 64,5%; GCN: 61,3%. Đây là trung bình ba seed trên cùng split. RF all có thêm 72 feature tổng hợp hàng xóm nên không được gọi là đối chứng hoàn toàn không có thông tin quan hệ."
+        },
+        {
+          "heading": "Tự kiểm tra",
+          "text": "Vì sao không chỉ báo Accuracy? Vì nhiều mẫu thuộc lớp licit. Vì sao không kết luận từ một ví dụ GCN đúng? Vì ví dụ không đại diện toàn bộ test. Vì sao RF all và RF local cần tách tên? Vì chúng có đầu vào khác nhau."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 2 / Thử ngưỡng và đọc sai sót",
+      "sections": [
+        {
+          "heading": "Phiên 3 · 50 phút",
+          "text": "Chọn GCN, đọc số phát hiện đúng, cảnh báo nhầm, bỏ sót ở ngưỡng validation. Kéo ngưỡng xuống 0,50 rồi lên 0,95. Ghi lại ba con số ở mỗi mức. Sau đó bấm dùng ngưỡng chọn trên validation để trở về cấu hình báo cáo."
+        },
+        {
+          "heading": "Điều phải quan sát",
+          "text": "Khi ngưỡng giảm, tập cảnh báo có thể chỉ tăng hoặc giữ nguyên. TP và FP có thể tăng, FN có thể giảm. Precision không bắt buộc tăng hoặc giảm đều tại mọi nấc. Recall không giảm khi hạ ngưỡng trên cùng bộ điểm."
+        },
+        {
+          "heading": "Tránh chọn lại trên test",
+          "text": "Thanh kéo giúp giảng giải. Không lấy ngưỡng nhìn đẹp nhất trên test rồi công bố đó là cấu hình đã được chọn độc lập. Nếu thực sự phát triển một cấu hình mới, phải chọn bằng validation và dùng một bộ kiểm tra chưa bị khai thác để ra quyết định."
+        },
+        {
+          "heading": "Kết quả seed 0 và bảng ba seed",
+          "text": "Demo sử dụng checkpoint seed 0 cố định. Vì vậy các số đếm trên demo và F1 của giao dịch toàn test thuộc seed 0. Bảng tổng hợp lấy trung bình ba seed nên khác một chút. Đây là khác biệt có chủ ý, không phải lỗi đồng bộ."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 3 / Kịch bản demo bảy phút",
+      "sections": [
+        {
+          "heading": "00:00–01:00 · Định nghĩa",
+          "text": "Mở trang, nói một nút là giao dịch, cạnh là dòng Bitcoin. Chọn Phát hiện đúng: ID 69756172, lát cắt 35. Đọc điểm GCN và ngưỡng. Chưa mở nhãn tham chiếu."
+        },
+        {
+          "heading": "01:00–02:00 · Mạng liên quan",
+          "text": "Đổi phạm vi một bước rồi hai bước. Nói rằng hình chỉ giới hạn tối đa 50 nút để dễ nhìn, còn suy luận vẫn dùng toàn bộ lát cắt. Bấm một nút để xem ID, sau đó dùng nút Phát hiện đúng để quay về tình huống gốc."
+        },
+        {
+          "heading": "02:00–03:00 · So sánh và đối chiếu",
+          "text": "So sánh điểm GCN với RF all và MLP. Nhấn mạnh mỗi mô hình có ngưỡng riêng. Bấm Đối chiếu nhãn: illicit. Nói đây là ví dụ chọn sau đánh giá; không dùng nó để thay thế bảng kết quả toàn test."
+        },
+        {
+          "heading": "03:00–04:30 · Hai loại sai",
+          "text": "Chọn Cảnh báo nhầm: ID 201433814, lát cắt 36, nhãn licit. Chuyển Bỏ sót: ID 67673076, lát cắt 35, nhãn illicit nhưng điểm dưới ngưỡng. Giải thích FP và FN."
+        },
+        {
+          "heading": "04:30–06:00 · Ngưỡng",
+          "text": "Kéo ngưỡng, đọc sự thay đổi các số đếm toàn bộ test có nhãn. Dừng ở hai mức đủ khác biệt. Bấm trở về ngưỡng validation. Giải thích đây là minh họa đánh đổi, bảng thực nghiệm phía dưới không đổi theo thanh kéo."
+        },
+        {
+          "heading": "06:00–07:00 · Unknown và kết luận",
+          "text": "Chọn Chưa có nhãn: ID 56460695, lát cắt 35. Nói chưa thể xác nhận đúng sai. Kết thúc bằng bảng kết quả: GCN đạt 61,3% F1, đối chứng MLP cùng thiết lập đạt 64,5%. RF all có F1 cao nhất trong thực nghiệm này."
+        }
+      ]
+    },
+    {
+      "title": "Ngày 3 / Diễn tập và dự phòng",
+      "sections": [
+        {
+          "heading": "Phiên 1 · 45 phút",
+          "text": "Chạy kịch bản bảy phút với đồng hồ. Ghi âm để nghe xem có nhầm node thành người, score thành xác suất chắc chắn, hoặc unknown thành licit không. Chỉ cần sửa ba lỗi này đã giúp phần trình bày chính xác hơn nhiều."
+        },
+        {
+          "heading": "Phiên 2 · 45 phút",
+          "text": "Nhờ một người hỏi ngắt quãng: “Vì sao dùng graph?”, “Sao RF tốt hơn?”, “Có đang chạy mô hình thật không?”, “Dữ liệu có phải trực tiếp không?”. Tập trả lời 20–30 giây rồi quay lại đúng bước đang demo."
+        },
+        {
+          "heading": "Phiên 3 · 45 phút",
+          "text": "Tắt kết nối Internet và chạy bản local. Mở PowerShell tại thư mục elliptic, chạy python -m http.server 8767 --bind 127.0.0.1 --directory site/dist, rồi mở http://127.0.0.1:8767. Bản local không cần API hay tài khoản. Không mở index.html bằng cách nhấp đôi vì trình duyệt có thể chặn tải dữ liệu."
+        },
+        {
+          "heading": "Trước buổi học",
+          "text": "Thử đúng máy, trình duyệt và màn hình sẽ trình chiếu. Mở sẵn demo, PowerPoint và PDF lời nói. Đảm bảo URL online truy cập được bằng tài khoản chủ site, hoặc dùng local. Không giả định người khác truy cập được URL riêng tư. Kiểm tra mức zoom để cả lớp đọc rõ. Chuẩn bị ảnh chụp trong thư mục qa nếu máy gặp lỗi."
+        }
+      ]
+    },
+    {
+      "title": "Câu hỏi phản biện / Dữ liệu và graph",
+      "sections": [
+        {
+          "heading": "“Có phải phát hiện rửa tiền chắc chắn không?”",
+          "text": "Không. Đây là mô hình hỗ trợ phân loại theo nhãn của bộ Elliptic. Đầu ra là điểm và cảnh báo, có cả sai dương lẫn sai âm. Nhóm không gắn nhãn pháp lý cho một người hoặc xác minh vụ việc ngoài dữ liệu."
+        },
+        {
+          "heading": "“Vì sao không dùng địa chỉ ví làm nút?”",
+          "text": "Trong Elliptic gốc mà nhóm dùng, nút là giao dịch. Có thể xây một bài toán khác với nút là ví, nhưng cần dataset và cách định nghĩa cạnh, nhãn tương ứng. Nhóm giữ đúng cấu trúc dữ liệu đang có."
+        },
+        {
+          "heading": "“Nhãn test có bị đưa vào graph không?”",
+          "text": "Graph dùng cạnh và đặc trưng. Nhãn test chỉ dùng để chấm điểm và mở đáp án trên giao diện. Code không truyền nhãn vào mô hình. Tuy vậy, graph snapshot có thể chứa thông tin từ giao dịch xuất hiện sau nút đang xét, nên nhóm chỉ tuyên bố phân loại snapshot lịch sử."
+        },
+        {
+          "heading": "“Một nút nối với illicit có phải illicit không?”",
+          "text": "Không. Quan hệ chỉ là tín hiệu có thể hữu ích. Cần mô hình học và đánh giá, còn kết luận từng trường hợp vẫn có sai. Khi bật nhãn trên hình, đó là công cụ đối chiếu, không phải một quy tắc kết tội qua liên kết."
+        },
+        {
+          "heading": "“Vì sao đối xứng hóa?”",
+          "text": "Đó là lựa chọn triển khai GCN cơ bản để tổng hợp hai phía. Nó đơn giản nhưng đánh mất hướng. Giao diện giữ hướng gốc để người xem hiểu dữ liệu. Mô hình có hướng là một thí nghiệm tiếp theo hợp lý, chưa phải kết quả đã làm."
+        }
+      ]
+    },
+    {
+      "title": "Câu hỏi phản biện / Kết quả và triển khai",
+      "sections": [
+        {
+          "heading": "“GCN kém hơn thì đề tài có thất bại không?”",
+          "text": "Bài toán là kiểm chứng thông tin quan hệ và xây dựng demo có đối chứng. GCN đạt 61,3% F1, đối chứng MLP cùng thiết lập đạt 64,5%. RF all có F1 cao nhất. Bài báo Elliptic gốc cũng ghi nhận RF mạnh hơn GCN. Cần nói rõ đầu vào, giao thức và giới hạn của từng kết quả."
+        },
+        {
+          "heading": "“Vì sao GCN kém?”",
+          "text": "Nguyên nhân có bằng chứng rõ nhất là ngân sách học. Cả ba seed cũ chọn checkpoint epoch 179, sát giới hạn 180. Ở seed 0, giữ kiến trúc và tăng ngân sách cùng patience nâng AP validation từ 74,8% lên 86,1%. Nhóm còn thử giảm trọng số lớp, chặn giá trị lớn và chuẩn hóa theo phân vị. Sau năm cấu hình thăm dò, ứng viên tốt nhất được chạy đủ ba seed. Nhóm chọn bằng AP validation trung bình và dừng ứng viên còn lại khi cận trên toán học của nó cũng không thể vượt kết quả này. Cách đối xứng hóa graph và nhiễu hàng xóm vẫn là các giả thuyết cần thí nghiệm riêng, chưa được coi là nguyên nhân đã chứng minh."
+        },
+        {
+          "heading": "“Mô hình nào thực sự chạy khi bấm?”",
+          "text": "Khi đổi lát cắt, JavaScript tính GCN và MLP từ trọng số đã học trên toàn bộ snapshot. Random Forest dùng điểm đã tính trước bằng Python. Đổi ngưỡng chỉ đổi quyết định cảnh báo, không huấn luyện lại. Đổi phạm vi graph chỉ đổi vùng hiển thị."
+        },
+        {
+          "heading": "“Có thể đưa vào vận hành ngay không?”",
+          "text": "Chưa. Cần đánh giá dữ liệu mới, tính nhân quả thời gian, ngưỡng phù hợp quy trình, chất lượng nhãn và khả năng giám sát khi phân bố thay đổi. Bài hiện tại là demo nghiên cứu trên dữ liệu lịch sử."
+        },
+        {
+          "heading": "“Có tái lập bài báo gốc không?”",
+          "text": "Không tuyên bố tái lập nguyên vẹn. Nhóm tham khảo bài toán Elliptic, dùng split có validation riêng và kiến trúc gọn. Vì thế không so sánh số của nhóm với bảng trong bài báo như thể cùng điều kiện."
+        }
+      ]
+    },
+    {
+      "title": "Tự kiểm tra cuối khóa và đáp án",
+      "sections": [
+        {
+          "heading": "Bài kiểm tra 1",
+          "text": "Một giao dịch unknown có điểm 0,98. Có được ghi TP không? Đáp án: không, vì chưa có nhãn xác nhận. Chỉ có thể nói nó được mô hình cảnh báo ở ngưỡng phù hợp."
+        },
+        {
+          "heading": "Bài kiểm tra 2",
+          "text": "Mô hình tìm đúng 30 illicit, cảnh báo nhầm 10, bỏ sót 20. Precision = 30/40 = 75%; Recall = 30/50 = 60%; F1 khoảng 66,7%. Hãy tự tính trước khi nhìn đáp án."
+        },
+        {
+          "heading": "Bài kiểm tra 3",
+          "text": "Bạn kéo ngưỡng trên test và tìm ra mức cho F1 cao hơn. Có sửa bảng báo cáo thành mức đó không? Đáp án: không. Bảng chính giữ ngưỡng chọn trên validation. Kết quả sau thao tác chỉ là khám phá, phải ghi rõ nếu trình bày."
+        },
+        {
+          "heading": "Bài kiểm tra 4",
+          "text": "Graph hiển thị 50 nút nhưng status ghi suy luận hơn 4.000 nút. Có mâu thuẫn không? Đáp án: không. Hình là mạng con để quan sát, còn GCN chạy trên toàn bộ lát cắt đã chọn."
+        },
+        {
+          "heading": "Bài kiểm tra 5",
+          "text": "GCN thắng RF ở một giao dịch thì có thể nói GCN tốt hơn không? Đáp án: không. Phải dùng toàn bộ tập test và nhiều chỉ số. Ví dụ riêng chỉ minh họa khả năng hoặc kiểu sai."
+        },
+        {
+          "heading": "Tiêu chí sẵn sàng",
+          "text": "Đạt ít nhất bốn câu tự kiểm tra và hoàn thành demo khoảng bảy phút. Giải thích được unknown, điểm chưa hiệu chỉnh, snapshot lịch sử và việc bản tối ưu dùng lại test cũ. Đọc đúng kết quả đối chứng GCN, MLP và RF."
+        }
+      ]
+    },
+    {
+      "title": "Bản cập nhật / Giải thích với thầy",
+      "sections": [
+        {
+          "heading": "Câu trả lời khoảng một phút",
+          "text": "Nhóm tăng ngân sách học, cải thiện xử lý đặc trưng và chọn cấu hình bằng validation. GCN tăng từ 36,5% lên 61,3% F1. Đối chứng MLP cùng thiết lập đạt 64,5%. RF all có F1 cao nhất. RF all đã có 72 đặc trưng tổng hợp hàng xóm, còn GCN học cách kết hợp đặc trưng theo graph. Kết quả giúp nhóm lựa chọn mô hình dựa trên bằng chứng và hiểu giá trị của thông tin quan hệ. Tập test từng được xem ở bản đầu. Bản cải tiến chọn cấu hình, checkpoint và ngưỡng bằng validation, rồi đánh giá lại test cũ. Nhóm chưa có một tập mới hoàn toàn để xác nhận độc lập."
+        },
+        {
+          "heading": "Bằng chứng cần mở khi được hỏi",
+          "text": "Mở optimization.html trên demo để xem đường học validation, đối chứng từng thay đổi và kết quả cũ/mới. Số liệu gốc nằm trong optimization/report.json. Bản 180 epoch và kết quả của nó được giữ trong optimization/baseline/."
+        },
+        {
+          "heading": "RF cũng tiếp cận thông tin graph",
+          "text": "RF all nhận 72 đặc trưng do nhà cung cấp tổng hợp từ hàng xóm. GCN nhận graph và học phép biến đổi bằng truyền tin. RF local và đối chứng MLP giúp phân biệt tác dụng của dữ liệu đầu vào với tác dụng của kiến trúc."
+        },
+        {
+          "heading": "Giới hạn cần nói đúng",
+          "text": "Tập test từng được xem ở bản đầu. Bản cải tiến chọn cấu hình, checkpoint và ngưỡng bằng validation, rồi đánh giá lại test cũ. Nhóm chưa có một tập mới hoàn toàn để xác nhận độc lập."
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Elliptic dataset",
+      "url": "https://www.kaggle.com/datasets/ellipticco/elliptic-data-set"
+    },
+    {
+      "title": "Weber et al. (2019)",
+      "url": "https://arxiv.org/abs/1908.02591"
+    },
+    {
+      "title": "Kipf & Welling: GCN",
+      "url": "https://arxiv.org/abs/1609.02907"
+    }
+  ],
+  "duration_seconds": 2280,
+  "revision": 2
+}

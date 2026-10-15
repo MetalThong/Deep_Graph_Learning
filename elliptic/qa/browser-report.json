@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "revision": 2,
+  "errors": [],
+  "checks": [
+    "initial neural inference",
+    "all five cases",
+    "exact reference labels",
+    "false positive and false negative",
+    "unknown handling",
+    "model switch",
+    "threshold counts independently recomputed",
+    "reset threshold",
+    "invalid search",
+    "hop control",
+    "node click",
+    "snapshot switch",
+    "optimization disclosure",
+    "mobile overflow",
+    "learning downloads"
+  ],
+  "first": {
+    "step": 35,
+    "id": 69756172,
+    "model": "gcn",
+    "threshold": 0.707859,
+    "revealed": false,
+    "nodes": 5507,
+    "score": 0.997197
+  }
+}

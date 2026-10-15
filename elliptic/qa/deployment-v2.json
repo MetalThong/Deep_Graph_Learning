@@ -1,0 +1,18 @@
+{
+  "id": "appgdep_6ace66dcb04c819189baecb28cdbb163",
+  "project_id": "appgprj_6acdeb81d7b48191b1e4c303d0a8c8af",
+  "title": "Elliptic Transaction Lab",
+  "version_id": "appgprj_6acdeb81d7b48191b1e4c303d0a8c8af~appgver_3f9ece0532a88191b0a02d7b9513ce4e",
+  "type": "publish",
+  "status": "succeeded",
+  "url": "https://elliptic-transaction-lab.pinkwand512.chatgpt.site",
+  "has_mcp": false,
+  "screenshot_asset_pointer": null,
+  "provider_deployment_id": "site---6acdeb81d7b48191b1e4c303d0a8c8af",
+  "failure_message": null,
+  "env_set_revision": 0,
+  "updated_at": "2026-10-13T17:14:25.915931+00:00",
+  "source_commit": "5e2801dc17d095cbf6ed6b7ce5cbf0e749e1ea00",
+  "materials_version": "V2",
+  "access": "Existing owner-private access retained"
+}

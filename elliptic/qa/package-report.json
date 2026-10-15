@@ -1,0 +1,7 @@
+{
+  "archive": "D:\\School\\PT HTTM\\DeepGraph\\elliptic\\output\\V2\\Elliptic_Code_Demo_TaiLieu.zip",
+  "files": 206,
+  "bytes": 71520715,
+  "sha256": "20415449049a96c681e376f8d926f154ac8cfd43723666a96b2ec497c0927f63",
+  "excluded": "Original raw CSV and prepared.npz; regenerate with prepare_data.py. Git metadata and node_modules excluded."
+}

@@ -1,0 +1,706 @@
+{
+  "selection": {
+    "selected_config": "quantile",
+    "finalists": [
+      "quantile",
+      "clipped"
+    ],
+    "criterion": "Mean validation AP across seeds 0,1,2; finalists based on pilot AP; mathematically dominated incomplete candidates may be pruned with AP<=1 upper bound",
+    "mean_validation_ap": {
+      "quantile": 0.9621567044602424
+    },
+    "pruned_finalists": [
+      {
+        "config": "clipped",
+        "observed_seeds": [
+          0
+        ],
+        "maximum_possible_mean_ap": 0.960244430270777,
+        "incumbent_mean_ap": 0.9621567044602424,
+        "reason": "AP <= 1. Even perfect validation AP on every missing seed cannot beat the completed incumbent mean. No test scores used."
+      }
+    ],
+    "evaluate_keys": [
+      "long_gcn_0",
+      "moderate_weight_gcn_0",
+      "paper_inspired_gcn_0",
+      "clipped_gcn_0",
+      "quantile_gcn_0",
+      "quantile_gcn_1",
+      "quantile_gcn_2",
+      "quantile_mlp_0",
+      "quantile_mlp_1",
+      "quantile_mlp_2"
+    ],
+    "config": {
+      "hidden": 64,
+      "dropout": 0.2,
+      "lr": 0.003,
+      "weight_decay": 0.0005,
+      "pos_weight": 2.3333333333333335,
+      "clip": null,
+      "transform": "quantile",
+      "epochs": 1500,
+      "patience": 150
+    },
+    "test_reuse_disclosure": "Original test was viewed before this revision. All new candidate selection uses validation only; final test results are retrospective.",
+    "selected_gcn_checkpoints_sha256": {
+      "quantile_gcn_0": "c98dc6e2a01c6899713b90cf833ae7fffda7ae6d64b86f1417b2df8737a3f5a8",
+      "quantile_gcn_1": "48236fc4ca50f8e5b04fcacaca3bdaaed1453ab2364ae3b79e77555dbda1ff38",
+      "quantile_gcn_2": "8a2b1053f871c31bfdb439083704151f1415764bf24cbaa24286bcc054275174"
+    },
+    "frozen_at_utc": "2026-10-13T16:51:48.438151+00:00"
+  },
+  "summary": [
+    {
+      "name": "GCN baseline",
+      "n": 3,
+      "precision": 0.25149842820963714,
+      "precision_std": 0.021569761694727872,
+      "recall": 0.6688211757463836,
+      "recall_std": 0.01821932728463987,
+      "f1": 0.36492249675920174,
+      "f1_std": 0.020559262664523008,
+      "ap": 0.3015267150608281,
+      "ap_std": 0.0344310460085622,
+      "roc_auc": 0.856035681177362,
+      "roc_auc_std": 0.007696812516620689
+    },
+    {
+      "name": "GCN optimized",
+      "n": 3,
+      "precision": 0.5210443618938311,
+      "precision_std": 0.011338134846331602,
+      "recall": 0.7451523545706372,
+      "recall_std": 0.0009233610341643494,
+      "f1": 0.6132132970707422,
+      "f1_std": 0.007597628230747097,
+      "ap": 0.7797105017872662,
+      "ap_std": 0.0017671250841811014,
+      "roc_auc": 0.9274510549638254,
+      "roc_auc_std": 0.0015540183500616668
+    },
+    {
+      "name": "MLP matched",
+      "n": 3,
+      "precision": 0.5708045322146965,
+      "precision_std": 0.03837730283175872,
+      "recall": 0.7433056325023083,
+      "recall_std": 0.0031986164498039905,
+      "f1": 0.6451997269103825,
+      "f1_std": 0.02294908902236829,
+      "ap": 0.7879977936784665,
+      "ap_std": 0.0007749547893913224,
+      "roc_auc": 0.9315981329628437,
+      "roc_auc_std": 0.0023193961134422266
+    },
+    {
+      "name": "rf_local",
+      "model": "rf_local",
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "precision": 0.8217980629616344,
+      "precision_std": 0.04607408850784674,
+      "recall": 0.7248384118190212,
+      "recall_std": 0.007558035800436231,
+      "f1": 0.7697077123469033,
+      "f1_std": 0.016469854263956963,
+      "ap": 0.7815977354312769,
+      "ap_std": 0.00018851076785792053,
+      "roc_auc": 0.9011959461526159,
+      "roc_auc_std": 0.0017853779694083438
+    },
+    {
+      "name": "rf_all",
+      "model": "rf_all",
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "precision": 0.8869133881938724,
+      "precision_std": 0.03807598549081767,
+      "recall": 0.7174515235457064,
+      "recall_std": 0.0060548832172687,
+      "f1": 0.7928923859721625,
+      "f1_std": 0.01138055339852953,
+      "ap": 0.7885950212100533,
+      "ap_std": 0.003767984929653149,
+      "roc_auc": 0.931043733262341,
+      "roc_auc_std": 0.004759268600205938
+    }
+  ],
+  "ablations": [
+    {
+      "key": "long_gcn_0",
+      "config_name": "long",
+      "graph": true,
+      "seed": 0,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": "ratio",
+        "clip": null,
+        "epochs": 1500,
+        "patience": 150
+      },
+      "threshold": 0.897365,
+      "best_epoch": 936,
+      "stopped_epoch": 1086,
+      "seconds": 335.08,
+      "validation": {
+        "precision": 0.8283712784588442,
+        "recall": 0.8003384094754653,
+        "f1": 0.8141135972461274,
+        "ap": 0.8608085290977093,
+        "roc_auc": 0.9648028666363234,
+        "tn": 2824,
+        "fp": 98,
+        "fn": 118,
+        "tp": 473
+      },
+      "test": {
+        "precision": 0.4362670713201821,
+        "recall": 0.530932594644506,
+        "f1": 0.4789670970428988,
+        "ap": 0.4673369427115068,
+        "roc_auc": 0.8777378347761331,
+        "tn": 14844,
+        "fp": 743,
+        "fn": 508,
+        "tp": 575
+      },
+      "test_at_half": {
+        "precision": 0.1979881115683585,
+        "recall": 0.7996306555863343,
+        "f1": 0.3173905076049111,
+        "ap": 0.4673369427115068,
+        "roc_auc": 0.8777378347761331,
+        "tn": 12079,
+        "fp": 3508,
+        "fn": 217,
+        "tp": 866
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "moderate_weight_gcn_0",
+      "config_name": "moderate_weight",
+      "graph": true,
+      "seed": 0,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "epochs": 1500,
+        "patience": 150
+      },
+      "threshold": 0.742631,
+      "best_epoch": 663,
+      "stopped_epoch": 813,
+      "seconds": 233.39,
+      "validation": {
+        "precision": 0.8269896193771626,
+        "recall": 0.8087986463620981,
+        "f1": 0.8177929854576561,
+        "ap": 0.8645600479025451,
+        "roc_auc": 0.96526757163985,
+        "tn": 2822,
+        "fp": 100,
+        "fn": 113,
+        "tp": 478
+      },
+      "test": {
+        "precision": 0.45615384615384613,
+        "recall": 0.5475530932594644,
+        "f1": 0.49769198489299205,
+        "ap": 0.49533736271985807,
+        "roc_auc": 0.8811678126781434,
+        "tn": 14880,
+        "fp": 707,
+        "fn": 490,
+        "tp": 593
+      },
+      "test_at_half": {
+        "precision": 0.27480371163454675,
+        "recall": 0.7109879963065558,
+        "f1": 0.3963963963963964,
+        "ap": 0.49533736271985807,
+        "roc_auc": 0.8811678126781434,
+        "tn": 13555,
+        "fp": 2032,
+        "fn": 313,
+        "tp": 770
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "paper_inspired_gcn_0",
+      "config_name": "paper_inspired",
+      "graph": true,
+      "seed": 0,
+      "config": {
+        "hidden": 100,
+        "dropout": 0.2,
+        "lr": 0.001,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "epochs": 1500,
+        "patience": 150
+      },
+      "threshold": 0.719321,
+      "best_epoch": 1015,
+      "stopped_epoch": 1165,
+      "seconds": 490.25,
+      "validation": {
+        "precision": 0.7875816993464052,
+        "recall": 0.8155668358714044,
+        "f1": 0.801330008312552,
+        "ap": 0.8109350192237224,
+        "roc_auc": 0.9592408833853918,
+        "tn": 2792,
+        "fp": 130,
+        "fn": 109,
+        "tp": 482
+      },
+      "test": {
+        "precision": 0.40373831775700936,
+        "recall": 0.5983379501385041,
+        "f1": 0.48214285714285715,
+        "ap": 0.47320099440301483,
+        "roc_auc": 0.8772280224286629,
+        "tn": 14630,
+        "fp": 957,
+        "fn": 435,
+        "tp": 648
+      },
+      "test_at_half": {
+        "precision": 0.25015832805573146,
+        "recall": 0.7294552169898431,
+        "f1": 0.37255364300872434,
+        "ap": 0.47320099440301483,
+        "roc_auc": 0.8772280224286629,
+        "tn": 13219,
+        "fp": 2368,
+        "fn": 293,
+        "tp": 790
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "clipped_gcn_0",
+      "config_name": "clipped",
+      "graph": true,
+      "seed": 0,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": 5.0,
+        "epochs": 1500,
+        "patience": 150
+      },
+      "threshold": 0.698034,
+      "best_epoch": 1477,
+      "stopped_epoch": 1500,
+      "seconds": 547.29,
+      "validation": {
+        "precision": 0.7935285053929122,
+        "recall": 0.871404399323181,
+        "f1": 0.8306451612903226,
+        "ap": 0.880733290812331,
+        "roc_auc": 0.9715742410397348,
+        "tn": 2788,
+        "fp": 134,
+        "fn": 76,
+        "tp": 515
+      },
+      "test": {
+        "precision": 0.3878612716763006,
+        "recall": 0.6195752539242844,
+        "f1": 0.47707074297902596,
+        "ap": 0.5145960868011887,
+        "roc_auc": 0.8822093262485649,
+        "tn": 14528,
+        "fp": 1059,
+        "fn": 412,
+        "tp": 671
+      },
+      "test_at_half": {
+        "precision": 0.26071311743539416,
+        "recall": 0.7359187442289935,
+        "f1": 0.385024154589372,
+        "ap": 0.5145960868011887,
+        "roc_auc": 0.8822093262485649,
+        "tn": 13327,
+        "fp": 2260,
+        "fn": 286,
+        "tp": 797
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "quantile_gcn_0",
+      "config_name": "quantile",
+      "graph": true,
+      "seed": 0,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "transform": "quantile",
+        "epochs": 1500,
+        "patience": 150
+      },
+      "torch_threads": 2,
+      "threshold": 0.707859,
+      "best_epoch": 811,
+      "stopped_epoch": 961,
+      "seconds": 402.63,
+      "validation": {
+        "precision": 0.9041095890410958,
+        "recall": 0.8934010152284264,
+        "f1": 0.8987234042553192,
+        "ap": 0.961978874812722,
+        "roc_auc": 0.9893685339411269,
+        "tn": 2866,
+        "fp": 56,
+        "fn": 63,
+        "tp": 528
+      },
+      "test": {
+        "precision": 0.5295663600525624,
+        "recall": 0.7442289935364728,
+        "f1": 0.618809980806142,
+        "ap": 0.7791328008444184,
+        "roc_auc": 0.9262333344648016,
+        "tn": 14871,
+        "fp": 716,
+        "fn": 277,
+        "tp": 806
+      },
+      "test_at_half": {
+        "precision": 0.38896746817538896,
+        "recall": 0.7617728531855956,
+        "f1": 0.5149812734082397,
+        "ap": 0.7791328008444184,
+        "roc_auc": 0.9262333344648016,
+        "tn": 14291,
+        "fp": 1296,
+        "fn": 258,
+        "tp": 825
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "quantile_gcn_1",
+      "config_name": "quantile",
+      "graph": true,
+      "seed": 1,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "transform": "quantile",
+        "epochs": 1500,
+        "patience": 150
+      },
+      "torch_threads": 2,
+      "threshold": 0.729762,
+      "best_epoch": 529,
+      "stopped_epoch": 679,
+      "seconds": 276.48,
+      "validation": {
+        "precision": 0.9017241379310345,
+        "recall": 0.8849407783417935,
+        "f1": 0.8932536293766012,
+        "ap": 0.9631760658229095,
+        "roc_auc": 0.9899751115002472,
+        "tn": 2865,
+        "fp": 57,
+        "fn": 68,
+        "tp": 523
+      },
+      "test": {
+        "precision": 0.525390625,
+        "recall": 0.7451523545706371,
+        "f1": 0.6162657502863689,
+        "ap": 0.7816941759305265,
+        "roc_auc": 0.9292013356538504,
+        "tn": 14858,
+        "fp": 729,
+        "fn": 276,
+        "tp": 807
+      },
+      "test_at_half": {
+        "precision": 0.3743820224719101,
+        "recall": 0.7691597414589104,
+        "f1": 0.5036275695284159,
+        "ap": 0.7816941759305265,
+        "roc_auc": 0.9292013356538504,
+        "tn": 14195,
+        "fp": 1392,
+        "fn": 250,
+        "tp": 833
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "quantile_gcn_2",
+      "config_name": "quantile",
+      "graph": true,
+      "seed": 2,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "transform": "quantile",
+        "epochs": 1500,
+        "patience": 150
+      },
+      "torch_threads": 2,
+      "threshold": 0.740955,
+      "best_epoch": 674,
+      "stopped_epoch": 824,
+      "seconds": 355.22,
+      "validation": {
+        "precision": 0.8977853492333902,
+        "recall": 0.8917089678510999,
+        "f1": 0.8947368421052632,
+        "ap": 0.9613151727450955,
+        "roc_auc": 0.989485216879707,
+        "tn": 2862,
+        "fp": 60,
+        "fn": 64,
+        "tp": 527
+      },
+      "test": {
+        "precision": 0.5081761006289308,
+        "recall": 0.7460757156048015,
+        "f1": 0.6045641601197157,
+        "ap": 0.778304528586854,
+        "roc_auc": 0.926918494772824,
+        "tn": 14805,
+        "fp": 782,
+        "fn": 275,
+        "tp": 808
+      },
+      "test_at_half": {
+        "precision": 0.34206219312602293,
+        "recall": 0.7719298245614035,
+        "f1": 0.47405727246952084,
+        "ap": 0.778304528586854,
+        "roc_auc": 0.926918494772824,
+        "tn": 13979,
+        "fp": 1608,
+        "fn": 247,
+        "tp": 836
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "quantile_mlp_0",
+      "config_name": "quantile",
+      "graph": false,
+      "seed": 0,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "transform": "quantile",
+        "epochs": 1500,
+        "patience": 150
+      },
+      "torch_threads": 2,
+      "threshold": 0.705189,
+      "best_epoch": 1220,
+      "stopped_epoch": 1370,
+      "seconds": 466.82,
+      "validation": {
+        "precision": 0.9215686274509803,
+        "recall": 0.8747884940778342,
+        "f1": 0.8975694444444444,
+        "ap": 0.9640524775949402,
+        "roc_auc": 0.9906268566484954,
+        "tn": 2878,
+        "fp": 44,
+        "fn": 74,
+        "tp": 517
+      },
+      "test": {
+        "precision": 0.614735226400614,
+        "recall": 0.739612188365651,
+        "f1": 0.6714165968147527,
+        "ap": 0.7873340796344243,
+        "roc_auc": 0.9304947638196259,
+        "tn": 15085,
+        "fp": 502,
+        "fn": 282,
+        "tp": 801
+      },
+      "test_at_half": {
+        "precision": 0.44199785177228784,
+        "recall": 0.7599261311172668,
+        "f1": 0.5589134125636672,
+        "ap": 0.7873340796344243,
+        "roc_auc": 0.9304947638196259,
+        "tn": 14548,
+        "fp": 1039,
+        "fn": 260,
+        "tp": 823
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "quantile_mlp_1",
+      "config_name": "quantile",
+      "graph": false,
+      "seed": 1,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "transform": "quantile",
+        "epochs": 1500,
+        "patience": 150
+      },
+      "torch_threads": 2,
+      "threshold": 0.600631,
+      "best_epoch": 756,
+      "stopped_epoch": 906,
+      "seconds": 318.15,
+      "validation": {
+        "precision": 0.9024793388429752,
+        "recall": 0.9238578680203046,
+        "f1": 0.9130434782608695,
+        "ap": 0.9662919833232548,
+        "roc_auc": 0.9915443956866111,
+        "tn": 2863,
+        "fp": 59,
+        "fn": 45,
+        "tp": 546
+      },
+      "test": {
+        "precision": 0.543800539083558,
+        "recall": 0.7451523545706371,
+        "f1": 0.6287495130502532,
+        "ap": 0.7878098741365621,
+        "roc_auc": 0.9300364006963922,
+        "tn": 14910,
+        "fp": 677,
+        "fn": 276,
+        "tp": 807
+      },
+      "test_at_half": {
+        "precision": 0.4703852788959172,
+        "recall": 0.7553093259464451,
+        "f1": 0.5797306874557052,
+        "ap": 0.7878098741365621,
+        "roc_auc": 0.9300364006963922,
+        "tn": 14666,
+        "fp": 921,
+        "fn": 265,
+        "tp": 818
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    },
+    {
+      "key": "quantile_mlp_2",
+      "config_name": "quantile",
+      "graph": false,
+      "seed": 2,
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "transform": "quantile",
+        "epochs": 1500,
+        "patience": 150
+      },
+      "torch_threads": 2,
+      "threshold": 0.617271,
+      "best_epoch": 1172,
+      "stopped_epoch": 1322,
+      "seconds": 352.66,
+      "validation": {
+        "precision": 0.908485856905158,
+        "recall": 0.9238578680203046,
+        "f1": 0.9161073825503355,
+        "ap": 0.9683803469231889,
+        "roc_auc": 0.991449138399284,
+        "tn": 2867,
+        "fp": 55,
+        "fn": 45,
+        "tp": 546
+      },
+      "test": {
+        "precision": 0.5538778311599176,
+        "recall": 0.7451523545706371,
+        "f1": 0.6354330708661418,
+        "ap": 0.7888494272644133,
+        "roc_auc": 0.9342632343725129,
+        "tn": 14937,
+        "fp": 650,
+        "fn": 276,
+        "tp": 807
+      },
+      "test_at_half": {
+        "precision": 0.4547975596228508,
+        "recall": 0.7571560480147738,
+        "f1": 0.5682605682605683,
+        "ap": 0.7888494272644133,
+        "roc_auc": 0.9342632343725129,
+        "tn": 14604,
+        "fp": 983,
+        "fn": 263,
+        "tp": 820
+      },
+      "test_note": "Previously inspected test, reused for retrospective reevaluation; selection used validation only."
+    }
+  ],
+  "baseline_prefix_max_ap_error": 0.0,
+  "verified_keys": [
+    "long_gcn_0",
+    "moderate_weight_gcn_0",
+    "paper_inspired_gcn_0",
+    "clipped_gcn_0",
+    "quantile_gcn_0",
+    "quantile_gcn_1",
+    "quantile_gcn_2",
+    "quantile_mlp_0",
+    "quantile_mlp_1",
+    "quantile_mlp_2"
+  ],
+  "test_reuse_disclosure": "The original test had already been viewed. Candidate/epoch/threshold selection used validation only. These are retrospective test results, not a fresh holdout."
+}

@@ -1,0 +1,541 @@
+
+--- PAGE 1 ---
+Lecture 04
+Introduction to Convolutional Neural Networks
+From Mathematical Convolution to NumPy, PyTorch and TensorFlow
+Lecturer: Dinh Que Tran
+Intelligent System Development
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 1 / 36
+
+--- PAGE 2 ---
+Lecture 04: Where Are We?
+In the previous lecture we learned:
+Deep Learning= Composition of learned functions
+For example:
+X→H1→H2→ˆy.
+We implemented a dense neural network from scratch.
+Today we ask:
+Can we design a layer that discovers local patterns?
+Convolution
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 2 / 36
+
+--- PAGE 3 ---
+From Dense Networks to CNN
+A dense layer connects every input feature to every neuron.
+H =σ(XW + b).
+This is powerful, but it ignores local structure.
+For images:
+pixel at (i, j)
+is naturally related to nearby pixels:
+(i−1, j), (i +1, j), (i, j−1), (i, j +1).
+For text:
+wordi
+is related to nearby words.
+Therefore:
+CNN = learned local pattern detector
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 3 / 36
+
+--- PAGE 4 ---
+The Key Idea of Convolution
+Suppose we have a 1D signal:
+x1, x2, x3, x4, x5, x6.
+Consider a kernel:
+w1, w2, w3.
+The kernel slides across the input.
+zi = w1xi + w2xi+1 + w3xi+2
+for each valid position.
+Thus:
+[x1, x2, x3]→z1
+[x2, x3, x4]→z2
+[x3, x4, x5]→z3.
+The same weights are reused.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 4 / 36
+
+--- PAGE 5 ---
+Convolution as a Function
+A convolution layer is another parameterized function.
+For one-dimensional input:
+Z = Conv1D(X ; W, b)
+Then normally:
+H = ReLU(Z ).
+Therefore:
+f (X ) = ReLU (Conv1D( X ; W, b))
+This fits directly into our previous idea:
+ˆy = f3(f2(f1(X )))
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 5 / 36
+
+--- PAGE 6 ---
+Why Does Convolution Help?
+A convolution has two important properties.
+1 Local connectivity
+The kernel sees only a small neighborhood.
+2 Weight sharing
+The same kernel is reused at different positions.
+Therefore:
+CNN = Locality +Weight Sharing+Nonlinearity
+This makes CNNs particularly useful for:
+images
+audio
+time series
+sequences
+text
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 6 / 36
+
+--- PAGE 7 ---
+A Simple 1D CNN
+Consider:
+X∈R8.
+This is convenient for our diabetes dataset.
+We can regard the eight features as a short 1D sequence:
+[x1, x2,..., x8].
+Then:
+8→Conv→ReLU→Pool→Conv→ReLU→Dense→Prediction
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 7 / 36
+
+--- PAGE 8 ---
+Important Modeling Warning
+Diabetes and house-price datasets aretabular.
+Their columns do not necessarily possess the spatial locality of pixels.
+For example:
+Glucose
+being next to
+BloodPressure
+in the CSV file does not mean that these variables have a spatial relationship.
+Therefore, using a 1D CNN on tabular data is:
+a teaching experiment
+rather than a claim that CNN is the optimal model.
+Comments/text are much more natural for 1D convolution because nearby tokens can form
+local linguistic patterns.Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 8 / 36
+
+--- PAGE 9 ---
+Three Datasets
+Exercise 04 will use three different types of data.
+Dataset Data Type CNN Interpretation
+Diabetes Tabular 1D feature sequence
+House Price Tabular 1D feature sequence
+Comments Text 1D token sequence
+The goal is not merely accuracy.
+The goal is to understand:
+How the same Deep Learning idea adapts to different data
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 9 / 36
+
+--- PAGE 10 ---
+CNN Architecture for Diabetes
+A simple teaching architecture:
+8→16→16→8→1.
+More explicitly:
+Input→Conv1D→ReLU→Conv1D→ReLU→Pooling→Dense→Sigmoid
+The first convolution learns local combinations of patient features.
+The second convolution learns combinations of those local patterns.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 10 / 36
+
+--- PAGE 11 ---
+CNN Architecture for Comments
+For text:
+tokens→embedding→Conv1D→ReLU→Pooling→Dense→classification.
+For example:
+[this,product,is,very,good]
+may contain local patterns such as:
+[very,good]
+or:
+[not,good].
+The convolution can learn such local patterns.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 11 / 36
+
+--- PAGE 12 ---
+Convolution Kernel
+Suppose:
+X = [2,1,3,4,2].
+A kernel is:
+W = [0.5,−1,0.5].
+At the first position:
+z1 = 2(0.5) +1(−1) +3(0.5).
+Therefore:
+z1 = 1.
+The kernel then moves:
+[2,1,3]→[1,3,4]→[3,4,2].
+The same kernel is reused.
+Weight sharing
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 12 / 36
+
+--- PAGE 13 ---
+Convolution + ReLU
+After convolution:
+Z = Conv(X, W ).
+Then:
+H = ReLU(Z ).
+Therefore:
+H = ReLU (Conv(X, W ) + b)
+This is directly analogous to:
+H = ReLU(XW + b)
+in a dense layer.
+The major difference is the structured local operation.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 13 / 36
+
+--- PAGE 14 ---
+Pooling
+A common operation is max pooling.
+For example:
+[1,5,2,4]
+with pool size 2 gives:
+[5,4].
+Mathematically:
+pi = max( xi, xi+1)
+Pooling reduces the representation size.
+It can also make the representation less sensitive to small positional changes.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 14 / 36
+
+--- PAGE 15 ---
+A 3-Layer CNN
+For Exercise 04, students will implement a small network.
+Conv1→ReLU→Conv2→ReLU→Dense
+This is already a composition:
+f (X ) = f3(f2(f1(X ))).
+The trainable functions are:
+f1 = Conv1D
+f2 = Conv1D
+f3 = Dense.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 15 / 36
+
+--- PAGE 16 ---
+A 5-Layer CNN
+Students may extend the architecture to:
+Conv1→ReLU→Conv2→ReLU→Pool→Conv3→ReLU→Dense→Output
+The exact definition of “layer” should be stated explicitly in the report.
+For this course:
+trainable convolution/dense transformations count as layers
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 16 / 36
+
+--- PAGE 17 ---
+CNN From Scratch
+Before using PyTorch or TensorFlow, students implement theconvolution operation
+manually.
+Mathematical Definition
+For input x and kernel k of size m:
+zi =
+m−1∑
+j=0
+kj xi+j + b
+The kernel moves across the input and produces one value at each position.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 17 / 36
+
+--- PAGE 18 ---
+CNN From Scratch: Numerical Example
+Consider
+x = [2, 1, 3, 4, 2]
+and kernel
+k = [0.5,−1, 0.5], b = 0.
+The kernel size is 3.
+[2, 1, 3] [4, 2]
+z1 = (2)(0.5) + (1)(−1) + (3)(0.5)
+z1 = 1
+Move the kernel one position:
+2, [1, 3, 4], 2
+z2 = (1)(0.5) + (3)(−1) + (4)(0.5) =−0.5
+Therefore, continuing the sliding operation gives
+Conv1D(x, k) = [1,−0.5,−1.5]
+Key Idea
+A convolution layer is a collection oflocal weighted sums with shared parameters.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 18 / 36
+
+--- PAGE 19 ---
+From Convolution to a CNN Layer
+The convolution operation alone is not yet a complete neural network layer.
+z = Conv1D(x ; k, b)
+Apply a nonlinear activation:
+h = ReLU(z)
+where
+ReLU(z) = max(0, z).
+For the previous example:
+z = [1,−0.5,−1.5]
+therefore
+h = ReLU(z) = [ 1, 0, 0].
+x
+Input
+Convolution
+z = Conv1D(x )
+ReLU
+h = max(0, z)
+Important
+The kernel values arelearnable parameters. Training changes the kernel so that the
+convolution produces useful representations.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 19 / 36
+
+--- PAGE 20 ---
+Why Implement CNN From Scratch?
+The Main Reason
+A framework can make CNN look like:
+model = Conv1D(...)
+But students should understand what
+happens inside that function.
+What is a convolution?
+How does a kernel slide over the input?
+Where do the parameters come from?
+How is the loss computed?
+How are gradients obtained?
+How are weights updated?
+From Mathematics to Intelligence
+X Convolution−−−−−−−→Z ReLU−−−→H Dense−−−→ˆy
+Training:
+θ←θ−η∇θL
+where
+θ={K, b, W, c}.
+Mathematics NumPy
+From Scratch PyTorch TensorFlow
+Pedagogical Principle
+Do not learn the framework first.
+Understand the function first.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 20 / 36
+
+--- PAGE 21 ---
+From Scratch to PyTorch
+The manually implemented operation
+Conv1D(X, W, b)
+becomes conceptually:
+nn.Conv1d(
+in_channels,
+out_channels,
+kernel_size
+)
+The activation:
+nn.ReLU()
+and pooling:
+nn.MaxPool1d(...)
+What PyTorch Adds
+efficient tensor computation;
+automatic differentiation;
+parameter management;
+optimized CPU/GPU execution;
+ready-to-use optimization algorithms.
+Key Idea
+PyTorch does not change the mathematics.
+It automates and accelerates the computation of the mathematics.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 21 / 36
+
+--- PAGE 22 ---
+From Scratch to TensorFlow
+The same conceptual operation can be expressed using TensorFlow/Keras:
+tf.keras.layers.Conv1D(
+filters=16,
+kernel_size=3,
+activation="relu"
+)
+Then pooling:
+tf.keras.layers.MaxPooling1D(...)
+and the output layer for binary classification:
+tf.keras.layers.Dense(
+1,
+activation="sigmoid"
+)
+Different Syntax =⇒ Same Mathematical Idea
+What Remains the Same?
+Convolution + Nonlinearity + Pooling + Dense Output
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 22 / 36
+
+--- PAGE 23 ---
+The Three Implementations
+MATHEMATICS
+⇓
+NUMPY FROM SCRATCH
+⇓
+PYTORCH
+⇓
+TENSORFLOW
+Students should ask:
+What stays the same?
+and:
+What changes?
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 23 / 36
+
+--- PAGE 24 ---
+What Stays the Same?
+Across all three implementations:
+Input data
+Train/test split
+Preprocessing
+Model idea
+Loss function
+Evaluation metrics
+Basic optimization objective
+Therefore:
+Fair comparison requires controlled experiments
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 24 / 36
+
+--- PAGE 25 ---
+What Changes?
+The implementation layer changes.
+NumPy PyTorch TensorFlow
+Manual convolution Conv1d Conv1D
+Manual ReLU ReLU ReLU
+Manual gradients Autograd GradientTape
+Manual update Optimizer Optimizer
+Manual training loop Training loop fit() / custom loop
+This is an important software-engineering lesson:
+Same mathematical model̸= same implementation
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 25 / 36
+
+--- PAGE 26 ---
+Evaluation
+Students will evaluate:
+Accuracy
+Precision
+Recall
+F1
+and training behavior:
+Loss vs. Epoch
+For regression:
+MAE, RMSE, R 2
+are appropriate.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 26 / 36
+
+--- PAGE 27 ---
+Classification vs. Regression
+The three datasets may have different tasks.
+Dataset Task Output
+Diabetes Classification P(y = 1)
+Comments Classification class probability
+House Price Regression predicted price
+Therefore, house-price prediction should use:
+Linear output neuron
+rather than sigmoid.
+The loss may be:
+MSE
+or:
+MAE.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 27 / 36
+
+--- PAGE 28 ---
+A Very Important Lesson
+The architecture should follow the task.
+For binary classification:
+Output: Sigmoid
+For multiclass classification:
+Output: Softmax
+For regression:
+Output: Linear
+Thus:
+Neural network architecture= Data +Task +Representation
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 28 / 36
+
+--- PAGE 29 ---
+Lecture 04 Summary
+Today we moved from:
+Dense Layer
+to:
+Convolution
+and then:
+CNN.
+The key concepts are:
+1 Local connectivity
+2 Weight sharing
+3 Learned filters
+4 ReLU
+5 Pooling
+6 Representation hierarchy
+7 Backpropagation
+8 Gradient-based learning
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 29 / 36
+
+--- PAGE 30 ---
+The Central Equation
+A CNN is still a composition of functions:
+ˆy = fL◦fL−1◦···◦f2◦f1(X )
+The difference is that some of these functions are convolutional.
+Therefore:
+CNN is not a completely different idea from Deep Learning
+It is a particular architecture for learning useful representations.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 30 / 36
+
+--- PAGE 31 ---
+From Lecture 03 to Lecture 04
+Lecture 03
+Function Composition
+⇓
+Lecture 04
+Convolutional Function Composition
+⇓
+Next
+More Complex Architectures
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 31 / 36
+
+--- PAGE 32 ---
+Exercise 04
+Build, Run, Evaluate and Compare CNNs
+Students will implement CNN models in:
+NumPy from scratch
+PyTorch
+TensorFlow
+using:
+Diabetes +House Price+Comments
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 32 / 36
+
+--- PAGE 33 ---
+Final Message
+Do not learn PyTorch first.
+Understand the function first.
+Mathematics→NumPy→PyTorch→TensorFlow
+This sequence makes Deep Learning understandable rather than magical.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 33 / 36
+
+--- PAGE 34 ---
+“‘latex
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 34 / 36
+
+--- PAGE 35 ---
+CNN Structure: Three Implementations
+X→Conv1D→ReLU→Conv1D→ReLU→Pool→Flatten→Dense→ˆy
+Operation NumPy PyTorch TensorFlow/Keras
+Convolution conv1d() nn.Conv1d() layers.Conv1D()
+Activation relu() nn.ReLU() activation="relu"
+Pooling maxpool1d() nn.MaxPool1d() MaxPooling1D()
+Flatten x.reshape() torch.flatten() Flatten()
+Dense dense() nn.Linear() Dense()
+Gradient Manual Autograd Automatic
+Parameter update Manual optimizer.step() model.fit()
+Central Idea
+Same Architecture → Different Implementation
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 34 / 36
+
+--- PAGE 36 ---
+CNN Structure: What Changes?
+NumPy
+We implement
+z = Conv(x )
+h = ReLU(z)
+p = Pool(h)
+ˆy = f (p)
+Students see the
+mechanism.
+PyTorch
+Framework provides
+z = Conv1d(x )
+h = ReLU(z)
+p = Pool(h)
+Students focus onmodel
+design.
+TensorFlow
+Framework provides
+z = Conv1D(x )
+h = ReLU(z)
+p = Pool(h)
+Students focus onmodel
+design.
+Mathematics is stable; implementation is flexible.Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 35 / 36
+
+--- PAGE 37 ---
+CNN Structure: What Does Not Change?
+Regardless of implementation, the learning system contains:
+X
+Input
+Convolution
+θ1
+ReLU Convolution
+θ2
+Pooling Dense
+θ3
+ˆy
+ˆy = fθ3 (Pool [ReLU (fθ2 (ReLU (fθ1(X ))))])
+Important
+PyTorch and TensorFlow change theimplementation, not the fundamental learning
+architecture.
+Lecturer: Dinh Que Tran ( Intelligent System Development ) CNN: From Scratch to Frameworks 36 / 36

@@ -1,0 +1,1000 @@
+
+--- PAGE 1 ---
+INTELLIGENT SYSTEM DEVELOPMENT
+Dinh Que Tran, Ph.D., Assoc. Prof.
+Posts and Telecommunications Institute of Technology (PTIT)
+Mail: quedt@ptit.edu.vn, tdque@yahoo.com
+
+--- PAGE 2 ---
+Lecture 01
+From Intelligence to Intelligent Systems
+Understand intelligence, representations, learning,
+reasoning, decision, action, and system development.
+Course theme
+Understand→Represent→Learn→Decide→Act→Adapt
+
+--- PAGE 3 ---
+Intelligence System Development: A General View
+Dimension Key Components Central Questions
+Intelligence
+▶ Perception
+▶ Representation
+▶ Learning
+▶ Reasoning
+▶ Decision
+▶ Action/Reflection
+▶ What does the system
+know?
+▶ How does it learn?
+▶ How does it reason?
+▶ How does it decide?
+System
+▶ Environment
+▶ Data
+▶ Internal State
+▶ Model
+▶ Interface
+▶ Memory/Feedback
+▶ What does the system
+observe?
+▶ What does it
+represent?
+▶ How does it interact?
+▶ How does it adapt?
+
+--- PAGE 4 ---
+Intelligence System Development: A General View (cont)
+Dimension Key Components Central Questions
+Development
+▶ Understand
+▶ Represent
+▶ Implement
+▶ Experiment
+▶ Evaluate
+▶ Deploy
+▶ Iterate
+▶ How do we build it?
+▶ How do we validate it?
+▶ How do we deploy it?
+▶ How do we improve it?
+Intelligence + System + Development =⇒ Intelligent System
+
+--- PAGE 5 ---
+Why Do We Study Intelligent System Development?
+An intelligent system is more than a trained machine-learning model.
+Environment Perception Representation Internal
+State
+Learning
+/Reasoning Decision Action
+interaction / feedback
+▶ AI methods provide mechanisms for computation and learning.
+▶ An intelligent system connects those mechanisms to an environment.
+▶ Development therefore includes data, representation, models, experiments,
+interfaces, deployment, feedback, and evaluation.
+ML model̸= complete intelligent system
+
+--- PAGE 6 ---
+What Is Intelligence?
+There is no single universally accepted engineering definition.
+For this course, we use a functional view:
+Observe Represent Learn Reason Decide Act
+Intelligence can be viewed through capabilities such as:
+▶ acquiring information from the environment;
+▶ forming useful internal representations;
+▶ learning from data or experience;
+▶ reasoning under uncertainty or constraints;
+▶ making goal-directed decisions;
+▶ acting and adapting from feedback.
+
+--- PAGE 7 ---
+Intelligence Is Not One Algorithm
+Different forms of intelligent behavior may require different mechanisms.
+Capability Possible mechanism Example
+Perception Computer vision Image understanding
+Representation Features / embeddings / graphs Semantic state
+Learning ML / deep learning Prediction
+Reasoning Logic / search / inference Planning
+Decision Optimization / policy Action selection
+Interaction Dialogue / agents Conversational system
+Adaptation Feedback / continual learning Changing environment
+Intelligence emerges from coordinated capabilities.
+
+--- PAGE 8 ---
+What Is an Intelligent System?
+A useful engineering abstraction is:
+Intel Syst = (Environment,State,Representation,Knowledge,Learning,Decision,Action)
+Environment Observation Internal State Decision Actionobserve update reason act
+changes
+The key distinction is between:
+external state and internal / cognitive state .
+The system does not directly possess the whole environment. It operates through
+observations and representations.
+
+--- PAGE 9 ---
+Model, Application, and Intelligent System
+Model
+fθ(x )
+learned mapping
+Application
+model +
+interface
++ data pro-
+cessing
+Intelligent
+System
+application
++ state
++ interaction
++ feedback
+▶ A model computes a learned function.
+▶ An application makes the model usable.
+▶ An intelligent systemoperates in an environment and can use state, knowledge,
+interaction, and feedback.
+Development must address the whole system, not only the model.
+
+--- PAGE 10 ---
+A Brief History of Artificial Intelligence
+The field has evolved through several major paradigms.
+Symbolic→Expert Systems→Statistical ML→Deep Learning→Foundation Models→Interactive/Agentic AI
+The important question is not only:
+Which algorithm is newer?
+but:
+What changed in representation, learning, and system architecture?
+
+--- PAGE 11 ---
+AI Development: A Conceptual Timeline
+Period Paradigm Main idea Typical representa-
+tion
+1950s–60s Symbolic AI Logic, search, problem solv-
+ing
+Symbols / rules
+1970s–80s Expert systems Encode domain expertise Rules / knowledge
+base
+1980s–
+2000s
+Statistical ML Learn patterns from exam-
+ples
+Feature vectors
+
+--- PAGE 12 ---
+AI Development: A Conceptual Timeline (cont)
+Period Paradigm Main idea Typical representa-
+tion
+2000s–
+2010s
+Deep learning Learn hierarchical represen-
+tations
+Tensors
+2010s Large-scale deep
+learning
+Data + compute + learned
+representations
+High-dimensional ten-
+sors
+Late
+2010s–
+2020s
+Transformers Attention-based sequence
+modeling
+Embeddings / tokens
+2020s Foundation / gener-
+ative AI
+General-purpose learned
+representations
+Multimodal embed-
+dings
+Current
+direction
+Interactive / agentic
+systems
+Perceive, reason, use tools,
+act
+State + memory +
+tools
+
+--- PAGE 13 ---
+Era 1: Symbolic AI
+A central idea was to represent knowledge explicitly.
+Knowledge→Symbols→Rules→Inference
+Example:
+IF fever AND cough
+THEN possible_infection.
+▶ Knowledge is explicit.
+▶ Reasoning can be inspected.
+▶ Search and logic are important.
+▶ Systems can be brittle when knowledge is incomplete.
+Strength: explicit reasoning Limitation: knowledge acquisition
+
+--- PAGE 14 ---
+Era 2: Expert Systems
+Expert systems made symbolic AI practical in many domains.
+User / Data
+Knowledge Base
+Inference
+Engine Decision / Advice
+evidence
+knowledge
+inference
+The central development problem became:
+How do we acquire, represent, maintain, and use knowledge?
+This question remains important today in knowledge graphs, retrieval systems, and AI
+agents.
+
+--- PAGE 15 ---
+Era 3: Statistical Machine Learning
+A major shift:
+Program the rules −→Learn patterns from examples
+GivenD ={(xi,yi )}N
+i=1, learn ˆy = fθ(x ).
+Typical methods include:
+▶ Logistic Regression
+▶ k-Nearest Neighbors
+▶ Support Vector Machines
+▶ Decision Trees
+▶ Random Forests
+Representation becomes a central engineering problem.
+
+--- PAGE 16 ---
+Era 4: Deep Learning
+Traditional ML often uses:
+Data→Human-designed features→ML model.
+Deep learning moves toward:
+Data→Learned representation→Prediction
+A neural network can learn multiple levels of representation:
+x→h1→h2→···→hL→y.
+Representation learning becomes part of the model.
+
+--- PAGE 17 ---
+Why Did Deep Learning Become So Powerful?
+Three reinforcing factors became particularly important:
+Data
+large datasets
+Compute
+GPUs / accelerators
+Models
+deeper architectures
+Modern AI
+learning capability
+The development pattern is important:
+More data+more compute+better architectures⇒new capabilities
+This is one reason intelligent-system development is also a systems-engineering
+problem.
+
+--- PAGE 18 ---
+Era 5: Transformers and Attention
+A major architectural development was the Transformer, introduced in 2017.
+Its key mechanism is attention.
+Conceptually:
+tokens→embeddings→attention→contextual representations.
+A simplified attention expression is:
+Attention(Q,K,V ) = softmax
+(
+QK T
+√dk
+)
+V.
+The important course-level idea is:
+Context can be represented and learned at scale.
+
+--- PAGE 19 ---
+Era 6: Foundation and Generative AI
+Large pretrained models can provide reusable capabilities.
+Large-scale
+data Pretraining Foundation
+model
+Task /
+Application
+Examples of capabilities include:
+▶ language understanding and generation;
+▶ image and multimodal understanding;
+▶ code generation;
+▶ retrieval and question answering;
+▶ adaptation to many downstream tasks.
+One model can support many applications.
+
+--- PAGE 20 ---
+Current Direction: Interactive and Agentic Systems
+A modern intelligent system increasingly does more than generate an output.
+Observe State Reason Plan Act
+Memory / Knowledge
+new observation
+knowledge
+The conceptual structure is now:
+Observe→State→Reason→Plan→Act→Observe
+with
+Memory / Knowledge→Reasoning
+This is a nice **agentic intelligence** diagram: the system maintains a state, reasons
+using memory/knowledge, plans, acts, and then learns from the resulting new
+observations.
+
+--- PAGE 21 ---
+Current Direction: Interactive and Agentic Systems (cont)
+This introduces important system concepts:
+state + memory + tools + interaction + feedback
+
+--- PAGE 22 ---
+What Really Changed Through AI History?
+The evolution can be summarized along four dimensions.
+Knowledge Representation Learning
+Symbolic AI explicit symbols limited / programmed
+Expert systems explicit rules knowledge engineering
+Statistical ML data-driven features statistical learning
+Deep learning mostly learned tensors representation learning
+Foundation models pretrained embeddings large-scale pretraining
+Interactive AI external + learned state + tools continual interaction
+The history of AI is also a history of representations.
+
+--- PAGE 23 ---
+Evolution of Representation
+Symbols Features Vectors Tensors Graphs Embeddings Multimodal
+Different information structures naturally suggest different representations:
+▶ records→feature vectors;
+▶ images→tensors;
+▶ relations→graphs;
+▶ language→tokens and embeddings;
+▶ multiple modalities→integrated representations.
+
+--- PAGE 24 ---
+Representation Is Not a Neutral Choice
+Consider the same real-world object.
+Real-world
+Object Feature Vector
+Graph
+Embedding
+Each representation preserves some information and discards or transforms other
+information.
+Therefore:
+Representation→available information→possible learning
+This principle will reappear throughout the course.
+
+--- PAGE 25 ---
+What Does “Development” Mean?
+Development is not simply writing code.
+Problem Data Representation Model Experiment Deployment Feedback
+iterate
+
+--- PAGE 26 ---
+What Does “Development” Mean?
+Development is not simply writing code. A development process must answer:
+▶ What problem are we solving?
+▶ What information is available?
+▶ How should it be represented?
+▶ What intelligence mechanism is appropriate?
+▶ How do we evaluate it?
+▶ How does it become a reliable application?
+
+--- PAGE 27 ---
+The Course Development Loop
+We will repeatedly use:
+Understand→Represent→Implement→Experiment→Evaluate→Apply
+Understand Represent Implement Experiment Evaluate Apply
+iterate
+A good intelligent system is developed through evidence and iteration.
+
+--- PAGE 28 ---
+From Data to Intelligent Behavior
+A useful abstraction for the whole course is:
+Data→Representation→Learning→Knowledge→Decision→Action
+But the process is not necessarily one-way.
+Action→Feedback→New Data→Updated System.
+This creates a development loop:
+Observe→Learn→Act→Observe again
+
+--- PAGE 29 ---
+External State and Internal State
+An intelligent system interacts with an environment.
+External State
+World / Environment
+Observation
+What the system receives
+Internal State
+Representation / Memory
+observe update
+decision / action
+Important distinction:
+internal state̸= external state
+The internal state is the system’s computational representation of what it currently
+knows, remembers, or believes.
+
+--- PAGE 30 ---
+Adaptation: Intelligence Under Change
+An intelligent system may operate in a changing environment.
+Et→ot→st→at→Et+1.
+Here:
+▶ Et: environment at timet;
+▶ ot: observation;
+▶ st: internal state;
+▶ at: action.
+The system may update its internal state:
+st+1 = F (st,ot,at).
+Intelligence becomes dynamic when state and feedback matter.
+
+--- PAGE 31 ---
+The Central Question of This Course
+Instead of asking only:
+How do I train a model?
+we ask:
+How do I develop a system that can use intelligence?
+That requires understanding:
+Data Representation Learning Reasoning Decision Action System
+
+--- PAGE 32 ---
+Course Roadmap
+Stage Main representation Main capability
+A1 Feature vectors Traditional ML + deployment
+A2 Data / improved representations Preprocessing + evaluation
+A3 Learned representations Neural networks + deep learning
+A4 Tensors + graphs CNN + relational knowledge
+A5 Embeddings + context RAG + conversational systems
+Project Integrated representations Complete intelligent system
+Each assignment adds a new capability.
+
+--- PAGE 33 ---
+Assignment 01: Where We Begin
+We begin with a relatively simple setting:
+Structured data→Feature vector→Traditional ML→Application
+Why start here?
+▶ The mathematical formulation is transparent.
+▶ Students can inspect the representation directly.
+▶ Several classical algorithms can be compared.
+▶ Experiments can be controlled and explained.
+▶ Deployment introduces the system perspective.
+We start simple so that the development principles are visible.
+
+--- PAGE 34 ---
+The Philosophy of the Course
+Understand Represent Implement Experiment Apply
+We do NOT want students to:
+▶ only call fit();
+▶ copy a notebook;
+▶ report one accuracy value;
+▶ choose a model without evidence.
+We want students to:
+▶ understand the representation;
+▶ understand the algorithm;
+▶ design experiments;
+▶ explain the results;
+▶ build a usable application.
+
+--- PAGE 35 ---
+The Central Representation Question
+What does a learning algorithm actually receive?
+Real world
+patient, image,
+text, network
+Computational
+representation
+Learning
+algorithm
+representation input
+Central Principle
+The representation determines what information is available to the learner.
+
+--- PAGE 36 ---
+Representation Is the Backbone
+Information Representation Typical models Later topic
+Structured
+records
+Feature vector x ∈
+Rd
+LR, KNN, SVM,
+Trees
+A1–A2
+Image Tensor CNN, ViT Deep Learning
+Sequence Vector sequence RNN, LSTM, Trans-
+former
+Deep Learning
+Graph Nodes + edges GNN Knowledge / Graph
+Knowledge Entities + relations KG reasoning Knowledge Graph
+Documents Embeddings Similarity search RAG
+Multimodal Multiple representa-
+tions
+Multimodal AI Final Project
+Feature Vector→Tensor→Graph→Embedding→Multimodal
+
+--- PAGE 37 ---
+Where Does Traditional Machine Learning Fit?
+Raw / Domain Data
+Human-designed
+Features
+Traditional ML
+Model
+Prediction
+x = [x1,x2,...,xd ].
+The model learns a relationship from the feature vector.
+
+--- PAGE 38 ---
+Running Case Study: Diabetes Prediction
+Problem
+Predict whether a person is likely to be
+diagnosed with diabetes from diagnostic
+measurements.
+Target
+y∈{0,1}.
+▶ 0: non-diabetic
+▶ 1: diabetic
+Input
+x∈R8.
+Pregnancies
+Glucose
+Blood Pressure
+Skin Thickness
+Insulin
+BMI
+Diabetes Pedigree
+Age
+Lee’s Chapter 12 provides the running case through model evaluation and deployment.
+
+--- PAGE 39 ---
+From a Patient Record to a Feature Vector
+Suppose one observation is represented by
+x = [p,g,bp,s,i,bmi,dpf,a].
+More explicitly:
+x = [Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI,Pedigree,Age].
+For N observations:
+X =
+
+
+x T
+1
+x T
+2
+...
+x T
+N
+
+
+∈RN× d, d = 8.
+Patient Feature Vector ML Algorithm
+
+--- PAGE 40 ---
+Representation Is Not a Neutral Choice
+Consider the same patient.
+Patient
+medical in-
+formation
+Feature Vector
+8 numeri-
+cal values
+Traditional ML
+LR / KNN
+/ SVM
+Question for Students
+What information is preserved by this vector, and what information is not represented?
+This question becomes increasingly important when we move to images, text, graphs,
+and multimodal data.
+
+--- PAGE 41 ---
+Formulating the Learning Problem
+Given:
+D ={(xi,yi )}N
+i=1,
+we seek:
+ˆy = fθ(x ).
+For classification:
+ˆy∈{0,1}.
+The learning process searches for:
+θ∗ = arg min
+θ
+1
+N
+N∑
+i=1
+ℓ(fθ(xi ),yi ).
+Students must be able to explain every symbol.
+
+--- PAGE 42 ---
+Supervised Learning: Learning from Examples
+Training Data Learning
+Algorithm
+Learned
+Model
+New InputPrediction
+Training̸= Testing
+The test set estimates performance on unseen observations.
+
+--- PAGE 43 ---
+Why Do We Need a Baseline?
+Baseline
+Always predict
+the majority class
+ML Model
+Predict using
+learned relationships
+comparison
+The question is not:
+“Is my model accurate?”
+but:
+Does my model learn something useful beyond a simple baseline?
+
+--- PAGE 44 ---
+Traditional Models in the Diabetes Case
+Model Core idea Representation
+Logistic Regression Linear decision function Feature vector
+KNN Neighborhood similarity Feature vector + distance
+SVM Maximum-margin separation Feature vector / kernel space
+Decision Tree Recursive feature splits Feature vector
+Random Forest Ensemble of trees Feature vector
+Key Idea
+The algorithms receive essentially the same patient representation, but impose different
+assumptions and learning mechanisms.
+
+--- PAGE 45 ---
+Model 1: Logistic Regression
+For binary classification:
+z = w Tx +b
+and
+P(y = 1|x ) = σ(z) = 1
+1 +e− z.
+Thus:
+x→w Tx +b→σ(·)→P(y = 1|x ).
+Interpretation
+▶ Each feature contributes through a learned weight.
+▶ The output is interpreted as a probability-like score.
+▶ A decision threshold converts the score into a class.
+Question: What does a large positive or negative weight mean?
+
+--- PAGE 46 ---
+Model 2: k-Nearest Neighbors
+KNN follows a very different idea.
+A new observation is classified using nearby training observations.
+For Euclidean distance:
+d(x,xi ) =
+√
+d∑
+j=1
+(xj−xij )2.
+Important consequence
+Feature scale matters.
+For example:
+Glucose∼100, Age∼40.
+A feature with a larger numerical scale can dominate distance.
+Representation and preprocessing are connected.
+
+--- PAGE 47 ---
+Model 3: Support Vector Machine
+SVM searches for a decision boundary with a large margin.
+x1
+x2
+Good separation is not enough; the margin matters.
+
+--- PAGE 48 ---
+Model 4: Random Forest - Ensemble of Decision Trees
+Core idea
+▶ Build many decision trees.
+▶ Each tree sees abootstrap sample.
+▶ Each split considers arandom
+subset of features.
+▶ Combine all tree predictions.
+ˆy = Vote (T1(x ),...,TB(x ))
+For regression:
+ˆy = 1
+B
+B∑
+b=1
+Tb(x )
+Why it works
+Training Data
+Tree 1 Tree 2 Tree B
+Voting / Averaging
+Final Prediction
+
+--- PAGE 49 ---
+Model 4: Random Forest - Ensemble of Decision Trees (cont)
+Key benefit:
+Many diverse trees⇒more robust prediction
+Random Forest = Bagging + Random Feature Selection + Ensemble Prediction
+
+--- PAGE 50 ---
+The Complete Assignment 01 Pipeline
+Dataset Explore Represent Train/Test Train Evaluate Select Apply
+Data→Representation→Model→Evidence→Decision
+
+--- PAGE 51 ---
+Looking Inside the Representation
+One important analysis is examining relationships among features.
+For featuresXi and Xj:
+ρij = corr(Xi,Xj ).
+A correlation matrix can be represented as:
+R =
+
+
+ρ11 ρ12 ···
+ρ21 ρ22 ···
+... ... ...
+
+.
+Why investigate correlation?
+▶ understand relationships among variables;
+▶ identify potentially redundant information;
+▶ understand the dataset before modeling;
+▶ motivate feature selection.
+But: correlation does not imply causation.
+
+--- PAGE 52 ---
+From “Running Models” to Experiments
+A weak experiment:
+“I trained KNN, SVM, and Logistic Regression. KNN was best.”
+A stronger experiment asks:
+Why?
+Students should investigate:
+1. Does feature scaling change KNN?
+2. Does changingk change KNN performance?
+3. Does SVM respond differently to scaling?
+4. Does feature selection change the result?
+5. Do different metrics identify the same “best” model?
+A parameter change should answer a question.
+
+--- PAGE 53 ---
+Evaluation: Accuracy Is Not Enough
+For binary classification:
+Predicted + Predicted -
+Actual + TP FN
+Actual - FP TN
+Accuracy = TP +TN
+TP +TN +FP +FN.
+Precision = TP
+TP +FP, Recall = TP
+TP +FN.
+F1 = 2PR
+P +R.
+Students must explain which metric matters and why.
+
+--- PAGE 54 ---
+Model Selection Is a Decision
+Suppose experiments produce:
+Model Accuracy Precision Recall F1
+Logistic Regression – – – –
+KNN – – – –
+SVM – – – –
+Random Forest – – – –
+The question is not simply:
+max(Accuracy)
+Instead ask:
+▶ Which model generalizes well?
+▶ Which metrics are important?
+▶ Is the model interpretable?
+▶ What is its computational cost?
+▶ Can it be reliably deployed?
+
+--- PAGE 55 ---
+From a Model to an Intelligent Application
+A trained model is not yet a complete intelligent system.
+Training Data ML Model Prediction API Client
+Model +Interface +Data Processing+Prediction Service = Application
+A deployed intelligent system may additionally require:
+state +memory +feedback +monitoring.
+
+--- PAGE 56 ---
+Model Persistence
+Once a model is trained, it can be saved for later use.
+Training→Saved Model→Prediction.
+Example:
+import pickle
+with open("model.pkl", "wb") as f:
+pickle.dump(model, f)
+Then:
+with open("model.pkl", "rb") as f:
+model = pickle.load(f)
+prediction = model.predict(X_new)
+Key Idea
+New input must be represented and preprocessed in the same way as the training data.
+
+--- PAGE 57 ---
+Deployment: Model as a Service
+User / Client
+Application
+REST API
+Prediction Service
+Saved ML Model
+Inference
+request features
+prediction
+response
+Application does not need to know how the model learns.
+It needs a well-defined prediction interface.
+
+--- PAGE 58 ---
+Assignment 01: What Must Students Deliver?
+Foundation
+1. Define the problem.
+2. Define X and y.
+3. Explain the representation.
+4. Explain selected algorithms.
+5. Explain assumptions and limitations.
+Development
+1. Use a real dataset.
+2. Build at least 4 models.
+3. Establish a baseline.
+4. Conduct 3 experiments.
+5. Evaluate with appropriate metrics.
+6. Select a final model.
+7. Build a small application.
+Notebook + Report + Application + Explanation
+
+--- PAGE 59 ---
+Required Notebook Structure
+1. Problem Definition
+2. Dataset Source
+3. Dataset Description
+4. Data Representation
+5. Feature Analysis
+6. Data Exploration
+7. Train/Test Split
+8. Baseline
+9. Model 1
+10. Model 2
+11. Model 3
+12. Model 4
+13. Evaluation
+14. Model Comparison
+15. Hyperparameter Experiment
+16. Representation / Feature Experiment
+17. Final Model
+18. Application
+19. Discussion
+20. Reflection
+21. Conclusion
+Every experiment must have a question.
+
+--- PAGE 60 ---
+What Makes This an Academic Assignment?
+Concept Principle/Math Implementation Experiment Analysis
+A good submission answers:
+1. What did you do?
+2. Why did you do it?
+3. What did you learn from the result?
+
+--- PAGE 61 ---
+The Limitation of Traditional ML
+Traditional pipeline:
+Raw Data→Human-designed Features→ML Model
+But consider an image.
+A raw image contains:
+H×W×C
+values.
+Can we manually design all useful features?
+Probably not.
+This motivates:
+Representation Learning
+Deep learning attempts to learn useful representations from data.
+
+--- PAGE 62 ---
+Traditional ML vs Deep Learning
+Traditional ML Deep Learning
+Human-designed features Learned representations
+Usually fixed-dimensional
+vectors
+Vectors, tensors, sequences
+Model learns prediction rela-
+tionship
+Model can learn representa-
+tion + prediction
+Often effective on struc-
+tured data
+Often effective on complex
+unstructured data
+Usually smaller models Potentially much larger
+models
+Assignment 01: feature engineering −→Later: representation learning
+
+--- PAGE 63 ---
+From Feature Vectors to Modern AI
+Feature
+Vector Tensor Graph Embedding Multimodal
+▶ Feature vectors→traditional ML
+▶ Tensors→deep learning
+▶ Graphs→GNN / knowledge graphs
+▶ Embeddings→semantic retrieval / RAG
+▶ Multiple representations→multimodal AI
+One course — one conceptual progression.
+
+--- PAGE 64 ---
+Why Will We Study Embeddings and RAG?
+Traditional ML:
+x→fθ(x )→y.
+RAG introduces another operation:
+Represent→Retrieve→Generate
+For documents:
+Document→Embedding→Similarity Search→Relevant Context→LLM.
+The conceptual connection is:
+Good intelligence requires an appropriate representation.
+
+--- PAGE 65 ---
+Why Will We Study Knowledge Graphs?
+Some information is naturally relational.
+DiseaseSymptom Glucosehas associated
+A feature vector does not naturally express:
+Entity→Relation→Entity.
+This motivates graph-based representations and knowledge graphs.
+
+--- PAGE 66 ---
+The Five-Assignment Learning Journey
+Assignment Representation Main learning
+A1 Feature vectors Traditional ML + deployment
+A2 Better data representation Preprocessing + visualization + metrics
+A3 Learned representations Neural networks + PyTorch
+A4 Tensors + graphs CNN + Knowledge Graph
+A5 Embeddings + context RAG + conversational systems
+Project Integrated representations Complete intelligent system
+Each assignment adds a new capability.
+
+--- PAGE 67 ---
+Assignment 01 Challenge
+Do not simply reproduce Lee’s diabetes example.
+Students use the diabetes case to learn the workflow:
+Problem→Representation→Algorithms→Experiments→Evaluation→Application.
+Then apply the same methodology to adifferent real dataset.
+The diabetes case is the learning scaffold.
+The student’s dataset is the actual assignment.
+
+--- PAGE 68 ---
+Assignment 01: Student Checklist
+Before submission, verify:
+□ I can define the prediction problem.
+□ I can explain every input feature.
+□ I can describe the representation mathematically.
+□ I can explain why the task is classification/regression.
+□ I implemented a baseline.
+□ I trained at least four models.
+□ I performed at least three controlled experiments.
+□ I used appropriate evaluation metrics.
+□ I compared the models fairly.
+□ I can explain why I selected the final model.
+□ I built a small application.
+□ I can explain every important part of my notebook.
+
+--- PAGE 69 ---
+Reflection: From Model to System
+Whatisyourdata?
+Howdoyourepresentit?
+Whatcanyourmodellearn
+fromthatrepresentation?
+Howdoyourexperimentsdemonstratethat?
+Howdoesthemodelbecomeanapplication?
+Howdoestheapplicationin-
+teractwithitsenvironment?
+Understand→Represent→Implement→Experiment→Apply
+
+--- PAGE 70 ---
+The Journey of Intelligent System Development
+Structured data
+↓
+Feature vectors
+↓
+Traditional ML
+↓
+Deep learned representations
+↓
+Images, sequences, graphs
+↓
+Embeddings and retrieval
+↓
+Conversational / interactive systems
+↓
+Integrated intelligent system
+The course moves from learning a function to developing a
+system.
+
+--- PAGE 71 ---
+The Big Picture
+The course can be summarized by five questions:
+1. What is intelligence?
+2. What should the system represent?
+3. How can it learn or reason?
+4. How does it decide and act?
+5. How do we develop, evaluate, deploy, and improve it?
+Intelligence→Representation→Learning / Reasoning→Decision→Action→Feedback
+This is the conceptual foundation of the course.
+
+--- PAGE 72 ---
+References
+1. Wei-Meng Lee,Python®Machine Learning, First Edition, Wiley, 2019.
+2. Wei-Meng Lee, “Chapter 12: Deploying Machine Learning Models.”
+3. Chapter 12 case study: Diabetes prediction using diagnostic measurements, followed by model
+comparison, model persistence, REST deployment, and a client application.
+4. Scikit-learn documentation: machine learning algorithms and model evaluation.
+5. Russell, S. and Norvig, P.,Artificial Intelligence: A Modern Approach.
+6. Goodfellow, I., Bengio, Y., and Courville, A.,Deep Learning.
+7. Vaswani, A. et al., “Attention Is All You Need,” 2017.
+Read → Understand → Reproduce → Modify → Experiment → Develop

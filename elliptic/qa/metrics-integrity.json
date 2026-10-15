@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "test_labeled": 16670,
+  "checks": [
+    {
+      "model": "rf_local",
+      "seed": 0,
+      "passed": true
+    },
+    {
+      "model": "rf_local",
+      "seed": 1,
+      "passed": true
+    },
+    {
+      "model": "rf_local",
+      "seed": 2,
+      "passed": true
+    },
+    {
+      "model": "rf_all",
+      "seed": 0,
+      "passed": true
+    },
+    {
+      "model": "rf_all",
+      "seed": 1,
+      "passed": true
+    },
+    {
+      "model": "rf_all",
+      "seed": 2,
+      "passed": true
+    },
+    {
+      "model": "mlp",
+      "seed": 0,
+      "passed": true
+    },
+    {
+      "model": "mlp",
+      "seed": 1,
+      "passed": true
+    },
+    {
+      "model": "mlp",
+      "seed": 2,
+      "passed": true
+    },
+    {
+      "model": "gcn",
+      "seed": 0,
+      "passed": true
+    },
+    {
+      "model": "gcn",
+      "seed": 1,
+      "passed": true
+    },
+    {
+      "model": "gcn",
+      "seed": 2,
+      "passed": true
+    }
+  ]
+}

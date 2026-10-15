@@ -1,0 +1,77 @@
+{
+  "created": "2026-10-13T23:13:59+0700",
+  "reason": "Previous 180-epoch GCN still improving on validation; all seed best epochs 179.",
+  "train": "t1-29",
+  "validation": "t30-34",
+  "test": "t35-49 (previously inspected; retrospective reevaluation)",
+  "candidates": {
+    "long": {
+      "hidden": 64,
+      "dropout": 0.2,
+      "lr": 0.003,
+      "weight_decay": 0.0005,
+      "pos_weight": "ratio",
+      "clip": null,
+      "epochs": 1500,
+      "patience": 150
+    },
+    "moderate_weight": {
+      "hidden": 64,
+      "dropout": 0.2,
+      "lr": 0.003,
+      "weight_decay": 0.0005,
+      "pos_weight": 2.3333333333333335,
+      "clip": null,
+      "epochs": 1500,
+      "patience": 150
+    },
+    "paper_inspired": {
+      "hidden": 100,
+      "dropout": 0.2,
+      "lr": 0.001,
+      "weight_decay": 0.0005,
+      "pos_weight": 2.3333333333333335,
+      "clip": null,
+      "epochs": 1500,
+      "patience": 150
+    },
+    "clipped": {
+      "hidden": 64,
+      "dropout": 0.2,
+      "lr": 0.003,
+      "weight_decay": 0.0005,
+      "pos_weight": 2.3333333333333335,
+      "clip": 5.0,
+      "epochs": 1500,
+      "patience": 150
+    }
+  },
+  "selection": "Pilot seed0 validation AP, then repeat promising configurations on seeds1,2. Select by mean validation AP; validation F1 threshold per seed. No candidate test inference in search stage.",
+  "controls": "Preserve original 12 runs. Compare extended budget to identical baseline; compare pos_weight; compare clipping; run graph=False control with final hyperparameters.",
+  "forbidden": "No threshold tuning on test, no changing labels/split, no unknown-as-licit, no selecting best test seed.",
+  "adaptive_extensions": [
+    {
+      "time_utc": "2026-10-13T16:35:39.384410+00:00",
+      "candidate": "quantile",
+      "config": {
+        "hidden": 64,
+        "dropout": 0.2,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "pos_weight": 2.3333333333333335,
+        "clip": null,
+        "transform": "quantile",
+        "epochs": 1500,
+        "patience": 150
+      },
+      "reason": "Train feature tails are extreme and the first raw-feature candidates plateau below 0.87 validation AP. Add a monotone marginal rank transform fitted on train nodes only; no new candidate test scores have been computed or inspected.",
+      "selection": "Top two seed-0 validation AP among all five candidates, repeat seeds1,2, select highest mean validation AP."
+    }
+  ],
+  "provable_pruning": {
+    "recorded_at_utc": "2026-10-13T16:51:33.732286+00:00",
+    "completed_quantile_mean_ap": 0.9621567044602424,
+    "clipped_upper_bound_if_other_two_seeds_perfect": 0.960244430270777,
+    "reason": "Completed quantile mean exceeds the mathematical maximum possible three-seed mean for clipped. Stop redundant clipped repetitions, preserve seed0 ablation, then train matched MLP. Test predictions have not yet been generated."
+  }
+}

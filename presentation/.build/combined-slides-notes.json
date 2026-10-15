@@ -1,0 +1,585 @@
+[
+  {
+    "speaker": 1,
+    "seconds": 35,
+    "title": "Deep Graph Learning",
+    "kind": "cover",
+    "lead": "Mạng lưới giúp AI học quan hệ",
+    "script": "Kính chào thầy và các bạn. Nhóm em trình bày Deep Graph Learning qua hai bài toán thực tế: dự báo tốc độ trên mạng cảm biến giao thông và sàng lọc giao dịch Bitcoin đáng ngờ. Trước hai demo, nhóm sẽ giải thích graph, cách mạng neural truyền thông tin giữa các nút, và cách đánh giá kết quả. Phần lý thuyết có liên hệ với năm chương học của môn.",
+    "action": "Mở đầu bằng câu hỏi: khi dữ liệu có liên hệ, một dòng dữ liệu riêng lẻ còn đủ để dự đoán không?",
+    "transition": "Mời Người 1 bắt đầu từ mạch kiến thức của môn học.",
+    "refs": "Tài liệu môn học: Chương 1–5 trong D:/School/PT HTTM/Chương1 đến Chương5."
+  },
+  {
+    "speaker": 1,
+    "seconds": 75,
+    "title": "Deep Graph nối tiếp năm chương đã học",
+    "kind": "course",
+    "takeaway": "Biểu diễn quyết định mô hình có thể nhìn thấy gì",
+    "items": [
+      "Chương 1 · Hệ thống: đầu vào → biểu diễn → học → quyết định",
+      "Chương 2 · Dữ liệu: làm sạch, mã hóa và chia tập",
+      "Chương 3 · Deep learning: mạng học biểu diễn từ ví dụ",
+      "Chương 4 · CNN: vùng lân cận và phép biến đổi dùng chung",
+      "Chương 5 · Knowledge Graph + RAG: biểu diễn tri thức và truy xuất"
+    ],
+    "script": "Deep Graph nối các chương đã học. Chương một nhìn hệ thống từ đầu vào đến quyết định. Chương hai nhấn mạnh dữ liệu và biểu diễn. Chương ba cho mạng neural học biểu diễn. Chương bốn dùng tính cục bộ và bộ lọc dùng chung trong CNN. Với graph, ta vẫn học biểu diễn, nhưng thay lưới pixel bằng nút và cạnh. Chương năm là điểm cần phân biệt: Knowledge Graph lưu tri thức thành các quan hệ có nghĩa; RAG truy xuất tài liệu để cung cấp ngữ cảnh cho mô hình sinh. GNN thì học từ cấu trúc graph để dự đoán. Ba hướng có thể kết hợp nhưng không phải cùng một kỹ thuật.",
+    "action": "Chỉ lần lượt vào năm dòng; dừng ở dòng CNN rồi nối sang graph.",
+    "transition": "Vì sao biểu diễn graph lại có thể cần thiết?",
+    "refs": "Chương 1 Slide 1; Chương 2 Assignment 2; Chương 3 Slide 3; Chương 4 Slide 4; Chương 5 Slide 5."
+  },
+  {
+    "speaker": 1,
+    "seconds": 70,
+    "title": "Biểu diễn quyết định quan hệ có được học hay không",
+    "kind": "representation",
+    "takeaway": "Vector mô tả từng đối tượng; graph còn mô tả liên hệ",
+    "items": [
+      "Bảng: mỗi hàng là một đối tượng",
+      "Tensor: các giá trị số cho mô hình neural",
+      "Graph: nút + cạnh + đặc trưng",
+      "Embedding: biểu diễn học được từ ngữ cảnh"
+    ],
+    "script": "Nếu mỗi giao dịch chỉ là một hàng, mô hình vẫn có thể học từ chính đặc trưng của hàng đó. Nhưng nếu hai giao dịch liên quan qua dòng tiền, ta có thể muốn xem cả liên hệ ấy. Trong giao thông, tốc độ ở cảm biến lân cận có thể mang thêm bối cảnh cho vị trí đang xét. Bảng vẫn cần thiết để lưu đặc trưng; graph bổ sung cấu trúc quan hệ. Deep Graph không tự làm dữ liệu tốt hơn. Nó cho mô hình một cách sử dụng mối liên hệ nếu mối liên hệ đó thực sự hữu ích.",
+    "action": "Dùng ví dụ hai nút có cùng feature nhưng khác hàng xóm để hỏi dự đoán có thể khác không.",
+    "transition": "Ta cần thống nhất các thành phần cơ bản của graph.",
+    "refs": "Chương 2 Assignment 2; Chương 3 Slide 3."
+  },
+  {
+    "speaker": 1,
+    "seconds": 75,
+    "title": "Graph gồm nút, cạnh và đặc trưng",
+    "kind": "graph",
+    "takeaway": "Mỗi bài toán phải định nghĩa nút là gì",
+    "items": [
+      "Nút (node): đối tượng cần mô tả",
+      "Cạnh (edge): quan hệ giữa hai đối tượng",
+      "Đặc trưng (feature): thông tin đầu vào",
+      "Nhãn (label): đáp án dùng để học/đánh giá"
+    ],
+    "script": "Một graph gồm các nút và cạnh. Mỗi nút có thể có vector đặc trưng, ví dụ tốc độ của cảm biến hoặc thuộc tính giao dịch. Cạnh có thể có hướng, như dòng tiền từ giao dịch nguồn sang giao dịch đích, hoặc không hướng, như quan hệ lân cận trong một mạng cảm biến đã đối xứng hóa. Nhãn là đáp án cần dự đoán. Trước khi chọn GCN hay GAT, ta phải trả lời câu hỏi miền dữ liệu: một nút đại diện cho cái gì và cạnh thực sự có nghĩa gì?",
+    "action": "Đọc các nhãn Nút, Cạnh, Đặc trưng, Nhãn trên sơ đồ; gắn ví dụ giao thông và Bitcoin.",
+    "transition": "Khi đã có graph, ta có thể đặt nhiều kiểu câu hỏi học khác nhau.",
+    "refs": "Chương 4 Slide 4; Weber et al. (2019), https://arxiv.org/abs/1908.02591."
+  },
+  {
+    "speaker": 1,
+    "seconds": 70,
+    "title": "Đầu ra có thể thuộc nút, cạnh, graph hoặc thời gian",
+    "kind": "tasks",
+    "items": [
+      "Nút · phân loại một giao dịch",
+      "Cạnh · dự đoán liên kết giữa hai đối tượng",
+      "Graph · phân loại một phân tử",
+      "Chuỗi trên graph · dự báo tốc độ theo thời gian"
+    ],
+    "script": "Ở bài toán nút, mô hình đưa ra một dự đoán cho từng giao dịch hoặc từng cảm biến. Ở bài toán cạnh, mục tiêu là dự đoán liên kết hay loại quan hệ. Ở bài toán graph, cả đồ thị như một phân tử có thể là một mẫu. Với giao thông, một cảm biến có lịch sử theo thời gian, đồng thời liên hệ với các cảm biến khác; ta vừa có chiều thời gian vừa có chiều không gian. Chọn sai đơn vị đầu ra sẽ dẫn đến dữ liệu, loss và metric không phù hợp.",
+    "action": "Nối lần lượt từng kiểu tác vụ với một ví dụ trong hai demo.",
+    "transition": "Vậy nút học thông tin từ hàng xóm bằng cách nào?",
+    "refs": "Chương 3 Slide 3; Chương 4 Slide 4."
+  },
+  {
+    "speaker": 1,
+    "seconds": 85,
+    "title": "Message passing: các nút trao đổi tín hiệu",
+    "kind": "message",
+    "takeaway": "Gửi thông điệp → tổng hợp → cập nhật biểu diễn",
+    "items": [
+      "Mỗi nút gửi thông tin đang có",
+      "Nút nhận tổng hợp các hàng xóm",
+      "Lớp neural cập nhật biểu diễn mới",
+      "Nhiều lớp mở rộng vùng ảnh hưởng"
+    ],
+    "script": "Hãy hình dung mỗi nút gửi một thông điệp cho các nút có cạnh nối với nó. Nút nhận tổng hợp các thông điệp và cập nhật biểu diễn của mình bằng một phép biến đổi đã học. Đây là message passing. Một lớp thường kết hợp thông tin ở khoảng một bước cạnh; xếp hai lớp cho phép ảnh hưởng đi xa hơn. Cách tổng hợp phải không phụ thuộc vào thứ tự tùy ý mà ta liệt kê hàng xóm. Nó cũng phải xử lý nút có ít hoặc nhiều hàng xóm. Đây là trực giác chung đằng sau nhiều GNN.",
+    "action": "Dùng sơ đồ: nút trung tâm nhận ba thông điệp, tổng hợp rồi đổi màu biểu diễn.",
+    "transition": "Cách nhìn này gần với CNN, nhưng lưới ảnh và graph khác nhau.",
+    "refs": "Gilmer et al., Neural Message Passing for Quantum Chemistry, https://arxiv.org/abs/1704.01212."
+  },
+  {
+    "speaker": 1,
+    "seconds": 75,
+    "title": "GNN mở rộng trực giác cục bộ của CNN",
+    "kind": "cnn",
+    "takeaway": "CNN dùng vùng lân cận trên lưới; GNN dùng hàng xóm theo cạnh",
+    "items": [
+      "CNN · pixel có hàng/cột cố định",
+      "GNN · nút có số hàng xóm không cố định",
+      "Cả hai · dùng quy tắc học chung ở nhiều vị trí",
+      "Graph không cần nút nằm trên lưới đều"
+    ],
+    "script": "Trong CNN, một bộ lọc quét các vùng nhỏ trên ảnh và chia sẻ cùng trọng số tại các vị trí. Tính cục bộ giúp mô hình khai thác pixel gần nhau. Graph giữ trực giác đó: một lớp xem các hàng xóm và dùng cùng quy tắc cập nhật cho nhiều nút. Nhưng số hàng xóm không cố định, và graph không có lưới hàng-cột đều. Vì vậy, phép tổng hợp cần bất biến với cách sắp thứ tự hàng xóm. Deep Graph là họ phương pháp; GCN chỉ là một lựa chọn trong họ đó.",
+    "action": "So sánh một ô pixel có 8 vị trí xung quanh với một nút có 2, 3 hoặc 10 hàng xóm.",
+    "transition": "Phần này kết thúc bằng câu hỏi: khi nào graph có thể giúp?",
+    "refs": "Chương 4 Slide 4; Kipf & Welling (2017), https://arxiv.org/abs/1609.02907."
+  },
+  {
+    "speaker": 1,
+    "seconds": 85,
+    "title": "Graph hữu ích khi quan hệ bổ sung thông tin",
+    "kind": "takeaway",
+    "takeaway": "Quan hệ đúng có thể giúp; cạnh sai cũng có thể gây nhiễu",
+    "items": [
+      "Liên hệ có ý nghĩa trong miền dữ liệu",
+      "Feature và nhãn được tạo đúng thời điểm",
+      "Hàng xóm có thể chia sẻ tín hiệu hữu ích",
+      "Lợi ích phải được so với baseline"
+    ],
+    "script": "Graph có cơ hội hữu ích khi cạnh phản ánh một quan hệ liên quan đến mục tiêu. Tuy vậy, nhiều cạnh hơn không đảm bảo dự báo tốt hơn. Nếu cạnh sai, lỗi lan truyền. Nếu các hàng xóm có hành vi khác nhau, phép lấy trung bình có thể làm tín hiệu kém đi. Ta cần baseline chỉ dùng đặc trưng hoặc lịch sử riêng, giữ cách chia tập công bằng, rồi đo kết quả. Hai demo sau minh họa hai kiểu graph, hai loại đầu ra và cả các trường hợp mô hình còn yếu.",
+    "action": "Hỏi lớp nêu một ví dụ quan hệ hữu ích và một ví dụ cạnh gây nhiễu.",
+    "transition": "Mời Người 2 giải thích GCN, các biến thể và cách kiểm chứng.",
+    "refs": "Chương 1 Slide 1; Chương 2 Assignment 2; Chương 4 Slide 4."
+  },
+  {
+    "speaker": 2,
+    "seconds": 75,
+    "title": "GCN gộp thông tin từ các nút kề",
+    "kind": "gcn",
+    "takeaway": "Tự thân + hàng xóm → biến đổi đã học",
+    "items": [
+      "Thêm self-loop để giữ tín hiệu nút",
+      "Chuẩn hóa đóng góp theo bậc graph",
+      "Biến đổi tuyến tính + hàm kích hoạt",
+      "Mỗi lớp là một lần truyền tin"
+    ],
+    "script": "GCN là cách message passing gọn. Trước hết thêm self-loop để nút vẫn giữ tín hiệu của chính nó. Sau đó tổng hợp biểu diễn của các nút kề với trọng số phụ thuộc cấu trúc và bậc nút. Một lớp tuyến tính và hàm kích hoạt biến tổ hợp đó thành biểu diễn mới. Có thể nhớ bằng lời: tự thân cộng ngữ cảnh hàng xóm, rồi học phép biến đổi. Công thức trên slide chỉ là ký hiệu cho quy trình, không phải một phép đo độ quan trọng của từng hàng xóm.",
+    "action": "Đọc từ trái qua phải; không đọc công thức từng ký hiệu.",
+    "transition": "Self-loop và chuẩn hóa xử lý hai vấn đề thực tế.",
+    "refs": "Kipf & Welling (2017), https://arxiv.org/abs/1609.02907."
+  },
+  {
+    "speaker": 2,
+    "seconds": 65,
+    "title": "Self-loop giữ tín hiệu của nút",
+    "kind": "selfloop",
+    "items": [
+      "Không self-loop: chỉ nghe nút khác",
+      "Có self-loop: nút vẫn tự giữ một phần thông tin",
+      "Chuẩn hóa: nút bậc cao không lấn át toàn bộ",
+      "Quy ước graph là một phần của mô hình"
+    ],
+    "script": "Self-loop thêm một cạnh từ nút về chính nó, nhờ đó cập nhật không xóa sạch thông tin ban đầu. Chuẩn hóa giảm việc nút có quá nhiều kết nối lấn át biểu diễn tổng hợp. Có nhiều cách chuẩn hóa, và kết quả phụ thuộc quy ước graph. Vì vậy, báo cáo cần nói rõ graph có hướng hay không, có đối xứng hóa không, thêm self-loop thế nào. Trong giao thông, nhóm dùng graph khoảng cách; trong Elliptic, nhóm đối xứng cạnh khi chạy GCN.",
+    "action": "Cho xem hai ví dụ trước và sau khi thêm cạnh vòng.",
+    "transition": "Các mô hình khác nhau ở cách tạo thông điệp và tổng hợp.",
+    "refs": "Kipf & Welling (2017), https://arxiv.org/abs/1609.02907; traffic/results/data_manifest.json; elliptic/README.md."
+  },
+  {
+    "speaker": 2,
+    "seconds": 80,
+    "title": "GraphSAGE và GAT · hai cách tổng hợp hàng xóm",
+    "kind": "model-compare",
+    "takeaway": "GraphSAGE học hàm tổng hợp; GAT học trọng số chú ý",
+    "table": [
+      [
+        "Mô hình",
+        "Cách kết hợp hàng xóm",
+        "Điểm cần nhớ"
+      ],
+      [
+        "GCN",
+        "Trọng số theo cấu trúc",
+        "Gọn, dễ làm baseline"
+      ],
+      [
+        "GraphSAGE",
+        "Lấy mẫu + hàm tổng hợp",
+        "Có thể áp dụng cho nút mới"
+      ],
+      [
+        "GAT",
+        "Trọng số attention theo cạnh",
+        "Attention không chứng minh nhân quả"
+      ]
+    ],
+    "script": "GCN dùng hệ số tổng hợp xác định từ cấu trúc. GraphSAGE lấy mẫu hàng xóm và học một hàm gộp feature; vì học quy tắc thay vì vector riêng theo ID, nó có thể áp dụng cho nút mới khi feature và hàng xóm có sẵn. GAT tính điểm attention giữa nút trung tâm và từng hàng xóm rồi chuẩn hóa trong vùng lân cận. Trực giác là một hàng xóm có thể đóng góp nhiều hơn. Attention không phải lời giải thích nhân quả, còn GraphSAGE không bảo đảm tổng quát nếu phân phối nút mới khác. Chọn mô hình theo dữ liệu và kiểm chứng.",
+    "action": "So ba hàng từ trái qua phải; nêu một điểm mạnh và một giới hạn.",
+    "transition": "Hai demo còn kết hợp graph với thông tin thời gian.",
+    "refs": "Hamilton et al. (2017), https://arxiv.org/abs/1706.02216; Veličković et al. (2018), https://arxiv.org/abs/1710.10903; Kipf & Welling (2017), https://arxiv.org/abs/1609.02907."
+  },
+  {
+    "speaker": 2,
+    "seconds": 70,
+    "title": "Graph có thể kết hợp với chuỗi thời gian",
+    "kind": "temporal",
+    "takeaway": "Không gian trả lời ai liên quan; thời gian trả lời điều gì thay đổi",
+    "items": [
+      "Traffic · GCN gom tín hiệu không gian, GRU đọc chuỗi",
+      "Bitcoin · graph giao dịch theo các lát cắt",
+      "Đầu ra khác nhau: tốc độ số hoặc nhãn giao dịch",
+      "Kiến trúc phù hợp phụ thuộc thời điểm có dữ liệu"
+    ],
+    "script": "Demo giao thông cần cả không gian và thời gian. GCN gom tín hiệu từ cảm biến lân cận; GRU đọc 12 mốc liên tiếp tại mỗi cảm biến. Đầu ra là tốc độ sau 15 phút. Elliptic mô tả các giao dịch cùng liên kết dòng tiền qua 49 lát cắt thời gian. Bài toán ở đây là phân loại nút giao dịch có nhãn, không dự báo chuỗi tốc độ. Thời gian trong tập Elliptic là một thuộc tính quan trọng để chia dữ liệu và tránh lẫn tương lai vào huấn luyện.",
+    "action": "Vẽ đường ngang cho lịch sử và graph cho hàng xóm; nối vào hai đầu ra khác nhau.",
+    "transition": "Mô hình học bằng quy trình supervised như các mạng đã biết.",
+    "refs": "Chương 3 Slide 3; DCRNN, https://arxiv.org/abs/1707.01926; Weber et al. (2019), https://arxiv.org/abs/1908.02591."
+  },
+  {
+    "speaker": 2,
+    "seconds": 65,
+    "title": "Huấn luyện học tham số từ nhãn",
+    "kind": "training",
+    "items": [
+      "Forward · tính đầu ra từ feature và graph",
+      "Loss · so đầu ra với nhãn hợp lệ",
+      "Optimizer · cập nhật trọng số neural",
+      "Validation · chọn checkpoint/cấu hình"
+    ],
+    "script": "Luồng học quen thuộc vẫn giữ nguyên. Ta đưa feature và graph vào forward pass. Loss so dự đoán với nhãn hợp lệ. Optimizer cập nhật trọng số để giảm loss trên train. Validation giúp chọn checkpoint hoặc cấu hình trước khi chấm test. Với dữ liệu thiếu nhãn, mask phải loại nút đó khỏi loss và metric có nhãn. Với lớp hiếm, chỉ accuracy có thể gây hiểu lầm. Cần chọn chỉ số gắn với chi phí bỏ sót và cảnh báo nhầm.",
+    "action": "Lần theo pipeline trên slide; nhấn validation không cập nhật trọng số bằng nhãn test.",
+    "transition": "Tách thời gian và metric đúng giúp kết luận đáng tin hơn.",
+    "refs": "Chương 1 Assignment 1; Chương 3 Slide 3; traffic/train.py; elliptic/train.py."
+  },
+  {
+    "speaker": 2,
+    "seconds": 65,
+    "title": "Chia tập theo thời điểm để tránh rò rỉ",
+    "kind": "split",
+    "takeaway": "Train học, validation chọn, test đánh giá cuối",
+    "items": [
+      "Fit scaler chỉ bằng train",
+      "Dùng validation cho checkpoint và ngưỡng",
+      "Test không tham gia lựa chọn",
+      "Dữ liệu tương lai không được lọt vào feature"
+    ],
+    "script": "Nếu dự đoán tương lai, chia ngẫu nhiên các dòng có thể đưa những thời điểm gần nhau vào cả train lẫn test, khiến đánh giá lạc quan. Chia theo thời gian mô phỏng tình huống sau này. Mọi bước học từ dữ liệu như scaler cũng chỉ fit trên train. Validation chọn checkpoint và ngưỡng. Test dùng để đánh giá sau lựa chọn. Một giới hạn phải nói đúng ở đây: cả hai project đã xem test trong phiên bản trước, nên các kết quả hiện hành là đánh giá hồi cứu trên tập cũ, không phải holdout mới hoàn toàn.",
+    "action": "Chỉ dải train–validation–test từ trái sang phải; khoanh riêng mốc test.",
+    "transition": "Cùng một nguyên lý chia tập, nhưng metric phụ thuộc mục tiêu.",
+    "refs": "Chương 2 Assignment 2; traffic/README.md; elliptic/README.md."
+  },
+  {
+    "speaker": 2,
+    "seconds": 80,
+    "title": "Đánh giá phải khớp mục tiêu và mất cân bằng",
+    "kind": "metrics",
+    "items": [
+      "Hồi quy · MAE/RMSE theo km/h",
+      "Phân loại · Precision, Recall, F1",
+      "Lớp hiếm · xem Average Precision và threshold",
+      "Luôn so baseline trên cùng split"
+    ],
+    "script": "Trong traffic, MAE cho biết độ lệch tuyệt đối trung bình theo km/h; RMSE nhạy hơn với lỗi lớn. Trong bài toán giao dịch, Precision hỏi trong các cảnh báo có bao nhiêu mẫu illicit; Recall hỏi bao nhiêu illicit được tìm thấy; F1 cân bằng hai đại lượng tại một ngưỡng. Average Precision đo xếp hạng qua các ngưỡng. Vì lớp illicit hiếm, accuracy không đủ. Không được gọi điểm GCN là xác suất nếu chưa hiệu chỉnh. Cuối cùng, phải so với baseline và báo cáo cả tình huống khó.",
+    "action": "Đọc đơn vị và câu hỏi mỗi metric trả lời; nhấn threshold đổi trade-off.",
+    "transition": "Trước hai demo, phân biệt GNN với KG và RAG.",
+    "refs": "Chương 1 Assignment 1; traffic/results/metrics.json; elliptic/results/metrics.json."
+  },
+  {
+    "speaker": 2,
+    "seconds": 70,
+    "title": "GNN, Knowledge Graph và RAG dùng graph khác nhau",
+    "kind": "kg-rag",
+    "table": [
+      [
+        "Hướng",
+        "Graph dùng để",
+        "Đầu ra"
+      ],
+      [
+        "GNN",
+        "Truyền tin giữa nút có feature",
+        "Dự đoán nhãn/giá trị"
+      ],
+      [
+        "Knowledge Graph",
+        "Lưu sự kiện theo bộ ba quan hệ",
+        "Truy vấn tri thức"
+      ],
+      [
+        "RAG + graph",
+        "Lấy ngữ cảnh có cấu trúc và văn bản",
+        "Câu trả lời có căn cứ"
+      ]
+    ],
+    "script": "GNN dùng graph làm cấu trúc tính toán: feature của hàng xóm tác động đến biểu diễn và đầu ra. Knowledge Graph thường biểu diễn tri thức thành bộ ba chủ thể–quan hệ–đối tượng, để truy vấn rõ ràng. RAG truy xuất đoạn tài liệu liên quan rồi đưa vào ngữ cảnh cho mô hình ngôn ngữ; có thể bổ sung graph retrieval. Vì vậy, GNN không tự trở thành cơ sở tri thức và cũng không tạo câu trả lời tự nhiên. Các hướng có thể kết hợp, nhưng demo hôm nay kiểm tra dự đoán trên graph.",
+    "action": "Đọc ba hàng của bảng, liên hệ Chương 5.",
+    "transition": "Mời Người 3 chuyển từ lý thuyết sang mạng cảm biến giao thông.",
+    "refs": "Chương 5 Slide 5; Chương 4 Slide 4."
+  },
+  {
+    "speaker": 3,
+    "seconds": 40,
+    "title": "Demo 1 · Dự báo tốc độ trên mạng cảm biến",
+    "kind": "section",
+    "lead": "Một nút cảm biến, một mạng lân cận, một mốc dự báo",
+    "script": "Em phụ trách demo giao thông. Câu hỏi là: với tốc độ đã quan sát ở các cảm biến, ta dự báo tốc độ của mỗi nút sau 15 phút ra sao? Ta sẽ xem một ca tốc độ phục hồi, một ca dữ liệu quá cũ và một ca giảm tốc mà mô hình xử lý kém. Đây là phát lại dữ liệu lịch sử Los Angeles, không phải camera hay giao thông trực tiếp.",
+    "action": "Mở demo traffic v2; nếu cần đăng nhập thì dùng tài khoản hiện tại. Bản offline: traffic/RUN_DEMO.cmd.",
+    "transition": "Trước tiên, xem dữ liệu và cách graph được dựng.",
+    "refs": "https://traffic-graph-lab-v2.fitdace1.chatgpt.site; traffic/README.md."
+  },
+  {
+    "speaker": 3,
+    "seconds": 55,
+    "title": "METR-LA là mạng 207 cảm biến ở Los Angeles",
+    "kind": "traffic-data",
+    "items": [
+      "207 cảm biến tốc độ",
+      "34.272 mốc, cách nhau 5 phút",
+      "Đầu vào 12 mốc; dự báo trực tiếp +15 phút",
+      "Cạnh từ graph khoảng cách giữa cảm biến"
+    ],
+    "script": "METR-LA có 207 cảm biến và 34.272 mốc cách nhau 5 phút, trong giai đoạn tháng 3 đến tháng 6 năm 2012. Mỗi nút là cảm biến. Cạnh được tạo từ graph khoảng cách. Mỗi dự báo dùng 12 mốc lịch sử; hai đầu cửa sổ cách nhau 55 phút. Đầu ra ở mốc sau 15 phút. Ta cần nhớ đây là dữ liệu cũ và khu vực Los Angeles. Kết quả không tự chuyển thành hiệu quả tại Việt Nam.",
+    "action": "Chỉ bản đồ graph cảm biến; nói rõ chấm là nút, đường là cạnh graph, không phải tuyến đường.",
+    "transition": "Mô hình dùng GRU cho thời gian và GCN cho hàng xóm.",
+    "refs": "traffic/results/data_manifest.json; DCRNN, https://github.com/liyaguang/DCRNN."
+  },
+  {
+    "speaker": 3,
+    "seconds": 55,
+    "title": "Ba phương pháp được so trên cùng tập test",
+    "kind": "traffic-model",
+    "table": [
+      [
+        "Phương pháp",
+        "MAE km/h",
+        "RMSE km/h"
+      ],
+      [
+        "Giữ nguyên tốc độ",
+        "5,629",
+        "10,324"
+      ],
+      [
+        "GRU",
+        "4,875 ± 0,002",
+        "9,613"
+      ],
+      [
+        "GCN + GRU",
+        "4,844 ± 0,009",
+        "9,449"
+      ]
+    ],
+    "script": "Mốc đơn giản là giữ nguyên tốc độ hiện tại. GRU chỉ đọc chuỗi tại cảm biến đang xét. GCN kết hợp GRU thêm quan hệ giữa các cảm biến. Mỗi mạng chạy ba seed, tối đa 160 epoch; checkpoint chọn bằng validation. Graph giảm MAE khoảng 0,64 phần trăm so với GRU trong cấu hình này, một chênh lệch nhỏ. SD biểu diễn độ lệch chuẩn giữa ba seed, không phải khoảng tin cậy. Đây là vòng v2 sau khi nhóm đã xem test v1, nên không gọi nó là benchmark mới độc lập.",
+    "action": "Đọc bảng từ baseline đến GRU rồi GCN; chỉ chênh lệch nhỏ, không nói quá.",
+    "transition": "Ta thử một tình huống đầu vào còn mới và có quan sát.",
+    "refs": "traffic/results/metrics.json; traffic/results/audit_v2/diagnostics.json."
+  },
+  {
+    "speaker": 3,
+    "seconds": 45,
+    "title": "Ca phục hồi · nhìn dự báo trước khi mở đáp án",
+    "kind": "traffic-fresh",
+    "lead": "Cảm biến 717458 · 06/06/2012 18:35",
+    "items": [
+      "Tốc độ hiện tại: 14,5 km/h",
+      "GRU: 20,9 km/h",
+      "GCN + GRU: 21,3 km/h",
+      "Thực tế +15 phút: 24,7 km/h"
+    ],
+    "script": "Ở ca này, tốc độ hiện tại là 14,5 km/h sau một đoạn đi chậm. Trước khi mở đáp án, hãy hỏi lớp liệu nút sẽ phục hồi hay tiếp tục giảm. Demo cho thấy GRU dự báo 20,9, GCN cộng GRU dự báo 21,3; thực tế là 24,7. Đây là một ví dụ được chốt từ phân tích trước khi huấn luyện v2. Bản mới tốt hơn trên toàn tập nhưng con số của riêng ví dụ vẫn có thể thay đổi.",
+    "action": "Chọn ‘Phục hồi tốc độ’; đọc lịch sử và hai dự báo; sau đó mở đáp án thực tế.",
+    "transition": "Tiếp theo, chọn một nút có cảnh báo chất lượng đầu vào.",
+    "refs": "traffic/results/demo_cases.json; traffic/results/demo-workspace.png."
+  },
+  {
+    "speaker": 3,
+    "seconds": 50,
+    "title": "Dữ liệu cũ được báo riêng với dự báo",
+    "kind": "traffic-stale",
+    "lead": "Cảm biến 774067 · tuổi dữ liệu 9 giờ 45 phút",
+    "items": [
+      "Lần đo thật cuối: 04:00",
+      "12/12 mốc đầu vào của nút bị thiếu",
+      "10/10 hàng xóm thiếu ở mốc hiện tại",
+      "Giá trị bù không phải quan sát mới"
+    ],
+    "script": "Ở ca này, đồng hồ dự báo là 13:45 nhưng lần đo thật cuối của cảm biến là 04:00. Cửa sổ có 12 trên 12 mốc thiếu tại nút; các hàng xóm cũng thiếu ở mốc hiện tại. Bộ chuẩn bị dữ liệu đã điền giá trị từ quá khứ để mô hình vẫn tính được. Giao diện phát cảnh báo rằng đầu vào đã cũ. Cảnh báo này nói về chất lượng và tuổi dữ liệu, không phải xác suất mô hình đúng. Giá trị tương lai thực tế là 5,6 km/h còn GCN cộng GRU vẫn dự báo khoảng 108,7.",
+    "action": "Chọn ‘Dữ liệu quá cũ’; chỉ lần đo cuối, 12/12 thiếu, tuổi dữ liệu và sau cùng mở nhãn +15.",
+    "transition": "Một ví dụ nữa cho thấy hàng xóm có tín hiệu nhưng mô hình vẫn có thể sai.",
+    "refs": "traffic/results/demo_cases.json; traffic/results/demo-warning-v2.png; traffic/dist/freshness.mjs."
+  },
+  {
+    "speaker": 3,
+    "seconds": 40,
+    "title": "Ca khó · tốc độ giảm mạnh ngoài dự báo",
+    "kind": "traffic-hard",
+    "lead": "Cảm biến 717573 · 15/06/2012 14:50",
+    "items": [
+      "Đầu vào gần nhất: 94,1 km/h",
+      "GCN + GRU dự báo: 97,8 km/h",
+      "Thực tế +15 phút: 42,8 km/h",
+      "Sai số tại ví dụ: 55,0 km/h"
+    ],
+    "script": "Tại nút này tốc độ quan sát là 94,1 km/h. GCN cộng GRU dự báo gần 97,8, nhưng thực tế sau 15 phút khoảng 42,8. Tín hiệu ở hàng xóm đã bắt đầu giảm. Mô hình vẫn chưa khai thác tốt tín hiệu sẵn có. Dataset không có nhãn sự cố, vì vậy không nên tự kết luận nguyên nhân là tai nạn. Một demo tốt cho xem cả khi mô hình thất bại và hỏi cần thêm feature hay thiết kế nào.",
+    "action": "Chọn ‘Tình huống khó’; cho thấy đường thực tế giảm; không gán nguyên nhân tai nạn.",
+    "transition": "Mời lớp cùng theo dõi một lượt demo bốn phút.",
+    "refs": "traffic/results/demo_cases.json; traffic/results/audit_v2/case-2.png."
+  },
+  {
+    "speaker": 3,
+    "seconds": 240,
+    "title": "Live demo traffic · 4 phút",
+    "kind": "traffic-live",
+    "items": [
+      "0:00–0:55 · Phục hồi tốc độ: hỏi lớp trước khi mở đáp án",
+      "0:55–1:50 · Ca khó: đọc tín hiệu hàng xóm và sai số 55 km/h",
+      "1:50–3:10 · Dữ liệu quá cũ: mốc đo, thiếu mẫu, cảnh báo",
+      "3:10–4:00 · So sánh GRU / GCN+GRU và chốt giới hạn"
+    ],
+    "script": "Kịch bản live trong bốn phút: 1) Trong 55 giây, chọn Phục hồi tốc độ, giải thích nút, thời điểm và +15 phút; mời lớp dự đoán rồi mới hiện đáp án. 2) Trong 55 giây, chọn Tình huống khó, chỉ ra tốc độ tại nút và graph hàng xóm; công bố sai số 55 km/h; nhắc dataset không gắn nguyên nhân. 3) Trong 80 giây, chọn Dữ liệu quá cũ; tìm thời điểm đo thật cuối cùng 04:00, số mốc thiếu và cảnh báo 9 giờ 45; mở đáp án để thấy tốc độ thực tế chỉ 5,6 km/h. 4) Trong 50 giây, quay về bảng so sánh, nhắc GCN+GRU giảm MAE nhẹ so với GRU và chốt giới hạn. Nếu mạng chậm, chạy offline bằng RUN_DEMO.cmd; nếu site yêu cầu đăng nhập, chuyển qua local.",
+    "action": "Thực hiện đúng 3 nút demo; che đáp án cho đến khi người nghe dự đoán; chuyển local nếu đăng nhập hoặc Internet cản trở.",
+    "transition": "Kết luận phần traffic bằng phạm vi áp dụng và giới hạn.",
+    "refs": "Demo private: https://traffic-graph-lab-v2.fitdace1.chatgpt.site; local: D:/School/PT HTTM/DeepGraph/traffic/RUN_DEMO.cmd."
+  },
+  {
+    "speaker": 3,
+    "seconds": 45,
+    "title": "Graph cải thiện nhẹ, nhưng lỗi lớn vẫn còn",
+    "kind": "traffic-limit",
+    "items": [
+      "MAE toàn tập không bảo đảm tốt ở tốc độ thấp",
+      "Cảnh báo dữ liệu cũ không phải độ tin cậy",
+      "Một tình huống tốt không chứng minh hiệu quả vận hành",
+      "Cần kiểm chứng bằng dữ liệu mới và bối cảnh Việt Nam"
+    ],
+    "script": "Kết quả trung bình không che được lỗi lớn ở tốc độ thấp hoặc khi đầu vào cũ. Cảnh báo tuổi dữ liệu giúp người dùng không nhầm giá trị đã bù với số đo hiện tại; nó không phải độ tin cậy dự báo. Demo phát lại dữ liệu lịch sử Los Angeles, chưa kết nối nguồn hiện tại và chưa kiểm chứng ở Việt Nam. Mời Người 4 chuyển sang graph giao dịch Bitcoin, nơi nhãn mất cân bằng và cảnh báo nhầm có ý nghĩa khác.",
+    "action": "Đọc bốn giới hạn; không quy đổi MAE thành phần trăm chính xác.",
+    "transition": "Người 4 trình bày demo giao dịch đáng ngờ.",
+    "refs": "traffic/README.md; traffic/results/audit_v2/diagnostics.json."
+  },
+  {
+    "speaker": 4,
+    "seconds": 40,
+    "title": "Demo 2 · Sàng lọc giao dịch Bitcoin đáng ngờ",
+    "kind": "section",
+    "lead": "Điểm cảnh báo là tín hiệu rà soát, không phải kết luận vi phạm",
+    "script": "Em phụ trách demo Elliptic. Đây là bài toán phân loại giao dịch dựa trên đặc trưng và graph dòng tiền. Từ ‘illicit’ chỉ nói nhãn trong bộ dữ liệu lịch sử, không phải cáo buộc giao dịch hay chủ thể ngoài đời. Ta sẽ xem một ca được phát hiện, một cảnh báo nhầm, một ca bỏ sót và giao dịch chưa có nhãn.",
+    "action": "Mở elliptic-transaction-lab.pinkwand512.chatgpt.site nếu tài khoản có quyền; local chạy elliptic/start_demo.ps1.",
+    "transition": "Xem trước cấu trúc và mức độ mất cân bằng của dữ liệu.",
+    "refs": "elliptic/README.md; Elliptic dataset, https://www.kaggle.com/datasets/ellipticco/elliptic-data-set."
+  },
+  {
+    "speaker": 4,
+    "seconds": 50,
+    "title": "Elliptic biểu diễn dòng tiền thành graph thời gian",
+    "kind": "elliptic-data",
+    "items": [
+      "203.769 giao dịch · nút",
+      "234.355 liên kết dòng tiền · cạnh",
+      "49 lát cắt thời gian",
+      "Chỉ 46.564 giao dịch có nhãn; 157.205 là unknown"
+    ],
+    "script": "Elliptic có 203.769 giao dịch và 234.355 liên kết dòng tiền qua 49 lát cắt. Mỗi nút là giao dịch; cạnh biểu thị dòng Bitcoin giữa các giao dịch theo bộ dữ liệu. Có 4.545 nhãn illicit, 42.019 licit và 157.205 giao dịch chưa có nhãn. Unknown không có nghĩa là hợp pháp hoặc đáng ngờ; nghĩa là ta không có đáp án tham chiếu. Phân biệt ba nhóm này rất quan trọng khi đọc demo và chỉ số.",
+    "action": "Chỉ vào nút, cạnh và nhóm Unknown; nhấn nhãn không phải bản án.",
+    "transition": "Nhóm so sánh nhiều mô hình, và GCN không đứng đầu.",
+    "refs": "elliptic/results/data_summary.json; elliptic/results/metrics.json; Weber et al. (2019), https://arxiv.org/abs/1908.02591."
+  },
+  {
+    "speaker": 4,
+    "seconds": 60,
+    "title": "Random Forest hiện có F1 cao hơn GCN",
+    "kind": "elliptic-results",
+    "table": [
+      [
+        "Mô hình",
+        "F1 illicit",
+        "AP"
+      ],
+      [
+        "RF local",
+        "77,0% ± 1,6",
+        "78,2%"
+      ],
+      [
+        "RF all",
+        "79,3% ± 1,1",
+        "78,9%"
+      ],
+      [
+        "MLP",
+        "64,5% ± 2,3",
+        "78,8%"
+      ],
+      [
+        "GCN",
+        "61,3% ± 0,8",
+        "78,0%"
+      ]
+    ],
+    "script": "Bảng kết quả trung bình ba seed. Random Forest all đạt F1 79,3%, cao nhất; GCN đạt 61,3%. Nhóm không che kết quả này. RF all dùng 93 feature local cộng 72 feature tổng hợp hàng xóm, nên đã nhận thông tin quan hệ có sẵn. MLP và GCN cùng dùng 93 feature local; GCN thêm truyền tin trên graph. AP của các mô hình neural khá gần RF, nhưng F1 ở ngưỡng được chọn khác nhau. Điều đó cho thấy threshold, mất cân bằng và cách biểu diễn đều quan trọng; không có lý do để tuyên bố GCN luôn tốt hơn.",
+    "action": "Đọc F1, chỉ RF all dẫn đầu; nói rõ RF all có 72 feature hàng xóm.",
+    "transition": "Bây giờ ta mở giao diện và xem đúng một nút trong mạng.",
+    "refs": "elliptic/results/metrics.json; elliptic/README.md; elliptic/output/V2/Elliptic_Loi_Thuyet_Trinh_Va_Demo.pdf."
+  },
+  {
+    "speaker": 4,
+    "seconds": 40,
+    "title": "Demo Bitcoin · đọc graph và điểm mô hình",
+    "kind": "elliptic-live-intro",
+    "items": [
+      "Chọn lát cắt và mã giao dịch",
+      "So sánh RF local, RF all, MLP, GCN",
+      "Ngưỡng cảnh báo chọn bằng validation",
+      "Graph hiển thị là ngữ cảnh quanh giao dịch"
+    ],
+    "script": "Giao diện cho chọn lát cắt, giao dịch, mô hình và ngưỡng. Màu nút cho biết dự đoán; danh sách hàng xóm giúp xem ngữ cảnh. GCN và MLP suy luận trên toàn lát cắt, dù giao diện chỉ vẽ một vùng nhỏ. Ngưỡng đã chọn từ validation, còn kéo thanh ngưỡng chỉ để minh họa trade-off. Ta không gọi điểm 0,99 là xác suất chắc chắn, vì mô hình chưa hiệu chỉnh xác suất.",
+    "action": "Mở giao diện Elliptic và chỉ bộ lọc thời gian, model, graph, điểm cảnh báo.",
+    "transition": "Cùng đọc bốn trường hợp theo thứ tự, rồi xem các giới hạn của kết quả.",
+    "refs": "elliptic/qa/workspace.png; elliptic/README.md."
+  },
+  {
+    "speaker": 4,
+    "seconds": 100,
+    "title": "Live demo Bitcoin · phát hiện đúng",
+    "kind": "elliptic-detected",
+    "lead": "Giao dịch 69756172 · lát cắt 35",
+    "items": [
+      "Điểm GCN: 0,9972",
+      "Ngưỡng validation: khoảng 0,7079",
+      "Nhãn tham chiếu: illicit",
+      "Ví dụ minh họa; không đại diện toàn test"
+    ],
+    "script": "Chọn lát cắt 35 và giao dịch 69756172. Đầu tiên chưa đối chiếu nhãn. Hỏi lớp: điểm GCN gần 1 có nghĩa gì? Trả lời: mô hình xếp giao dịch này trên ngưỡng đã chọn, vì vậy phát cảnh báo. Điểm là đầu ra mô hình, chưa phải xác suất hiệu chỉnh. Sau khi mời lớp đoán, mở nhãn tham chiếu: illicit. Đây là một phát hiện đúng trong trường hợp được chọn sau đánh giá. Không suy rộng từ một nút sang toàn bộ dữ liệu. Quan sát mạng không chứng minh nguyên nhân hoặc hành vi của cá nhân.",
+    "action": "Chọn case Phát hiện đúng; đọc GCN 0,9972; mời dự đoán; bấm đối chiếu để hiện nhãn.",
+    "transition": "Một điểm trên ngưỡng cũng có thể là cảnh báo nhầm.",
+    "refs": "elliptic/results/demo_cases.json; elliptic/README.md."
+  },
+  {
+    "speaker": 4,
+    "seconds": 80,
+    "title": "Cảnh báo nhầm · ngưỡng không xóa hết sai số",
+    "kind": "elliptic-false",
+    "lead": "Giao dịch 201433814 · lát cắt 36",
+    "items": [
+      "Điểm GCN: 0,8350",
+      "Vượt ngưỡng validation",
+      "Nhãn tham chiếu: licit",
+      "False positive · cần người rà soát"
+    ],
+    "script": "Chuyển sang giao dịch 201433814 ở lát cắt 36. GCN cho điểm 0,835, cao hơn ngưỡng và phát cảnh báo. Nhãn tham chiếu là licit, nên đây là false positive trong bộ dữ liệu. Nếu chỉ nhìn màu đỏ, người xem dễ hiểu quá mức. Một hệ thống sàng lọc cần quản lý khối lượng cảnh báo nhầm và có quy trình rà soát của con người. Ta không nên gọi đây là giao dịch bất hợp pháp.",
+    "action": "Chọn Cảnh báo nhầm; đọc điểm và ngưỡng trước; sau đó hiện nhãn licit.",
+    "transition": "Hạ ngưỡng có thể giảm bỏ sót nhưng làm tăng cảnh báo.",
+    "refs": "elliptic/results/demo_cases.json."
+  },
+  {
+    "speaker": 4,
+    "seconds": 155,
+    "title": "Bỏ sót và unknown nhắc ta đọc nhãn cẩn thận",
+    "kind": "elliptic-missed",
+    "lead": "Hai nút, hai trạng thái khác nhau",
+    "items": [
+      "67673076 · điểm 0,359 dưới ngưỡng; nhãn illicit",
+      "56460695 · điểm 0,962 nhưng nhãn unknown",
+      "FN: mô hình không cảnh báo một mẫu illicit",
+      "Unknown: không có đáp án để xác nhận đúng/sai"
+    ],
+    "script": "Chọn Bỏ sót, giao dịch 67673076 ở lát cắt 35. Điểm 0,359 thấp hơn ngưỡng validation, nên mô hình không cảnh báo; nhãn tham chiếu là illicit. Đây là false negative. Sau đó chọn Chưa có nhãn, giao dịch 56460695. Điểm 0,962 nhưng nhãn unknown. Vì không có nhãn, ta không thể gọi kết quả đúng hay sai. Cuối cùng mở confusion matrix hoặc metric summary: hạ ngưỡng thường tăng recall nhưng cũng tăng cảnh báo nhầm. Kết thúc live bằng câu hỏi: trong một công cụ sàng lọc, ta chấp nhận cân bằng precision/recall thế nào và ai rà soát cảnh báo? Nếu site yêu cầu tài khoản cũ hoặc không vào được, chạy local bằng start_demo.ps1.",
+    "action": "Chọn case Bỏ sót, mở nhãn; chuyển Unknown và nói rõ không có đáp án; xem bảng chỉ số; dùng bản local khi site bị khóa.",
+    "transition": "Kết luận hai demo bằng bài học chung về biểu diễn và kiểm chứng.",
+    "refs": "elliptic/results/demo_cases.json; elliptic/results/metrics.json; local: D:/School/PT HTTM/DeepGraph/elliptic/start_demo.ps1."
+  },
+  {
+    "speaker": 4,
+    "seconds": 45,
+    "title": "Hai miền dữ liệu · một nguyên tắc làm khoa học",
+    "kind": "closing",
+    "items": [
+      "Định nghĩa đúng nút, cạnh và thời điểm",
+      "Đặt baseline cùng giao thức",
+      "Đọc cả tình huống tốt và sai",
+      "Graph có ích khi được kiểm chứng"
+    ],
+    "script": "Hai demo dùng cùng trực giác: đối tượng có quan hệ nên ta thử để mô hình khai thác graph. Nhưng target và thước đo khác nhau: tốc độ là hồi quy, giao dịch là phân loại mất cân bằng. Trong cấu hình này graph giúp nhẹ ở traffic; tại Elliptic, RF đạt F1 cao hơn GCN. Kết luận tốt không phải graph luôn thắng, mà là biểu diễn phải phù hợp, đánh giá phải công bằng, và ví dụ lỗi phải được trình bày cùng kết quả tốt. Nhóm xin cảm ơn thầy và các bạn. Mời thầy đặt câu hỏi.",
+    "action": "Đọc bốn nguyên tắc; chuyển sang hỏi đáp hai phút.",
+    "transition": "Q&A · mỗi thành viên nhận câu hỏi theo phần mình phụ trách.",
+    "refs": "Kết quả do nhóm thực nghiệm: traffic/results/metrics.json; elliptic/results/metrics.json."
+  }
+]
