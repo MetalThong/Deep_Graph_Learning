@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {ageLabel,observationTime,assessFreshness} from './dist/freshness.mjs';
+assert.equal(ageLabel(585),'9 giờ 45 phút');
+assert.equal(observationTime('2012-06-09 13:45:00',585),'2012-06-09 04:00');
+assert.equal(observationTime('2012-06-09 00:05:00',10),'2012-06-08 23:55');
+assert.equal(observationTime('2012-06-09 13:45:00',-1),null);
+const meta={nodes:[{},{}],rows:[[[0,1],[1,1]],[[1,1],[0,1]]],timestamps:Array(12).fill('2012-06-09 13:45:00')};
+const data={mask:new Uint8Array(24).fill(1),age:new Int32Array(24)};
+assert.equal(assessFreshness(meta,data,11,0).severity,'fresh');
+data.mask[22]=0;data.age[22]=5;assert.equal(assessFreshness(meta,data,11,0).severity,'warning');
+data.age[22]=60;assert.equal(assessFreshness(meta,data,11,0).severity,'critical');
+data.age[22]=-1;assert.equal(assessFreshness(meta,data,11,0).lastObserved,null);
+data.age[22]=0;data.mask[22]=1;data.age[23]=585;data.mask[23]=0;
+const neighbor=assessFreshness(meta,data,11,0);assert.equal(neighbor.staleNeighbors,1);assert.equal(neighbor.severity,'warning');
+console.log('Freshness: age, day rollover, never-observed, threshold and neighbor warnings passed.');
+
+// Integration: exported ages must line up with replay timestamps and sensor order.
+const fs=await import('node:fs/promises');
+const replay=JSON.parse(await fs.readFile(new URL('./dist/meta.json',import.meta.url),'utf8'));
+const bytes=await fs.readFile(new URL('./dist/age.i32',import.meta.url));
+const ages=new Int32Array(bytes.buffer,bytes.byteOffset,bytes.byteLength/4);
+const mask=await fs.readFile(new URL('./dist/observed.u8',import.meta.url));
+assert.equal(ages.length,replay.steps*replay.nodes.length);
+for(let i=0;i<ages.length;i++)assert.equal(mask[i]?ages[i]===0:ages[i]>0||ages[i]===-1,true);
+const episode=replay.cases.find(c=>c.sensor_id==='774067'&&c.time==='2012-06-09 13:45:00');
+assert.ok(episode,'Frozen stale-data episode is exported');
+const stale=assessFreshness(replay,{mask,age:ages},episode.origin,episode.node);
+assert.equal(stale.age,585);assert.equal(stale.lastObserved,'2012-06-09 04:00');
+assert.equal(stale.missing,12);assert.equal(stale.missingNeighbors,10);assert.equal(stale.severity,'critical');
+console.log('Exported replay: all age/mask pairs consistent; 585-minute episode verified.');

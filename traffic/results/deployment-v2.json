@@ -1,0 +1,21 @@
+{
+  "run_id": "v2_160epochs_fullval",
+  "status": "succeeded",
+  "published_at": "2026-10-14T00:18:18.861896+00:00",
+  "project_id": "appgprj_6acec9e0b62c8191b3c530b91a8e4208",
+  "deployment_id": "appgdep_6aceca35d7588191936a92d8caafa791",
+  "version_id": "appgprj_6acec9e0b62c8191b3c530b91a8e4208~appgver_fda9ad12bd948191b16377a7cf7837ce",
+  "commit_sha": "ea48ae6523878370fb9d030e389437683d9598ee",
+  "url": "https://traffic-graph-lab-v2.fitdace1.chatgpt.site",
+  "v2_published": true,
+  "audience": "owner-private",
+  "source_directory": "../traffic-site-v2",
+  "reason_for_new_site": "User changed accounts and explicitly requested a new private website in the current account.",
+  "verification": {
+    "deployment_status": "succeeded",
+    "archive_matches_all_12_dist_files": true,
+    "local_demo_UI_checked": true,
+    "production_browser": "Private login page verified; app UI behind login requires owner sign-in."
+  },
+  "local_demo": "RUN_DEMO.cmd or python run_demo.py"
+}

@@ -1,0 +1,1 @@
+Buildless traffic forecasting demo v2. METR-LA / GRU / GCN+GRU. Source and reproducible training: ../traffic. Model run: v2_160epochs_fullval. This checkout belongs to the new private Site created at the user's request on 2026-10-14.

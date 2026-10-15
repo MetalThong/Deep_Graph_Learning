@@ -1,0 +1,53 @@
+{
+  "dataset": "METR-LA",
+  "nodes": 207,
+  "timestamps": 34272,
+  "start": "2012-03-01 00:00:00",
+  "end": "2012-06-27 23:55:00",
+  "interval_minutes": 5,
+  "raw_unit": "mph",
+  "display_unit": "km/h",
+  "mph_to_kmh": 1.609344,
+  "missing_fraction": 0.08109350825676487,
+  "mean_train_mph": 58.58426284790039,
+  "std_train_mph": 12.822882652282715,
+  "train_end_index": 23990,
+  "val_end_index": 27417,
+  "directed_edges_without_self": 1515,
+  "undirected_edges_without_self": 1313,
+  "input_steps": 12,
+  "horizon_steps": 3,
+  "splits": {
+    "train": {
+      "windows": 23976,
+      "target_start": "2012-03-01 01:10:00",
+      "target_end": "2012-05-23 07:05:00"
+    },
+    "val": {
+      "windows": 3425,
+      "target_start": "2012-05-23 07:20:00",
+      "target_end": "2012-06-04 04:40:00"
+    },
+    "test": {
+      "windows": 6853,
+      "target_start": "2012-06-04 04:55:00",
+      "target_end": "2012-06-27 23:55:00"
+    }
+  },
+  "preprocessing": "Zero/non-finite = missing; causal forward fill with train-only node-median fallback; global train-only observed mean/std; target zeros masked.",
+  "boundary_gap": "Two target timestamps excluded at each validation/test start, so the first origin is at or after the preceding final label timestamp.",
+  "freshness": "Age in minutes since last observed raw value, computed from complete past before replay slicing; -1 means no earlier observation. Informational warning only; not a calibrated confidence score or a model input.",
+  "graph": "max(A,A.T), diagonal=1, symmetric degree normalization; no road direction in this compact model.",
+  "sources": {
+    "metr-la.h5": "https://drive.google.com/uc?id=1pAGRfzMx6K9WWsfDcD1NMbIif0T0saFC",
+    "adj_mx.pkl": "https://raw.githubusercontent.com/liyaguang/DCRNN/master/data/sensor_graph/adj_mx.pkl",
+    "graph_sensor_locations.csv": "https://raw.githubusercontent.com/liyaguang/DCRNN/master/data/sensor_graph/graph_sensor_locations.csv",
+    "DCRNN_LICENSE": "https://raw.githubusercontent.com/liyaguang/DCRNN/master/LICENSE"
+  },
+  "sha256": {
+    "metr-la.h5": "64784b76d6fb8ec9bff4b6decafb354da2bb37840468fdccee5044e511277c05",
+    "adj_mx.pkl": "a35687c6e15aa228dc45027b0ed2a0ea0f4ec78f573deb992c595092d12f61b3",
+    "graph_sensor_locations.csv": "eb8ea96e07358b45d0e4ba3b89c2673fa20c54af50150249e627389e749ade6f",
+    "DCRNN_LICENSE": "29414ec274aafdfde2e0e5f5e55f136fcd3d5e8514ab54f1809298eeb1fd5a43"
+  }
+}
